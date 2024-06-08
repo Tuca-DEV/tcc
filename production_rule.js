@@ -1,6 +1,4 @@
-
-
-class Regra {
+export default class Regra {
     constructor() {
       this.antecedente = []; // Vetor que armazena as cláusulas condicionais da regra
       this.variaveisAntecedente = []; // Atributo que armazena as variáveis envolvidas no antecedente
@@ -47,11 +45,11 @@ regras[0].adicionarClausula(
   }
 ) 
 regras[0].adicionarClausula(() => usuario.disponibilidade.length > 0)
-regras[0].adicionarFuncaoConsequente(calc_qtd_treinos_anual())
+regras[0].adicionarFuncaoConsequente(() => calc_qtd_treinos_anual())
 regras[0].variaveisAntecedente.push("Usuario.disponibilidade")
 regras[0].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
 
-export var regras
+export { regras }
 
 export function calc_qtd_treinos_anual(usuario) {
     let atual = new Date() //Data atual do usuário
@@ -78,9 +76,6 @@ export function calc_qtd_treinos_anual(usuario) {
     usuario.plano_treino.qtd_treinos_anual = diasTreino;
 
 }
-
-
-export default Regra
 
 /*
 let idade = 20;

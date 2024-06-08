@@ -1,1 +1,1 @@
-Projeto TCC
+Algorítmo para seleção de Treinos TCC

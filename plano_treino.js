@@ -1,6 +1,6 @@
 import Treino from './treino.js';
 
-class PlanoTreino {
+export default class PlanoTreino {
     constructor(qtd_treinos_anual = undefined, fases = undefined) {
       this.qtd_treinos_anual = qtd_treinos_anual;
       this.datas = new Array(qtd_treinos_anual).fill(null)
@@ -31,5 +31,3 @@ class PlanoTreino {
       return this.treinos;
     }
 }
-
-export default PlanoTreino

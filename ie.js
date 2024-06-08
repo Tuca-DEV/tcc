@@ -1,5 +1,5 @@
-import {askable_vars} from './main.js'
-import {regras} from './production_rule.js'
+import { askable_vars } from './main.js'
+import { regras } from './production_rule.js'
 
 
 //Tentará obter um valor para a variável variable através de inferência ou pergunta ao usuário

@@ -1,7 +1,6 @@
-
 import PlanoTreino from './plano_treino.js'
 
-class Usuario {
+export default class Usuario {
   constructor(id = null, nome = null, idade = null, sexo = null, peso = null, altura = null, objetivo = null, disponibilidade = [], nivel = null, comorbidades = [], ant_lesoes = []) {
     //Cadastradas
     this.id = id;
@@ -21,13 +20,11 @@ class Usuario {
   }
 
 
-/*
-  definirPlanoTreino(planoTreino) {
-    this.plano_treino = new PlanoTreino();
-  }
-  */
- 
+  /*
+    definirPlanoTreino(planoTreino) {
+      this.plano_treino = new PlanoTreino();
+    }
+    */
+
 }
 
-export default Usuario 
-  
