@@ -51,7 +51,7 @@ regras[0].adicionarFuncaoConsequente(calc_qtd_treinos_anual())
 regras[0].variaveisAntecedente.push("Usuario.disponibilidade")
 regras[0].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
 
-
+export var regras
 
 export function calc_qtd_treinos_anual(usuario) {
     let atual = new Date() //Data atual do usuário

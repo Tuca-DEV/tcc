@@ -12,7 +12,7 @@ console.log("Qual sua disponibilidade? ")
 
 let eu = new Usuario()
  
-traceValues(eu.plano_treino)
+traceValues(eu)
 console.log("Treinos totais: ", eu.plano_treino.qtd_treinos_anual)
 console.log("Datas: "+eu.plano_treino.datas)
 
