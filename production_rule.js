@@ -58,7 +58,7 @@ regras[1].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
 
 
 
-export var regras
+export {regras}
 export default Regra
 
 

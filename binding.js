@@ -1,5 +1,5 @@
-import {user} from 'main.js'
-import {x, y} from 'ie.js'
+import {user} from './main.js'
+import {x, y} from './ie.js'
  
 var binding = {
     //Usuário

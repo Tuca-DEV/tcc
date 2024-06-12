@@ -3,11 +3,11 @@ import TabExercicios from './tabexercicios.js';
 class Treino {
     // Var's objetivo: tabExercicios
     constructor() {
-      this.data = undefined;
-      this.fase = undefined;
-      this.tempoTotal = undefined;
-      this.volume = undefined;
-      this.intensidade = undefined;
+      this.data = null;
+      this.fase = null;
+      this.tempoTotal = null;
+      this.volume = null;
+      this.intensidade = null;
       this.agrupMusc = [];
       this.tabExercicios = [new TabExercicios("WarmUp"), new TabExercicios("Core"), new TabExercicios("Resistência"), new TabExercicios("Core")]; 
     }

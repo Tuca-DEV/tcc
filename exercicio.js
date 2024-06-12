@@ -1,14 +1,14 @@
 class Exercicio {
     constructor() {
-      this.id_exerc = undefined;
-      this.nivel_opt = undefined;
-      this.dificuldade = undefined;
-      this.intensidade = undefined;
-      this.nome = undefined;
+      this.id_exerc = null;
+      this.nivel_opt = null;
+      this.dificuldade = null;
+      this.intensidade = null;
+      this.nome = null;
       this.agrup_musc = [];
-      this.tipo_sub_treino = undefined;
-      this.temp_exec_medio = undefined;
-      this.repeticoes = undefined;
+      this.tipo_sub_treino = null;
+      this.temp_exec_medio = null;
+      this.repeticoes = null;
       this.restricoes = [];
     }
   }

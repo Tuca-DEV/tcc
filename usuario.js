@@ -5,16 +5,16 @@ class Usuario {
   // Var's objetivo: planoTreino
   constructor() {
     //Cadastradas
-    this.id = undefined;
-    this.nome = undefined;
-    this.idade = undefined;
+    this.id = null;
+    this.nome = null;
+    this.idade = null;
     //Perguntadas
-    this.altura = undefined;
-    this.peso = undefined;
-    this.sexo = undefined;
-    this.objetivo = undefined;
+    this.altura = null;
+    this.peso = null;
+    this.sexo = null;
+    this.objetivo = null;
     this.disponibilidade = [];
-    this.nivel = undefined;
+    this.nivel = null;
     this.comorbidades = [];
     this.antLesoes = [];
     //Inferida
