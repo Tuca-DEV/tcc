@@ -1,40 +1,65 @@
-import {askable_vars} from './main.js'
-import {regras} from './production_rule.js'
 
+import {askable_vars, objVars} from './main.js'
+import {regras} from './production_rule.js'
+import {binding} from './binding.js'
+
+var x = 0, y = 0;
 
 //Tentará obter um valor para a variável variable através de inferência ou pergunta ao usuário
-export function traceValues(variable) {
-    infer(variable)
-    if(variable === undefined || typeof(variable) == 'object' && askable_vars.includes(nameof(variable))) { //Caso a variável não tenha sido inferida e pode ser perguntada
-        if(typeof(variable) == 'object') { //Se é uma variável multi-valorada
-            var i = prompt("Quantos valores quer adicionar a(o) "+nameof(variable)+"?  ")
-            for(var c = 0; c < i; c++){
-                variable[c] = prompt("Valor de ["+c+"]: ")
-            }
-        } else { //Se é uma variável uni-valorada
-            console.log("Qual o valor de "+nameof(variable)+"?")
-            variable = prompt("Diga aqui: ")
+export function traceValues(nameVariable) {
+    infer(nameVariable) // Tentativa de deduzir o valor da variável
+
+    //Caso a variável não tenha sido inferida e pode ser perguntada
+    if(binding[nameVariable] === 'undefined' && askable_vars.includes(nameVariable)) { 
+
+        if(binding[nameVariable] instanceof Array) { //Se é uma variável multi-valorada tipo array
+                var i = prompt("Quantos valores quer adicionar a(o) "+nameVariable+"?  ")
+                for(var c = 0; c < i; c++){
+                    binding[nameVariable][c] = prompt("Valor de ["+c+"]: ")
+                }
+        } else if (binding[nameVariable] != 'object') { //Se é uma variável uni-valorada
+            console.log("Qual o valor de "+nameVariable+"?")
+            binding[nameVariable] = prompt("Diga aqui: ")
+
+        } else { //Variável ??
+            console.log("\nALGO DE ERRADO N ESTA CERTO!\n") 
         }
-        
+    // Caso seja um array de objetos
+    } else if (binding[nameVariable] instanceof Array && binding[nameVariable][0] instanceof Object) {
+        //Para cada objeto no array de objetos faça
+        for(i in binding[nameVariable]) {
+            activate(i, nameVariable)
+        }
+
+    // Caso seja um objeto
+    } else if (binding[nameVariable] instanceof Object && binding[nameVariable].length == undefined) {
+        activate(binding[nameVariable], nameVariable)    
+
     } else {
-        console.log("Não foi possível traçar a variável\n")
+        console.log("Não foi possível traçar a variável no momento\n")
     }
+
 }
 
 //Método para inferir o valor da variável
-function infer(variable){
+function infer(nameVariable){
     var selected_regras = []
-    select(regras, variable, selected_regras) //Seleciona as regras para dentro do vetor selected_regras
+    select(regras, nameVariable, selected_regras) //Seleciona as regras para dentro do vetor selected_regras
     selected_regras.forEach(r => { //Para cada regra selecionada, aplique-a
         apply(r)
     })
 }
 
 //Seleção das regras
-function select(regras, variable, selected_regras){
-    regras.forEach((r, i) => { //Para cada regra, analise se a variável em questão é alterada pelo consequente desta regra
+function select(regras, nameVariable, selected_regras){
+    //Para cada regra, analise se a variável em questão é alterada pelo consequente desta regra
+    regras.forEach((r, i) => {
         for(var i = 0; i < r.variaveisConsequente.length; i++) {  
-            if (r.variaveisConsequente[i] == nameof(variable)) {selected_regras.push(r); break;} //Selecionando a regra de fato
+            //Selecionando a regra de fato
+            if (r.variaveisConsequente[i] == nameVariable) { 
+                selected_regras.push(r); 
+                break;
+            } 
         }
     });
 }
@@ -44,7 +69,7 @@ function apply(regra){
     if(evalconditions(regra)) { 
         regra.executarConsequente() //Executará o consequente da regra caso todos os predicados sejam verdadeiros com o valor da variável
     } else {
-        console.log("Não foi possível\n")
+        console.log("Predicado falso\n")
     }
 }
 
@@ -57,3 +82,13 @@ function evalconditions(regra) {
     return true
 }
 
+function activate(objeto, nameVariable) {
+    for (atr in objeto){
+        nameAtr = nameVariable + "." + atr
+        if(objVars.includes(nameAtr)) {
+            traceValues(nameAtr)
+        }
+    }
+}
+
+export {x,y}

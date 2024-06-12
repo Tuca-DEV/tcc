@@ -2,22 +2,23 @@
 import PlanoTreino from './plano_treino.js'
 
 class Usuario {
-  constructor(id = null, nome = null, idade = null, sexo = null, peso = null, altura = null, objetivo = null, disponibilidade = [], nivel = null, comorbidades = [], ant_lesoes = []) {
+  // Var's objetivo: planoTreino
+  constructor() {
     //Cadastradas
-    this.id = id;
-    this.nome = nome;
-    this.idade = idade;
+    this.id = undefined;
+    this.nome = undefined;
+    this.idade = undefined;
     //Perguntadas
-    this.altura = altura;
-    this.peso = peso;
-    this.sexo = sexo;
-    this.objetivo = objetivo;
-    this.disponibilidade = disponibilidade;
-    this.nivel = nivel;
-    this.comorbidades = comorbidades;
-    this.ant_lesoes = ant_lesoes;
+    this.altura = undefined;
+    this.peso = undefined;
+    this.sexo = undefined;
+    this.objetivo = undefined;
+    this.disponibilidade = [];
+    this.nivel = undefined;
+    this.comorbidades = [];
+    this.antLesoes = [];
     //Inferida
-    this.plano_treino = new PlanoTreino();
+    this.planoTreino = new PlanoTreino;
   }
 
 

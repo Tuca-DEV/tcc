@@ -1,37 +1,15 @@
-
+import {binding} from './binding.js'
 
 class Regra {
     constructor() {
       this.antecedente = []; // Vetor que armazena as cláusulas condicionais da regra
       this.variaveisAntecedente = []; // Atributo que armazena as variáveis envolvidas no antecedente
       this.acoesConsequente = []; // Atributo que armazena as funções caso todos os predicados em antecedente sejam verdadeiros
-      this.variaveisConsequente = []; // Atributo que guarda as variáveis que sofrerão mudanças no consequente
-    }
-  
-    adicionarClausula(clausula) {
-      this.antecedente.push(clausula);
-    }
-  
-    adicionarVariavelAntecedente(variavel) {
-      this.variaveisAntecedente.push(variavel);
-    }
-  
-    adicionarFuncaoConsequente(funcao) {
-      this.acoesConsequente.push(funcao);
-    }
-  
-    adicionarVariavelConsequente(variavel) {
-      this.variaveisConsequente.push(variavel);
-    }
-  
-    verificarAntecedente() {
-      return this.antecedente.every(clausula => clausula());
+      this.strVariaveisConsequente = []; // Atributo que guarda o nome das variáveis que sofrerão mudanças no consequente
     }
   
     executarConsequente() {
-      if (this.verificarAntecedente()) {
         this.acoesConsequente.forEach(funcao => funcao());
-      }
     }
   }
 
@@ -40,21 +18,13 @@ var regras = new Array(10).fill(null).map(() => new Regra())
 
 //Regra 0: Calculadora de dias de treino durante 1 ano de programação variando com a disponibilidade do usuário
 
-regras[0].adicionarClausula(
-  function(usuario) {
-    if(usuario.disponibilidade > 0){return true} 
-    else {return false}
-  }
-) 
-regras[0].adicionarClausula(() => usuario.disponibilidade.length > 0)
-regras[0].adicionarFuncaoConsequente(calc_qtd_treinos_anual())
+regras[0].adicionarClausula(function() {return binding["Usuario.disponibilidade"].length > 0})
+regras[0].adicionarFuncaoConsequente(calc_qtd_treinos_anual)
 regras[0].variaveisAntecedente.push("Usuario.disponibilidade")
 regras[0].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
 
-export var regras
-
-export function calc_qtd_treinos_anual(usuario) {
-    let atual = new Date() //Data atual do usuário
+function calc_qtd_treinos_anual() {
+    let atual = new Date() //Data atual do usuário ao criar plano de treinos
     let final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
     
     let dataIterada = new Date(atual.valueOf())
@@ -68,31 +38,29 @@ export function calc_qtd_treinos_anual(usuario) {
         // Verificar se o dia da semana está na disponibilidade do usuário
         if (usuario.disponibilidade.includes(diaSemana)) {
           diasTreino++;
-          usuario.plano_treino.datas.push(new Date(dataIterada.valueOf()))
+          binding["Usuario.planoTreino.datas"].push(new Date(dataIterada.valueOf()))
         }
     
         // Avançar para o próximo dia
         dataIterada.setDate(dataIterada.getDate() + 1);
     }
     
-    usuario.plano_treino.qtd_treinos_anual = diasTreino;
+    binding["usuario.planoTreino.qtTreinosAnual"] = diasTreino;
 
 }
 
+//Regra 1: escolha exercício ID
 
+regras[1].adicionarClausula(function() {return binding["Usuario.disponibilidade"].length > 0})
+regras[1].adicionarFuncaoConsequente(calc_qtd_treinos_anual)
+regras[1].variaveisAntecedente.push("Usuario.disponibilidade")
+regras[1].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
+
+
+
+export var regras
 export default Regra
 
-/*
-let idade = 20;
 
-const regra = new Regra();
-regra.adicionarClausula(() => idade > 18);
-regra.adicionarVariavelAntecedente('idade');
-regra.adicionarFuncaoConsequente(() => console.log('Idade é maior que 18.'));
-regra.adicionarVariavelConsequente('mensagem');
-
-regra.executarConsequente(); // Isso vai imprimir: "Idade é maior que 18."
-
-*/
 
   

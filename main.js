@@ -6,14 +6,13 @@ import TabExercicios from './tabexercicios.js'
 import Regra, {calc_qtd_treinos_anual} from "./production_rule.js"
 import {traceValues} from "./ie.js"
  
-export var askable_vars = ["nome", "idade", "sexo", "peso", "altura", "objetivo", "disponibilidade", "nivel", "comorbidades", "ant_lesoes"]
+export var askable_vars = ["Usuario.nome", "Usuario.idade", "Usuario.sexo", "Usuario.peso", "Usuario.altura", "Usuario.objetivo", "Usuario.disponibilidade", "Usuario.nivel", "Usuario.comorbidades", "Usuario.ant_lesoes"]
+export var objVars = ["Usuario.planoTreino", "Usuario.planoTreino.treinos", "Usuario"]
 
-console.log("Qual sua disponibilidade? ")
+var user = new Usuario
+traceValues("User")
 
-let eu = new Usuario()
- 
-traceValues(eu)
-console.log("Treinos totais: ", eu.plano_treino.qtd_treinos_anual)
-console.log("Datas: "+eu.plano_treino.datas)
+console.log("Treinos totais: ", user.plano_treino.qtd_treinos_anual)
+console.log("Datas: "+user.plano_treino.datas)
 
 

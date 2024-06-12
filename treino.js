@@ -1,17 +1,18 @@
 import TabExercicios from './tabexercicios.js';
 
 class Treino {
-    constructor(id = null, data = '', fase = null, agrup_musc = [], tempototal = null, volume = null, intensidade = null) {
-      this.id = id;
-      this.data = data;
-      this.fase = fase;
-      this.agrup_musc = agrup_musc;
-      this.tempototal = tempototal;
-      this.volume = volume;
-      this.intensidade = intensidade;
-      this.tab_exercicios = new Array(4).fill(null).map(() => new TabExercicios()); // Assume que cada TabExercicios tem 5 exercícios
+    // Var's objetivo: tabExercicios
+    constructor() {
+      this.data = undefined;
+      this.fase = undefined;
+      this.tempoTotal = undefined;
+      this.volume = undefined;
+      this.intensidade = undefined;
+      this.agrupMusc = [];
+      this.tabExercicios = [new TabExercicios("WarmUp"), new TabExercicios("Core"), new TabExercicios("Resistência"), new TabExercicios("Core")]; 
     }
   
+    /*
     // Método para adicionar um TabExercicios
     adicionarTabExercicios(index, tabExercicios) {
       if (index >= 0 && index < this.tab_exercicios.length) {
@@ -35,6 +36,7 @@ class Treino {
     listarTodosTabExercicios() {
       return this.tab_exercicios;
     }
+      */
   }
   
 export default Treino
