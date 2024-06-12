@@ -1,5 +1,9 @@
-import {user} from './main.js'
-import {x, y} from './ie.js'
+//import {x, y} from './ie.js'
+//import user from './main.js'
+import Usuario from "./usuario.js"
+
+export var user = new Usuario;
+var x = 0, y = 0;
  
 var binding = {
     //Usuário
@@ -40,7 +44,7 @@ var binding = {
                 "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso": user.planoTreino.treinos[x].tabExercicios[y].tempoDescanso,
                 "Usuario.planoTreino.treinos.tabExercicios.repeticoes": user.planoTreino.treinos[x].tabExercicios[y].repeticoes,
                 "Usuario.planoTreino.treinos.tabExercicios.sets": user.planoTreino.treinos[x].tabExercicios[y].sets,
-                "Usuario.planoTreino.treinos.tabExercicios.modTempoExec": user.planoTreino.treinos[x].tabExercicios[y].modTempoExec,
+                "Usuario.planoTreino.treinos.tabExercicios.modTempoExec": user.planoTreino.treinos[x].tabExercicios[y].modTempoExec
 
 //Obs: Não há ligação para a classe Exercicio pois esta classe será pré-determinada manualmente pelos programadores
 

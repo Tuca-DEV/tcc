@@ -3,7 +3,6 @@ import {askable_vars, objVars} from './main.js'
 import {regras} from './production_rule.js'
 import {binding} from './binding.js'
 
-var x = 0, y = 0;
 
 //Tentará obter um valor para a variável variable através de inferência ou pergunta ao usuário
 export function traceValues(nameVariable) {
@@ -54,9 +53,9 @@ function infer(nameVariable){
 function select(regras, nameVariable, selected_regras){
     //Para cada regra, analise se a variável em questão é alterada pelo consequente desta regra
     regras.forEach((r, i) => {
-        for(var i = 0; i < r.variaveisConsequente.length; i++) {  
+        for(var i = 0; i < r.nameVariaveisConsequente.length; i++) {  
             //Selecionando a regra de fato
-            if (r.variaveisConsequente[i] == nameVariable) { 
+            if (r.nameVariaveisConsequente[i] == nameVariable) { 
                 selected_regras.push(r); 
                 break;
             } 
@@ -76,7 +75,7 @@ function apply(regra){
 //Avalia se todos os testes lógicos na regra retornam valor verdadeiro
 function evalconditions(regra) {
     regra.antecedente.forEach((clausula, i) => {
-        traceValues(regra.variaveisAntecedente[i])
+        traceValues(regra.nameVariaveisAntecedente[i])
         if(!clausula) return false //Caso haja um predicado com valor falso, retornará falso
     })
     return true
@@ -90,5 +89,3 @@ function activate(objeto, nameVariable) {
         }
     }
 }
-
-export {x,y}

@@ -3,9 +3,9 @@ import {binding} from './binding.js'
 class Regra {
     constructor() {
       this.antecedente = []; // Vetor que armazena as cláusulas condicionais da regra
-      this.variaveisAntecedente = []; // Atributo que armazena as variáveis envolvidas no antecedente
+      this.nameVariaveisAntecedente = []; // Atributo que armazena as variáveis envolvidas no antecedente
       this.acoesConsequente = []; // Atributo que armazena as funções caso todos os predicados em antecedente sejam verdadeiros
-      this.strVariaveisConsequente = []; // Atributo que guarda o nome das variáveis que sofrerão mudanças no consequente
+      this.nameVariaveisConsequente = []; // Atributo que guarda o nome das variáveis que sofrerão mudanças no consequente
     }
   
     executarConsequente() {
@@ -18,10 +18,10 @@ var regras = new Array(10).fill(null).map(() => new Regra())
 
 //Regra 0: Calculadora de dias de treino durante 1 ano de programação variando com a disponibilidade do usuário
 
-regras[0].adicionarClausula(function() {return binding["Usuario.disponibilidade"].length > 0})
-regras[0].adicionarFuncaoConsequente(calc_qtd_treinos_anual)
-regras[0].variaveisAntecedente.push("Usuario.disponibilidade")
-regras[0].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
+regras[0].antecedente.push(function() {return binding["Usuario.disponibilidade"].length > 0})
+regras[0].acoesConsequente.push((calc_qtd_treinos_anual))
+regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade")
+regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.qtdTreinosAnual")
 
 function calc_qtd_treinos_anual() {
     let atual = new Date() //Data atual do usuário ao criar plano de treinos
@@ -49,14 +49,14 @@ function calc_qtd_treinos_anual() {
 
 }
 
-//Regra 1: escolha exercício ID
+/*Regra 1: escolha exercício ID
 
-regras[1].adicionarClausula(function() {return binding["Usuario.disponibilidade"].length > 0})
+regras[1].adicionarClausula(() => binding["Usuario.disponibilidade"].length > 0)
 regras[1].adicionarFuncaoConsequente(calc_qtd_treinos_anual)
 regras[1].variaveisAntecedente.push("Usuario.disponibilidade")
 regras[1].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
 
-
+*/
 
 export {regras}
 export default Regra
