@@ -1,4 +1,3 @@
-
 import PlanoTreino from './plano_treino.js'
 
 class Usuario {

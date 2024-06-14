@@ -16,14 +16,15 @@ class Regra {
 //Knowledge base
 var regras = new Array(10).fill(null).map(() => new Regra())
 
-//Regra 0: Calculadora de dias de treino durante 1 ano de programação variando com a disponibilidade do usuário
+////Regra 0: Calculadora de dias de treino durante 1 ano de programação variando com a disponibilidade do usuário
 
 regras[0].antecedente.push(function() {return binding["Usuario.disponibilidade"].length > 0})
-regras[0].acoesConsequente.push((calc_qtd_treinos_anual))
+regras[0].acoesConsequente.push(normDisp, calc_qtd_treinos_anual)
 regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade")
-regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.qtdTreinosAnual")
+regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.qtTreinosAnual", "Usuario.planoTreino.datas")
 
 function calc_qtd_treinos_anual() {
+    binding["Usuario.disponibilidade"]
     let atual = new Date() //Data atual do usuário ao criar plano de treinos
     let final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
     
@@ -36,7 +37,7 @@ function calc_qtd_treinos_anual() {
         var diaSemana = dataIterada.getDay();
     
         // Verificar se o dia da semana está na disponibilidade do usuário
-        if (usuario.disponibilidade.includes(diaSemana)) {
+        if (binding["Usuario.disponibilidade"].includes(diaSemana)) {
           diasTreino++;
           binding["Usuario.planoTreino.datas"].push(new Date(dataIterada.valueOf()))
         }
@@ -45,21 +46,45 @@ function calc_qtd_treinos_anual() {
         dataIterada.setDate(dataIterada.getDate() + 1);
     }
     
-    binding["usuario.planoTreino.qtTreinosAnual"] = diasTreino;
+    binding["Usuario.planoTreino.qtTreinosAnual"] = diasTreino;
 
 }
 
-/*Regra 1: escolha exercício ID
+//Normalizar os dados para tipo inteiro em Usuario.disponibilidade
+function normDisp(){
+  binding["Usuario.disponibilidade"].forEach((day, i) => {
+    binding["Usuario.disponibilidade"][i] = parseInt(day)
+  })
+}
 
-regras[1].adicionarClausula(() => binding["Usuario.disponibilidade"].length > 0)
-regras[1].adicionarFuncaoConsequente(calc_qtd_treinos_anual)
-regras[1].variaveisAntecedente.push("Usuario.disponibilidade")
-regras[1].variaveisConsequente.push("PlanoTreino.qtd_treinos_anual")
+////Regra 1: Definição das fases OPT a serem utilizadas
 
-*/
+// Caso o objetivo do usuário já tenha sido definido
+regras[1].antecedente.push(function() {return binding["Usuario.objetivo"].length > 0}) 
+regras[1].acoesConsequente.push(defineFases)
+regras[1].nameVariaveisAntecedente.push("Usuario.objetivo")
+regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+
+// Função que define as fases de acordo com o objetivo
+function defineFases() { 
+  switch(binding["Usuario.objetivo"]) {
+    case "emagrecimento":
+      binding["Usuario.planoTreino.fases"].push(1, 2)
+      break
+    case "hipertrofia":
+      binding["Usuario.planoTreino.fases"].push(1, 2, 3, 4)
+      break
+    case "esporte":
+      binding["Usuario.planoTreino.fases"].push(1, 2, 3, 4, 5)
+      break
+    default:
+      console.log("Objetivo não definido, valor: "+binding["Usuario.objetivo"]+"\n")
+  }
+}
+
+
 
 export {regras}
-export default Regra
 
 
 

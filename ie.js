@@ -2,10 +2,12 @@
 import {askable_vars, objVars} from './main.js'
 import {regras} from './production_rule.js'
 import {binding} from './binding.js'
+import promptSync from 'prompt-sync';
 
+const prompt = promptSync();
 
 //Tentará obter um valor para a variável variable através de inferência ou pergunta ao usuário
-export function traceValues(nameVariable) {
+function traceValues(nameVariable) {
     infer(nameVariable) // Tentativa de deduzir o valor da variável
 
     //Caso a variável não tenha sido inferida e pode ser perguntada
@@ -26,9 +28,14 @@ export function traceValues(nameVariable) {
     // Caso seja um array de objetos
     } else if (binding[nameVariable] instanceof Array && binding[nameVariable][0] instanceof Object) {
         //Para cada objeto no array de objetos faça
-        for(i in binding[nameVariable]) {
+        /*for(i in binding[nameVariable]) {
+            console.log("\ni = "+i+"\n")
             activate(i, nameVariable)
         }
+            */
+        binding[nameVariable].forEach(x => {
+            activate(x, nameVariable)
+        })
 
     // Caso seja um objeto
     } else if (binding[nameVariable] instanceof Object && binding[nameVariable].length == undefined) {
@@ -52,7 +59,7 @@ function infer(nameVariable){
 //Seleção das regras
 function select(regras, nameVariable, selected_regras){
     //Para cada regra, analise se a variável em questão é alterada pelo consequente desta regra
-    regras.forEach((r, i) => {
+    regras.forEach(r => {
         for(var i = 0; i < r.nameVariaveisConsequente.length; i++) {  
             //Selecionando a regra de fato
             if (r.nameVariaveisConsequente[i] == nameVariable) { 
@@ -82,10 +89,17 @@ function evalconditions(regra) {
 }
 
 function activate(objeto, nameVariable) {
-    for (atr in objeto){
-        nameAtr = nameVariable + "." + atr
-        if(objVars.includes(nameAtr)) {
-            traceValues(nameAtr)
+    //Teste para ver se o if no traceValues funciona corretamente
+    if(!(objeto instanceof Object)) {return console.log("\nERRO! NÃO É OBJETO: "+nameVariable+"||"+objeto)}
+
+    //Atributos do objeto
+    var atr = Object.keys(objeto)
+    atr.forEach(nameAtr => {
+        var nameAtrComplete = nameVariable + "." + nameAtr;
+        if(objVars.includes(nameAtrComplete)) {
+            traceValues(nameAtrComplete)
         }
-    }
+    })
 }
+
+export {traceValues}

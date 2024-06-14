@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-      "start": "node main.js"
+        "start": "node main.js"
+    },
+    "dependencies": {
+        "prompt-sync": "^4.2.0"
     }
-  }
+}
