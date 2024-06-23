@@ -3,7 +3,7 @@
 import Usuario from "./usuario.js"
 
 export var user = new Usuario;
-var x = 0, y = 0;
+var x = 0, y = 0; // x (cada treino do usuário) varia de 0 a Usuario.planoTreino.qtdTreinosAnual, y (tipo de subtreino) varia de 0 a 3
  
 var binding = {
     //Usuário
@@ -32,7 +32,7 @@ var binding = {
             "Usuario.planoTreino.treinos.fase": user.planoTreino.treinos[x].fase,
             "Usuario.planoTreino.treinos.tempoTotal": user.planoTreino.treinos[x].tempoTotal,
             "Usuario.planoTreino.treinos.volume": user.planoTreino.treinos[x].volume,
-            "Usuario.planoTreino.treinos.intensidade": user.planoTreino.treinos[x].fase,
+            "Usuario.planoTreino.treinos.intensidade": user.planoTreino.treinos[x].intensidade,
             "Usuario.planoTreino.treinos.agrupMusc": user.planoTreino.treinos[x].agrupMusc,
             "Usuario.planoTreino.treinos.tabExercicios": user.planoTreino.treinos[x].tabExercicios, //Array de TabExercicios
 
@@ -41,6 +41,7 @@ var binding = {
                 //Todos são Arrays abaixo
                 "Usuario.planoTreino.treinos.tabExercicios.idExercicios": user.planoTreino.treinos[x].tabExercicios[y].idExercicios,
                 "Usuario.planoTreino.treinos.tabExercicios.nomeExercicios": user.planoTreino.treinos[x].tabExercicios[y].nomeExercicios,
+                "Usuario.planoTreino.treinos.tabExercicios.intensidade": user.planoTreino.treinos[x].tabExercicios[y].intensidade,
                 "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso": user.planoTreino.treinos[x].tabExercicios[y].tempoDescanso,
                 "Usuario.planoTreino.treinos.tabExercicios.repeticoes": user.planoTreino.treinos[x].tabExercicios[y].repeticoes,
                 "Usuario.planoTreino.treinos.tabExercicios.sets": user.planoTreino.treinos[x].tabExercicios[y].sets,

@@ -24,7 +24,8 @@ regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade")
 regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.qtTreinosAnual", "Usuario.planoTreino.datas")
 
 function calc_qtd_treinos_anual() {
-    binding["Usuario.disponibilidade"]
+    //Assume-se que o usuário foi orientado a colocar pelo menos 3 dias de disponibilidade semanal
+    
     let atual = new Date() //Data atual do usuário ao criar plano de treinos
     let final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
     
@@ -82,6 +83,13 @@ function defineFases() {
   }
 }
 
+//// Regra 2
+/*
+regras[2].antecedente.push(function() {return binding["Usuario.objetivo"].length > 0}) 
+regras[2].acoesConsequente.push(defineFases)
+regras[2].nameVariaveisAntecedente.push("Usuario.objetivo")
+regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+*/
 
 
 export {regras}

@@ -7,10 +7,10 @@ class Usuario {
     this.id = null;
     this.nome = null;
     this.idade = null;
+    this.sexo = null;
     //Perguntadas
     this.altura = null;
     this.peso = null;
-    this.sexo = null;
     this.objetivo = null;
     this.disponibilidade = [];
     this.nivel = null;
@@ -20,13 +20,6 @@ class Usuario {
     this.planoTreino = new PlanoTreino;
   }
 
-
-/*
-  definirPlanoTreino(planoTreino) {
-    this.plano_treino = new PlanoTreino();
-  }
-  */
- 
 }
 
 export default Usuario 
