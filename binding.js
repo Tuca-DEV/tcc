@@ -17,8 +17,6 @@ var binding = {
     "Usuario.objetivo": user.objetivo,
     "Usuario.nivel": user.nivel,
     "Usuario.disponibilidade": user.disponibilidade,
-    "Usuario.comorbidades": user.comorbidades,
-    "Usuario.antLesoes": user.antLesoes,
     "Usuario.planoTreino": user.planoTreino, 
 
         //PlanoTreino

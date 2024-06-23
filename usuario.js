@@ -14,8 +14,6 @@ class Usuario {
     this.objetivo = null;
     this.disponibilidade = [];
     this.nivel = null;
-    this.comorbidades = [];
-    this.antLesoes = [];
     //Inferida
     this.planoTreino = new PlanoTreino;
   }
