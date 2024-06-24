@@ -4,7 +4,8 @@ import Usuario from "./usuario.js"
 
 export var user = new Usuario;
 var x = 0, y = 0; // x (cada treino do usuário) varia de 0 a Usuario.planoTreino.qtdTreinosAnual, y (tipo de subtreino) varia de 0 a 3
- 
+
+// Database de fatos DBF
 var binding = {
     //Usuário
     "Usuario": user,
@@ -20,8 +21,6 @@ var binding = {
     "Usuario.planoTreino": user.planoTreino, 
 
         //PlanoTreino
-        "Usuario.planoTreino.qtTreinosAnual": user.planoTreino.qtTreinosAnual,
-        "Usuario.planoTreino.datas": user.planoTreino.datas, 
         "Usuario.planoTreino.fases": user.planoTreino.fases,
         "Usuario.planoTreino.treinos": user.planoTreino.treinos, //Array de Treino's
     

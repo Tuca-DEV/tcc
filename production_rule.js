@@ -1,4 +1,5 @@
 import {binding} from './binding.js'
+import Treino from './treino.js'
 
 class Regra {
     constructor() {
@@ -21,11 +22,11 @@ var regras = new Array(10).fill(null).map(() => new Regra())
 regras[0].antecedente.push(function() {return binding["Usuario.disponibilidade"].length > 0})
 regras[0].acoesConsequente.push(normDisp, calc_qtd_treinos_anual)
 regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade")
-regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.qtTreinosAnual", "Usuario.planoTreino.datas")
+regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
 
 function calc_qtd_treinos_anual() {
     //Assume-se que o usuário foi orientado a colocar pelo menos 3 dias de disponibilidade semanal
-    
+    let first = true
     let atual = new Date() //Data atual do usuário ao criar plano de treinos
     let final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
     
@@ -37,18 +38,19 @@ function calc_qtd_treinos_anual() {
         // Obter o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
         var diaSemana = dataIterada.getDay();
     
-        // Verificar se o dia da semana está na disponibilidade do usuário
-        if (binding["Usuario.disponibilidade"].includes(diaSemana)) {
-          diasTreino++;
-          binding["Usuario.planoTreino.datas"].push(new Date(dataIterada.valueOf()))
+        // Se o usuário tem disponibilidade neste dia da semana e estamos definindo o primeiro treino dele
+        if (binding["Usuario.disponibilidade"].includes(diaSemana) && first) {
+          binding["Usuario.planoTreino.treinos"][0].data = new Date(dataIterada.valueOf())
+          first = false
+
+        // Se o usuário tem disponibilidade neste dia da semana
+        } else if (binding["Usuario.disponibilidade"].includes(diaSemana)) {
+          binding["Usuario.planoTreino.treinos"].push(new Treino(new Date(dataIterada.valueOf())))
         }
     
         // Avançar para o próximo dia
         dataIterada.setDate(dataIterada.getDate() + 1);
     }
-    
-    binding["Usuario.planoTreino.qtTreinosAnual"] = diasTreino;
-
 }
 
 //Normalizar os dados para tipo inteiro em Usuario.disponibilidade

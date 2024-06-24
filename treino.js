@@ -2,8 +2,8 @@ import TabExercicios from './tabexercicios.js';
 
 class Treino {
     // Var's objetivo: tabExercicios
-    constructor() {
-      this.data = null;
+    constructor(data) {
+      this.data = data;
       this.fase = null;
       this.tempoTotal = null;
       this.volume = null;
