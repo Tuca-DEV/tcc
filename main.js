@@ -8,6 +8,6 @@ export var objVars = ["Usuario.planoTreino", "Usuario.planoTreino.treinos", "Usu
 
 traceValues("Usuario")
 
-console.log("Disponibilidade: ", binding["Usuario.disponibilidade"])
 console.log("Treinos: ", binding["Usuario.planoTreino.treinos"])
 console.log("Treinos.length: ", binding["Usuario.planoTreino.treinos"].length)
+console.log("Disponibilidade: ", binding["Usuario.disponibilidade"])

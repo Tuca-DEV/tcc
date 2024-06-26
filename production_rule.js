@@ -17,34 +17,117 @@ class Regra {
 //Knowledge base
 var regras = new Array(10).fill(null).map(() => new Regra())
 
-////Regra 0: Calculadora de dias de treino durante 1 ano de programação variando com a disponibilidade do usuário
+////Regra 0: Inicializa o array de treinos calcuando os dias de treino durante 1 ano de programação variando de acordo com o objetivo do usuário e a disponibilidade semanal
 
-regras[0].antecedente.push(function() {return binding["Usuario.disponibilidade"].length > 0})
-regras[0].acoesConsequente.push(normDisp, calc_qtd_treinos_anual)
-regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade")
+regras[0].antecedente.push(function() {return binding["Usuario.disponibilidade"].length > 0}) // Se disponibilidade foi definido
+regras[0].antecedente.push(function() {return binding["Usuario.objetivo"].length > 0}) // Se o objetivo foi definido
+regras[0].antecedente.push(function() {return binding["Usuario.nivel"] > 0}) // Se o nível foi definido
+regras[0].acoesConsequente.push(normNivel, normDisp, calc_qtd_treinos_anual)
+regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
 regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
 
 function calc_qtd_treinos_anual() {
-    //Assume-se que o usuário foi orientado a colocar pelo menos 3 dias de disponibilidade semanal
-    let first = true
-    let atual = new Date() //Data atual do usuário ao criar plano de treinos
-    let final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
+
+    var first = true // Primeiro treino a ser definido?
+    var atual = new Date() //Data atual do usuário ao criar plano de treinos
+    var final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
+    var disp = binding["Usuario.disponibilidade"]
+    var semanaNoMes = [] // Matriz que carregará os dias de treino das semanas de cada mês
+  
+    switch (binding["Usuario.objetivo"]) {
+      case "emagrecimento": // Para usuários iniciantes, os 6 primeiros meses são 3 dias e os últimos 4. Para usuários intermediários/avançados 4 dias todo ano
+        if(binding["Usuario.nivel"] == 1) { // Usuário iniciante
+          if(disp.length >= 4){ // 4 ou mais dias disponíveis
+            while(disp.length > 4){ // Remove dias extras
+              var index = Math.floor(Math.random() * disp.length)
+              disp.splice(index,1)
+            }
+            // Armazena a frequência dos 6 últimos mêses
+            for(var i = 6; i < 12; i++){
+              semanaNoMes[i] = disp
+            }
+            // Diminui para 3 dias
+            var i = Math.floor(Math.random() * disp.length) 
+            delete disp[i]
+            // Armazena a frequência dos 6 primeiros mêses
+            for(var i = 0; i < 6; i++){
+              semanaNoMes[i] = disp
+            }
+
+          } else { // 3 ou menos dias disponíveis
+            while(disp.length < 3){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+            // Armazena a frequência dos primeiros 6 mêses
+            for(var i = 0; i < 6; i++){
+              semanaNoMes[i] = disp
+            }
+
+            while(disp.length < 4){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+            // Armazena a frequência dos 6 últimos mêses
+            for(var i = 6; i < 12; i++){ 
+              semanaNoMes[i] = disp
+            }
+
+          }
+        } else { // Usuário intermediário ou avançado
+          if(disp.length > 4){ // Mais de 4 dias disponíveis
+            while(disp.length > 4){ // Remove dias extras
+              var index = Math.floor(Math.random() * disp.length)
+              disp.splice(index,1)
+            }
+          } else if (disp.length < 4) { // Menos de 4 dias disponíveis
+            while(disp.length < 4){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+          }
+          for(var i = 0; i < 12; i++){
+            semanaNoMes[i] = disp
+          }
+        }
+        break;
+      case "hipertrofia":
+        break;
+      case "esporte": // Define 3 dias de treino semanais de acordo com a disponibilidade do usuário
+        if(disp.length > 3){
+          while(disp.length > 3){
+            var index = Math.floor(Math.random() * disp.length)
+            disp.splice(index,1)
+          }
+        } else if (disp.length < 3){
+          while(disp.length < 3){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+            var i = Math.floor(Math.random() * 7)
+            if(!disp.includes(i)){disp.push(i)}
+          }
+        }
+        for(var i = 0; i < 12; i++){
+          semanaNoMes[i] = disp
+        }
+        break;
+      default:
+        console.log("ERRO, OBJETIVO DO USUÁRIO ZUADO");
+    }
+  
     
-    let dataIterada = new Date(atual.valueOf())
+    var dataIterada = new Date(atual.valueOf())
     dataIterada.setDate(dataIterada.getDate() + 1)//Avanço de 1 dia
-    let diasTreino = 0
 
     while (dataIterada.valueOf() <= final.valueOf()) {
         // Obter o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
         var diaSemana = dataIterada.getDay();
+        var mes = dataIterada.getMonth()
     
-        // Se o usuário tem disponibilidade neste dia da semana e estamos definindo o primeiro treino dele
-        if (binding["Usuario.disponibilidade"].includes(diaSemana) && first) {
+        // Se o planejamento inclui este dia dessa semana e estamos definindo o primeiro treino dele
+        if (semanaNoMes[mes].includes(diaSemana) && first) {
           binding["Usuario.planoTreino.treinos"][0].data = new Date(dataIterada.valueOf())
           first = false
-
-        // Se o usuário tem disponibilidade neste dia da semana
-        } else if (binding["Usuario.disponibilidade"].includes(diaSemana)) {
+        // Se o planejamento inclui este dia dessa semana
+        } else if (semanaNoMes[mes].includes(diaSemana)) {
           binding["Usuario.planoTreino.treinos"].push(new Treino(new Date(dataIterada.valueOf())))
         }
     
@@ -58,6 +141,10 @@ function normDisp(){
   binding["Usuario.disponibilidade"].forEach((day, i) => {
     binding["Usuario.disponibilidade"][i] = parseInt(day)
   })
+}
+//Normalizar os dados para tipo inteiro em Usuario.nivel
+function normNivel(){
+  binding["Usuario.nivel"] = parseInt(binding["Usuario.nivel"])
 }
 
 ////Regra 1: Definição das fases OPT a serem utilizadas
@@ -92,7 +179,6 @@ regras[2].acoesConsequente.push(defineFases)
 regras[2].nameVariaveisAntecedente.push("Usuario.objetivo")
 regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
 */
-
 
 export {regras}
 
