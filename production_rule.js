@@ -107,6 +107,106 @@ function calc_qtd_treinos_anual() {
         }
         break;
       case "hipertrofia":
+        if(binding["Usuario.nivel"] == 1){
+          if(disp.length >= 5){ // Se o usuário tem 5 ou mais dias disponíveis na semana
+            while(disp.length > 5){
+              var index = Math.floor(Math.random() * disp.length)
+              disp.splice(index,1)
+            }  
+            for(var i = 0; i < 12; i++){
+              if(i >= 8 && i <= 10){ // Para os meses SEP, OCT, NOV
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+            // Tira 1 dia aleatório
+            var index = Math.floor(Math.random() * disp.length)
+            disp.splice(index,1)
+
+            for(var i = 0; i < 12; i++){
+              if(i >= 2 && i <= 5 || i == 11){ // Para os meses MAR, APR, MAY, JUN, DEC
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+            // Tira 1 dia aleatório
+            var index = Math.floor(Math.random() * disp.length)
+            disp.splice(index,1)
+
+            for(var i = 0; i < 12; i++){
+              if(i == 0 || i == 1 || i == 6 || i == 7){ // Para os meses JAN, FEV, JUL, AUG
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+          } else if (disp.length == 4){ // Usuário tem 4 dias disponíveis
+
+
+          } else { // Usuário tem 3 ou menos dias disponíveis
+
+
+          }
+        } else { // Usuário intermediário ou avançado
+          if(disp.length >= 5){ // Se o usuário tem 5 ou mais dias disponíveis na semana
+            while(disp.length > 5){
+              var index = Math.floor(Math.random() * disp.length)
+              disp.splice(index,1)
+            }  
+
+            for(var i = 0; i < 12; i++){
+              if((i >= 2 && i <= 5) || i >= 8 && i <= 10){ // Para os meses MAR, APR, MAY, JUN, SEP, OCT, NOV
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+            // Tira 1 dia aleatório
+            var index = Math.floor(Math.random() * disp.length)
+            disp.splice(index,1)
+
+            for(var i = 0; i < 12; i++){
+              if(i == 0 || i == 1 || i == 6 || i == 7 || i == 11){ // Para os meses JAN, FEV, JUL, AUG, DEC
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+          } else { // Tem 4 ou menos dias de disponibilidade
+            while(disp.length < 4){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+
+            for(var i = 0; i < 12; i++){
+              if(i == 0 || i == 1 || i == 6 || i == 7 || i == 11){ // Para os meses JAN, FEV, JUL, AUG, DEC
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+            while(disp.length < 5){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+
+            for(var i = 0; i < 12; i++){
+              if((i >= 2 && i <= 5) || i >= 8 && i <= 10){ // Para os meses MAR, APR, MAY, JUN, SEP, OCT, NOV
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+          }      
+          
+        }
         break;
       case "esporte": // Define 3 dias de treino semanais de acordo com a disponibilidade do usuário
         if(disp.length > 3){
