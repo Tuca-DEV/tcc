@@ -11,3 +11,4 @@ traceValues("Usuario")
 console.log("Treinos: ", binding["Usuario.planoTreino.treinos"])
 console.log("Treinos.length: ", binding["Usuario.planoTreino.treinos"].length)
 console.log("Disponibilidade: ", binding["Usuario.disponibilidade"])
+

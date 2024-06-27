@@ -31,8 +31,12 @@ function calc_qtd_treinos_anual() {
     var first = true // Primeiro treino a ser definido?
     var atual = new Date() //Data atual do usuário ao criar plano de treinos
     var final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
-    var disp = binding["Usuario.disponibilidade"]
-    var semanaNoMes = [] // Matriz que carregará os dias de treino das semanas de cada mês
+    var semanaNoMes = Array.from({ length: 12 }, () => []) // Matriz que carregará os dias de treino das semanas de cada mês
+    var disp = []
+    // Passagem dos valores, não do objeto Array (Tomar cuidado com a passagem de valores por referência)
+    binding["Usuario.disponibilidade"].forEach(dia => {
+      disp.push(dia)
+    })
   
     switch (binding["Usuario.objetivo"]) {
       case "emagrecimento": // Para usuários iniciantes, os 6 primeiros meses são 3 dias e os últimos 4. Para usuários intermediários/avançados 4 dias todo ano
@@ -44,14 +48,19 @@ function calc_qtd_treinos_anual() {
             }
             // Armazena a frequência dos 6 últimos mêses
             for(var i = 6; i < 12; i++){
-              semanaNoMes[i] = disp
+              for(var item of disp){
+                semanaNoMes[i].push(item)
+              }
+              
             }
             // Diminui para 3 dias
             var i = Math.floor(Math.random() * disp.length) 
-            delete disp[i]
+            disp.splice(index,1)
             // Armazena a frequência dos 6 primeiros mêses
             for(var i = 0; i < 6; i++){
-              semanaNoMes[i] = disp
+              for(var item of disp){
+                semanaNoMes[i].push(item)
+              }
             }
 
           } else { // 3 ou menos dias disponíveis
@@ -61,7 +70,9 @@ function calc_qtd_treinos_anual() {
             }
             // Armazena a frequência dos primeiros 6 mêses
             for(var i = 0; i < 6; i++){
-              semanaNoMes[i] = disp
+              for(var item of disp){
+                semanaNoMes[i].push(item)
+              }
             }
 
             while(disp.length < 4){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
@@ -70,7 +81,9 @@ function calc_qtd_treinos_anual() {
             }
             // Armazena a frequência dos 6 últimos mêses
             for(var i = 6; i < 12; i++){ 
-              semanaNoMes[i] = disp
+              for(var item of disp){
+                semanaNoMes[i].push(item)
+              }
             }
 
           }
@@ -87,7 +100,9 @@ function calc_qtd_treinos_anual() {
             }
           }
           for(var i = 0; i < 12; i++){
-            semanaNoMes[i] = disp
+            for(var item of disp){
+              semanaNoMes[i].push(item)
+            }
           }
         }
         break;
@@ -106,7 +121,9 @@ function calc_qtd_treinos_anual() {
           }
         }
         for(var i = 0; i < 12; i++){
-          semanaNoMes[i] = disp
+          for(var item of disp){
+            semanaNoMes[i].push(item)
+          }
         }
         break;
       default:
