@@ -319,13 +319,13 @@ function calc_qtd_treinos_anual() {
     }
 }
 
-//Normalizar os dados para tipo inteiro em Usuario.disponibilidade
+//Converter os dados para tipo inteiro em Usuario.disponibilidade
 function normDisp(){
   binding["Usuario.disponibilidade"].forEach((day, i) => {
     binding["Usuario.disponibilidade"][i] = parseInt(day)
   })
 }
-//Normalizar os dados para tipo inteiro em Usuario.nivel
+//Converter os dados para tipo inteiro em Usuario.nivel
 function normNivel(){
   binding["Usuario.nivel"] = parseInt(binding["Usuario.nivel"])
 }
