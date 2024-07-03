@@ -145,10 +145,76 @@ function calc_qtd_treinos_anual() {
             }
 
           } else if (disp.length == 4){ // Usuário tem 4 dias disponíveis
+            for(var i = 0; i < 12; i++){
+              if(i >= 2 && i <= 5 || i == 11){ // Para os meses MAR, APR, MAY, JUN, DEC
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
 
+            var diaAdicionado;
+            while(disp.length < 5){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i); diaAdicionado = i;}
+            }
+
+            for(var i = 0; i < 12; i++){
+              if(i >= 8 && i <= 10){ // Para os meses SEP, OCT, NOV
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+            disp.pop() // Remove o último dia (que é aleatório) que foi adicionado
+            while(disp.length > 3){
+              var index = Math.floor(Math.random() * disp.length)
+              disp.splice(index,1)
+            }  
+
+            for(var i = 0; i < 12; i++){
+              if(i == 0 || i == 1 || i == 6 || i == 7){ // Para os meses JAN, FEV, JUL, AUG
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
 
           } else { // Usuário tem 3 ou menos dias disponíveis
+            for(var i = 0; i < 12; i++){
+              if(i == 0 || i == 1 || i == 6 || i == 7){ // Para os meses JAN, FEV, JUL, AUG
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
 
+            while(disp.length < 4){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+
+            for(var i = 0; i < 12; i++){
+              if(i >= 2 && i <= 5 || i == 11){ // Para os meses MAR, APR, MAY, JUN, DEC
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
+
+            while(disp.length < 5){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+              var i = Math.floor(Math.random() * 7)
+              if(!disp.includes(i)){disp.push(i)}
+            }
+
+            for(var i = 0; i < 12; i++){
+              if(i >= 8 && i <= 10){ // Para os meses SEP, OCT, NOV
+                for(var item of disp){
+                  semanaNoMes[i].push(item)
+                }
+              }
+            }
 
           }
         } else { // Usuário intermediário ou avançado
