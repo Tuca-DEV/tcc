@@ -38,7 +38,6 @@ function calc_qtd_treinos_anual() {
       disp.push(dia)
     })
   
-    /* 
     switch (binding["Usuario.objetivo"]) {
       case "emagrecimento": // Para usuários iniciantes, os 6 primeiros meses são 3 dias e os últimos 4. Para usuários intermediários/avançados 4 dias todo ano
         if(binding["Usuario.nivel"] == 1) { // Usuário iniciante
