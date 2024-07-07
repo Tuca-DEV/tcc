@@ -31,7 +31,7 @@ function calc_qtd_treinos_anual() {
     var first = true // Primeiro treino a ser definido?
     var atual = new Date() //Data atual do usuário ao criar plano de treinos
     var final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
-    var semanaNoMes = Array.from({ length: 12 }, () => []) // Matriz que carregará os dias de treino das semanas de cada mês
+    var semanaNoMes = Array.from({ length: 12 }, () => []) // Matriz que carregará os dias da semanas de treino de cada mês
     var disp = []
     // Passagem dos valores, não do objeto Array (Tomar cuidado com a passagem de valores por referência)
     binding["Usuario.disponibilidade"].forEach(dia => {
@@ -299,11 +299,12 @@ function calc_qtd_treinos_anual() {
     
     var dataIterada = new Date(atual.valueOf())
     dataIterada.setDate(dataIterada.getDate() + 1)//Avanço de 1 dia
+    var pMes = dataIterada.getMonth();//Qual o primeiro mês
 
     while (dataIterada.valueOf() <= final.valueOf()) {
         // Obter o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
         var diaSemana = dataIterada.getDay();
-        var mes = dataIterada.getMonth()
+        var mes = mesRelativo(dataIterada.getMonth(), pMes); //Retorna o mês relativo ao primeiro mês de criação do treino
     
         // Se o planejamento inclui este dia dessa semana e estamos definindo o primeiro treino dele
         if (semanaNoMes[mes].includes(diaSemana) && first) {
@@ -317,6 +318,15 @@ function calc_qtd_treinos_anual() {
         // Avançar para o próximo dia
         dataIterada.setDate(dataIterada.getDate() + 1);
     }
+}
+
+//Padroniza os meses de acordo com o mês de criação do treino
+function mesRelativo(mesAbs, pMes){
+  if(mesAbs < pMes){
+    return mesAbs + (12 - pMes);
+  }else{
+    return mesAbs - pMes;
+  }
 }
 
 //Converter os dados para tipo inteiro em Usuario.disponibilidade
