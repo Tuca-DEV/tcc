@@ -352,13 +352,26 @@ regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
 function defineFases() { 
   switch(binding["Usuario.objetivo"]) {
     case "emagrecimento":
-      binding["Usuario.planoTreino.fases"].push(1, 2)
+      for(var i = 0; i < 12; i++){
+        if(i%2==0){
+          binding["Usuario.planoTreino.fases"].push(1)
+        } else {
+          binding["Usuario.planoTreino.fases"].push(2)
+        }
+      }
       break
     case "hipertrofia":
-      binding["Usuario.planoTreino.fases"].push(1, 2, 3, 4)
+      binding["Usuario.planoTreino.fases"].push(1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2)
       break
     case "esporte":
-      binding["Usuario.planoTreino.fases"].push(1, 2, 3, 4, 5)
+      binding["Usuario.planoTreino.fases"].push(1, 2)
+      for(var i = 2; i < 12; i++){
+        if(i%2==0){
+          binding["Usuario.planoTreino.fases"].push([1,2,5])
+        } else {
+          binding["Usuario.planoTreino.fases"].push([2,5])
+        }
+      }
       break
     default:
       console.log("Objetivo não definido, valor: "+binding["Usuario.objetivo"]+"\n")
@@ -366,12 +379,12 @@ function defineFases() {
 }
 
 //// Regra 2
-/*
+
 regras[2].antecedente.push(function() {return binding["Usuario.objetivo"].length > 0}) 
 regras[2].acoesConsequente.push(defineFases)
 regras[2].nameVariaveisAntecedente.push("Usuario.objetivo")
 regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
-*/
+
 
 export {regras}
 
