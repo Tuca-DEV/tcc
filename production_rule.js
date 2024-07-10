@@ -418,8 +418,8 @@ function normNivel(){
 ////Regra 5: Definição das fases OPT a serem utilizadas por usuários com objetivo de emagrecimento
 regras[5].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
 regras[5].acoesConsequente.push(regra5)
-regras[5].nameVariaveisAntecedente.push("Usuario.objetivo")
-regras[5].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[5].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
+regras[5].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
 regras[5].exp = "Regra 5: Caso o usuário queira emagrecer, haverá uma intercalação entre fases 1 e 2 do modelo OPT durante os meses"
 
 // Função que define as fases durante os meses
@@ -436,8 +436,8 @@ function regra5() {
 ////Regra 6: Definição das fases OPT a serem utilizadas por usuários com objetivo de hipertrofia
 regras[6].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
 regras[6].acoesConsequente.push(regra6)
-regras[6].nameVariaveisAntecedente.push("Usuario.objetivo")
-regras[6].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[6].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
+regras[6].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
 regras[6].exp = "Regra 6: Caso o usuário queira hipertrofia muscular, haverá a seguinte ordem de fases opt durante os meses: 1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2"
 
 // Função que define as fases durante os meses
@@ -446,10 +446,10 @@ function regra6() {
 }
 
 ////Regra 7: Definição das fases OPT a serem utilizadas por usuários com objetivo de esporte
-regras[7].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[7].antecedente.push(() => binding["Usuario.objetivo"] == "esporte") 
 regras[7].acoesConsequente.push(regra7)
-regras[7].nameVariaveisAntecedente.push("Usuario.objetivo")
-regras[7].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[7].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
+regras[7].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
 regras[7].exp = "Regra 7: Caso o usuário queira desenvolvimento para esportes, os primeiros dois meses serão fase 1 e 2, respectivamente. Os próximos meses utilizarão mais de 1 fase por mês, seguindo uma intercalação de fases (1, 2 e 5) com (2 e 5)"
 
 // Função que define as fases durante os meses
@@ -462,6 +462,22 @@ function regra7() {
       binding["Usuario.planoTreino.fases"].push([2,5])
     }
   }
+}
+
+function calcOptTreino(){
+
+}
+
+////Regra 8: 
+regras[8].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[8].acoesConsequente.push(regra8)
+regras[8].nameVariaveisAntecedente.push()
+regras[8].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[8].exp = "Regra 8: "
+
+// Função que define as fases durante os meses
+function regra8() { 
+  
 }
 
 export {regras}
