@@ -26,7 +26,7 @@ regras[0].antecedente.push(() => binding["Usuario.nivel"] == 1) // Se o nível �
 regras[0].acoesConsequente.push(normNivel, normDisp, regra0)
 regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
 regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
-regras[0].exp = "Para usuários que querem emagrecer e iniciantes, os 6 primeiros meses são 3 dias, e os últimos 4 dias"
+regras[0].exp = "Regra 0: Para usuários que querem emagrecer e iniciantes, os 6 primeiros meses são 3 dias, e os últimos 4 dias"
 
 // Emag -> Nivel 1
 function regra0() {
@@ -93,7 +93,7 @@ regras[1].antecedente.push(() => binding["Usuario.nivel"] > 1) // Se o nível é
 regras[1].acoesConsequente.push(normNivel, normDisp, regra1)
 regras[1].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
 regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
-regras[1].exp = "Para usuários que querem emagrecer e tem nível intermediários/avançado, a frequência semanal durante todo o ano é de 4 dias"
+regras[1].exp = "Regra 1: Para usuários que querem emagrecer e tem nível intermediários/avançado, a frequência semanal durante todo o ano é de 4 dias"
 
 // Emag -> Nivel 2/3
 function regra1() {
@@ -132,7 +132,7 @@ regras[2].antecedente.push(() => binding["Usuario.nivel"] == 1) // Se o nível �
 regras[2].acoesConsequente.push(normNivel, normDisp, regra2)
 regras[2].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
 regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
-regras[2].exp = "Para usuários que querem hipertrofia e são iniciantes, JAN,FEV,JUL,AGO: 3 dias; MAR,ABR,MAI,JUN,DEZ: 4 dias; SET,OUT,NOV: 5 dias"
+regras[2].exp = "Regra 2: Para usuários que querem hipertrofia e são iniciantes, JAN,FEV,JUL,AGO: 3 dias; MAR,ABR,MAI,JUN,DEZ: 4 dias; SET,OUT,NOV: 5 dias"
 
 // Hip -> Nivel 1
 function regra2() {
@@ -262,7 +262,7 @@ regras[3].antecedente.push(() => binding["Usuario.nivel"] > 1) // Se o nível é
 regras[3].acoesConsequente.push(normNivel, normDisp, regra3)
 regras[3].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
 regras[3].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
-regras[3].exp = "Para usuários que querem hipertrofia e são intermediário/avançado, JAN,FEV,JUL,AGO,DEZ: 4 dias; MAR,ABR,MAI,JUN,SET,OUT,NOV: 5 dias"
+regras[3].exp = "Regra 3: Para usuários que querem hipertrofia e são intermediário/avançado, JAN,FEV,JUL,AGO,DEZ: 4 dias; MAR,ABR,MAI,JUN,SET,OUT,NOV: 5 dias"
 
 // Hip -> Nivel 2/3
 function regra3() {
@@ -336,7 +336,7 @@ regras[4].antecedente.push(() => binding["Usuario.objetivo"] == "esporte") // Se
 regras[4].acoesConsequente.push(normNivel, normDisp, regra4)
 regras[4].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo")
 regras[4].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
-regras[4].exp = "Para todos os usuários que querem aprimoramento em esportes: 3 dias de frequência semanal no ano todo"
+regras[4].exp = "Regra 4: Para todos os usuários que querem aprimoramento em esportes: 3 dias de frequência semanal no ano todo"
 
 // Esp
 function regra4() {
@@ -416,39 +416,51 @@ function normNivel(){
 }
 
 ////Regra 5: Definição das fases OPT a serem utilizadas por usuários com objetivo de emagrecimento
-regras[5].antecedente.push(() => binding["Usuario.objetivo"].length > 0) 
-regras[5].acoesConsequente.push(defineFases)
+regras[5].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
+regras[5].acoesConsequente.push(regra5)
 regras[5].nameVariaveisAntecedente.push("Usuario.objetivo")
 regras[5].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
-regras[5].exp = "aa"
+regras[5].exp = "Regra 5: Caso o usuário queira emagrecer, haverá uma intercalação entre fases 1 e 2 do modelo OPT durante os meses"
 
-// Função que define as fases de acordo com o objetivo
-function defineFases() { 
-  switch(binding["Usuario.objetivo"]) {
-    case "emagrecimento":
-      for(var i = 0; i < 12; i++){
-        if(i%2==0){
-          binding["Usuario.planoTreino.fases"].push(1)
-        } else {
-          binding["Usuario.planoTreino.fases"].push(2)
-        }
-      }
-      break
-    case "hipertrofia":
-      binding["Usuario.planoTreino.fases"].push(1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2)
-      break
-    case "esporte":
-      binding["Usuario.planoTreino.fases"].push(1, 2)
-      for(var i = 2; i < 12; i++){
-        if(i%2==0){
-          binding["Usuario.planoTreino.fases"].push([1,2,5])
-        } else {
-          binding["Usuario.planoTreino.fases"].push([2,5])
-        }
-      }
-      break
-    default:
-      console.log("Objetivo não definido, valor: "+binding["Usuario.objetivo"]+"\n")
+// Função que define as fases durante os meses
+function regra5() { 
+  for(var i = 0; i < 12; i++){
+    if(i%2==0){
+      binding["Usuario.planoTreino.fases"].push(1)
+    } else {
+      binding["Usuario.planoTreino.fases"].push(2)
+    }
+  } 
+}
+
+////Regra 6: Definição das fases OPT a serem utilizadas por usuários com objetivo de hipertrofia
+regras[6].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[6].acoesConsequente.push(regra6)
+regras[6].nameVariaveisAntecedente.push("Usuario.objetivo")
+regras[6].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[6].exp = "Regra 6: Caso o usuário queira hipertrofia muscular, haverá a seguinte ordem de fases opt durante os meses: 1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2"
+
+// Função que define as fases durante os meses
+function regra6() { 
+  binding["Usuario.planoTreino.fases"].push(1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2)
+}
+
+////Regra 7: Definição das fases OPT a serem utilizadas por usuários com objetivo de esporte
+regras[7].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[7].acoesConsequente.push(regra7)
+regras[7].nameVariaveisAntecedente.push("Usuario.objetivo")
+regras[7].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[7].exp = "Regra 7: Caso o usuário queira desenvolvimento para esportes, os primeiros dois meses serão fase 1 e 2, respectivamente. Os próximos meses utilizarão mais de 1 fase por mês, seguindo uma intercalação de fases (1, 2 e 5) com (2 e 5)"
+
+// Função que define as fases durante os meses
+function regra7() { 
+  binding["Usuario.planoTreino.fases"].push(1, 2)
+  for(var i = 2; i < 12; i++){
+    if(i%2==0){
+      binding["Usuario.planoTreino.fases"].push([1,2,5])
+    } else {
+      binding["Usuario.planoTreino.fases"].push([2,5])
+    }
   }
 }
 
