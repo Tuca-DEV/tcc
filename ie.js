@@ -6,6 +6,9 @@ import promptSync from 'prompt-sync';
 
 const prompt = promptSync();
 
+var tracedVars = []
+var explanations = []
+
 //Tentará obter um valor para a variável variable através de inferência ou pergunta ao usuário
 function traceValues(nameVariable) {
     infer(nameVariable) // Tentativa de deduzir o valor da variável
@@ -43,8 +46,9 @@ function traceValues(nameVariable) {
 
     } else {
         console.log("Não foi possível traçar a variável no momento\n")
-    }
+    } 
 
+    tracedVars.push(nameVariable)
 }
 
 //Método para inferir o valor da variável
@@ -52,7 +56,7 @@ function infer(nameVariable){
     var selected_regras = []
     select(regras, nameVariable, selected_regras) //Seleciona as regras para dentro do vetor selected_regras
     selected_regras.forEach(r => { //Para cada regra selecionada, aplique-a
-        apply(r)
+        if(!r.used){r.used = true; apply(r)} // Se a regra não foi utilizada anteriormente
     })
 }
 
@@ -73,18 +77,19 @@ function select(regras, nameVariable, selected_regras){
 //Avalia se a regra selecionada será executada
 function apply(regra){
     if(evalconditions(regra)) { 
+        explanations.push(regra.exp)
         regra.executarConsequente() //Executará o consequente da regra caso todos os predicados sejam verdadeiros com o valor da variável
-    } else {
-        console.log("Predicado falso\n")
-    }
+    } 
 }
 
 //Avalia se todos os testes lógicos na regra retornam valor verdadeiro
-function evalconditions(regra) {
-    regra.antecedente.forEach((clausula, i) => {
-        traceValues(regra.nameVariaveisAntecedente[i])
-        if(!clausula) return false //Caso haja um predicado com valor falso, retornará falso
-    })
+function evalconditions(regra) {    
+    for(var i=0; i < regra.antecedente.length; i++){
+        if(!tracedVars.includes(regra.nameVariaveisAntecedente[i])){traceValues(regra.nameVariaveisAntecedente[i])}
+        if(!regra.antecedente[i]()) {
+            return false
+        } //Caso haja um predicado com valor falso, retornará falso
+    }
     return true
 }
 
@@ -102,4 +107,4 @@ function activate(objeto, nameVariable) {
     })
 }
 
-export {traceValues}
+export {traceValues, explanations}
