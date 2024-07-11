@@ -4,11 +4,7 @@ import Usuario from "./usuario.js"
 
 export var user = new Usuario;
 var x = 0, y = 0; // x (cada treino do usuário) varia de 0 a Usuario.planoTreino.qtdTreinosAnual, y (tipo de subtreino) varia de 0 a 3
-/*
-user.disponibilidade = [2, 3, 4, 5]
-user.nivel = 1
-user.objetivo = "emagrecimento"
-*/
+
 
 // Database de fatos DBF
 var binding = {

@@ -9,7 +9,7 @@ class Treino {
       this.volume = null;
       this.intensidade = null;
       this.agrupMusc = [];
-      this.tabExercicios = [new TabExercicios("WarmUp"), new TabExercicios("Core"), new TabExercicios("Resistência"), new TabExercicios("Core")]; 
+      this.tabExercicios = [new TabExercicios("WarmUp"), new TabExercicios("Core"), new TabExercicios("Resistência"), new TabExercicios("Cardio")]; 
     }
   
     /*
