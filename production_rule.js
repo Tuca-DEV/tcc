@@ -431,6 +431,8 @@ function regra5() {
       binding["Usuario.planoTreino.fases"].push(2)
     }
   } 
+
+  calcOptTreino();
 }
 
 ////Regra 6: Definição das fases OPT a serem utilizadas por usuários com objetivo de hipertrofia
@@ -443,6 +445,8 @@ regras[6].exp = "Regra 6: Caso o usuário queira hipertrofia muscular, haverá a
 // Função que define as fases durante os meses
 function regra6() { 
   binding["Usuario.planoTreino.fases"].push(1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2)
+
+  calcOptTreino();
 }
 
 ////Regra 7: Definição das fases OPT a serem utilizadas por usuários com objetivo de esporte
@@ -462,17 +466,40 @@ function regra7() {
       binding["Usuario.planoTreino.fases"].push([2,5])
     }
   }
+
+  calcOptTreino()
 }
 
+// Define a fase OPT para cada treino singular
 function calcOptTreino(){
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  var faseNoMes = binding["Usuario.planoTreino.fases"]
+  var pMes = treinos[0].data.getMonth() //Mês de criação do treino
+  var intercala = 0 // Variável para intercalar os treinos de diferentes fases OPT no mesmo mês
 
+  for(var i = 0; i < treinos.length; i++){
+    var mes = mesRelativo(treinos[i].data.getMonth(), pMes) // Mês relativo (mês de criação = 0)
+
+    if(faseNoMes[mes] instanceof Array){ // Se o Mês tem mais de 1 fase OPT
+      if(faseNoMes[mes][intercala] == undefined){faseNoMes[mes][intercala] = 1} // Correção de erro
+      treinos[i].fase = faseNoMes[mes][intercala] // Recebe a fase OPT referente ao mês e a intercalação
+
+      if(faseNoMes[mes].length == 3){// Se há 3 tipos de fase OPT no mesmo mês
+        intercala = (intercala+1)%3
+      } else if (faseNoMes[mes].length == 2){// Se há 2 tipos de fase OPT no mesmo mês
+        intercala = (intercala+1)%2
+      }
+    }else{ // Apenas uma fase OPT no mesmo mês
+      treinos[i].fase = faseNoMes[mes]
+    }
+  }
 }
 
 ////Regra 8: 
 regras[8].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
 regras[8].acoesConsequente.push(regra8)
 regras[8].nameVariaveisAntecedente.push()
-regras[8].nameVariaveisConsequente.push("Usuario.planoTreino.fases")
+regras[8].nameVariaveisConsequente.push()
 regras[8].exp = "Regra 8: "
 
 // Função que define as fases durante os meses
