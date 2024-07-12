@@ -25,7 +25,7 @@ regras[0].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento")
 regras[0].antecedente.push(() => binding["Usuario.nivel"] == 1) // Se o nível é iniciante
 regras[0].acoesConsequente.push(normNivel, normDisp, regra0)
 regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
+regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[0].exp = "Regra 0: Para usuários que querem emagrecer e iniciantes, os 6 primeiros meses são 3 dias, e os últimos 4 dias"
 
 // Emag -> Nivel 1
@@ -92,7 +92,7 @@ regras[1].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento")
 regras[1].antecedente.push(() => binding["Usuario.nivel"] > 1) // Se o nível é intermediário/avançado
 regras[1].acoesConsequente.push(normNivel, normDisp, regra1)
 regras[1].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
+regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[1].exp = "Regra 1: Para usuários que querem emagrecer e tem nível intermediários/avançado, a frequência semanal durante todo o ano é de 4 dias"
 
 // Emag -> Nivel 2/3
@@ -131,7 +131,7 @@ regras[2].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") /
 regras[2].antecedente.push(() => binding["Usuario.nivel"] == 1) // Se o nível é iniciante
 regras[2].acoesConsequente.push(normNivel, normDisp, regra2)
 regras[2].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
+regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[2].exp = "Regra 2: Para usuários que querem hipertrofia e são iniciantes, JAN,FEV,JUL,AGO: 3 dias; MAR,ABR,MAI,JUN,DEZ: 4 dias; SET,OUT,NOV: 5 dias"
 
 // Hip -> Nivel 1
@@ -261,7 +261,7 @@ regras[3].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") /
 regras[3].antecedente.push(() => binding["Usuario.nivel"] > 1) // Se o nível é intermediário/avançado
 regras[3].acoesConsequente.push(normNivel, normDisp, regra3)
 regras[3].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[3].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
+regras[3].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[3].exp = "Regra 3: Para usuários que querem hipertrofia e são intermediário/avançado, JAN,FEV,JUL,AGO,DEZ: 4 dias; MAR,ABR,MAI,JUN,SET,OUT,NOV: 5 dias"
 
 // Hip -> Nivel 2/3
@@ -335,7 +335,7 @@ regras[4].antecedente.push(() => binding["Usuario.disponibilidade"].length > 0) 
 regras[4].antecedente.push(() => binding["Usuario.objetivo"] == "esporte") // Se o objetivo é hipertrofia
 regras[4].acoesConsequente.push(normNivel, normDisp, regra4)
 regras[4].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo")
-regras[4].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data")
+regras[4].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[4].exp = "Regra 4: Para todos os usuários que querem aprimoramento em esportes: 3 dias de frequência semanal no ano todo"
 
 // Esp
@@ -368,6 +368,7 @@ function regra4() {
 }
 
 function calc_qtd_treinos_anual(semanaNoMes){
+  binding["Usuario.planoTreino.freqNoMes"] = semanaNoMes
   var first = true // Primeiro treino a ser definido?
   var atual = new Date() //Data atual do usuário ao criar plano de treinos
   var final = new Date(atual.getFullYear() + 1, atual.getMonth(), atual.getDate()+1) //Data após 1 ano
@@ -496,15 +497,45 @@ function calcOptTreino(){
 }
 
 ////Regra 8: 
-regras[8].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[8].antecedente.push(() => binding["Usuario.planoTreino.freqNoMes"] != null) 
+regras[8].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Os treinos foram definidos
 regras[8].acoesConsequente.push(regra8)
-regras[8].nameVariaveisAntecedente.push()
-regras[8].nameVariaveisConsequente.push()
-regras[8].exp = "Regra 8: "
+regras[8].nameVariaveisAntecedente.push("Usuario.planoTreino.freqNoMes", "Usuario.planoTreino.treinos")
+regras[8].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.agrupMusc", "Usuario.planoTreino.treinos")
+regras[8].exp = "Regra 8: Os agrupamentos musculares trabalhados em cada dia são definidos de acordo com a frequência diária das semanas naquele mês."
 
 // Função que define as fases durante os meses
 function regra8() { 
-  
+  var semanaNoMes = binding["Usuario.planoTreino.freqNoMes"]
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  var pMes = treinos[0].data.getMonth()
+  var intercala = 0
+
+  for(var i = 0; i < treinos.length; i++){
+    var mes = mesRelativo(treinos[i].data.getMonth(), pMes)
+    var freq3 = [["Peito", "Ombro", "Tríceps"], ["Pernas"], ["Costas", "Bíceps"]]
+    var freq4 = [["Peito", "Ombro", "Tríceps"], ["Pernas","Costas", "Bíceps"]]
+    var freq5 = [["Peito"], ["Pernas"], ["Costas"], ["Ombro"], ["Bíceps", "Tríceps"]]
+    
+    if(semanaNoMes[mes].length == 3){
+      if(intercala > (freq3.length-1)){intercala = 0}
+
+      treinos[i].agrupMusc = freq3[intercala]
+      intercala++
+    } else if (semanaNoMes[mes].length == 4){
+      if(intercala > (freq4.length-1)){intercala = 0}
+
+      treinos[i].agrupMusc = freq4[intercala]
+      intercala++
+    } else if (semanaNoMes[mes].length == 5) {
+      if(intercala > (freq5.length-1)){intercala = 0}
+
+      treinos[i].agrupMusc = freq5[intercala]
+      intercala++
+    } else {
+      console.log("ERRO na Regra 8")
+    }
+  }
 }
 
 export {regras}

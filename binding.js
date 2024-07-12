@@ -23,6 +23,7 @@ var binding = {
 
         //PlanoTreino
         "Usuario.planoTreino.fases": user.planoTreino.fases,
+        "Usuario.planoTreino.freqNoMes": user.planoTreino.freqNoMes,
         "Usuario.planoTreino.treinos": user.planoTreino.treinos, //Array de Treino's
     
             //n Treino
