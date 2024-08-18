@@ -42,6 +42,7 @@ var binding = {
                 "Usuario.planoTreino.treinos.tabExercicios.nomeExercicios": user.planoTreino.treinos[x].tabExercicios[y].nomeExercicios,
                 "Usuario.planoTreino.treinos.tabExercicios.intensidade": user.planoTreino.treinos[x].tabExercicios[y].intensidade,
                 "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso": user.planoTreino.treinos[x].tabExercicios[y].tempoDescanso,
+                "Usuario.planoTreino.treinos.tabExercicios.tempoExec": user.planoTreino.treinos[x].tabExercicios[y].tempoExec,
                 "Usuario.planoTreino.treinos.tabExercicios.repeticoes": user.planoTreino.treinos[x].tabExercicios[y].repeticoes,
                 "Usuario.planoTreino.treinos.tabExercicios.sets": user.planoTreino.treinos[x].tabExercicios[y].sets,
                 "Usuario.planoTreino.treinos.tabExercicios.modTempoExec": user.planoTreino.treinos[x].tabExercicios[y].modTempoExec

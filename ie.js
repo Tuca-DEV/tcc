@@ -36,16 +36,16 @@ function traceValues(nameVariable) {
             activate(i, nameVariable)
         }
             */
-        binding[nameVariable].forEach(x => {
-            activate(x, nameVariable)
-        })
+        //binding[nameVariable].forEach(x => {
+            activate(binding[nameVariable][0], nameVariable)
+        //})
 
     // Caso seja um objeto
     } else if (binding[nameVariable] instanceof Object && binding[nameVariable].length == undefined) {
         activate(binding[nameVariable], nameVariable)    
 
     } else {
-        console.log("Não foi possível traçar a variável no momento\n")
+        console.log("Não foi possível traçar a variável: " + nameVariable)
     } 
 
     tracedVars.push(nameVariable)
@@ -85,7 +85,7 @@ function apply(regra){
 //Avalia se todos os testes lógicos na regra retornam valor verdadeiro
 function evalconditions(regra) {    
     for(var i=0; i < regra.antecedente.length; i++){
-        if(!tracedVars.includes(regra.nameVariaveisAntecedente[i])){traceValues(regra.nameVariaveisAntecedente[i])}
+        if(!tracedVars.includes(regra.nameVariaveisAntecedente[i])){traceValues(regra.nameVariaveisAntecedente[i])} // Se a variável não foi traçada, trace seu valor
         if(!regra.antecedente[i]()) {
             return false
         } //Caso haja um predicado com valor falso, retornará falso

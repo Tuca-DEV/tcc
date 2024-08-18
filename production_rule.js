@@ -1,5 +1,6 @@
 import {binding} from './binding.js'
 import Treino from './treino.js'
+import {exercicios} from './exercicios.js'
 
 class Regra {
     constructor() {
@@ -25,7 +26,7 @@ regras[0].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento")
 regras[0].antecedente.push(() => binding["Usuario.nivel"] == 1) // Se o nível é iniciante
 regras[0].acoesConsequente.push(normNivel, normDisp, regra0)
 regras[0].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
+regras[0].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[0].exp = "Regra 0: Para usuários que querem emagrecer e iniciantes, os 6 primeiros meses são 3 dias, e os últimos 4 dias"
 
 // Emag -> Nivel 1
@@ -92,7 +93,7 @@ regras[1].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento")
 regras[1].antecedente.push(() => binding["Usuario.nivel"] > 1) // Se o nível é intermediário/avançado
 regras[1].acoesConsequente.push(normNivel, normDisp, regra1)
 regras[1].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
+regras[1].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[1].exp = "Regra 1: Para usuários que querem emagrecer e tem nível intermediários/avançado, a frequência semanal durante todo o ano é de 4 dias"
 
 // Emag -> Nivel 2/3
@@ -131,7 +132,7 @@ regras[2].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") /
 regras[2].antecedente.push(() => binding["Usuario.nivel"] == 1) // Se o nível é iniciante
 regras[2].acoesConsequente.push(normNivel, normDisp, regra2)
 regras[2].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
+regras[2].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[2].exp = "Regra 2: Para usuários que querem hipertrofia e são iniciantes, JAN,FEV,JUL,AGO: 3 dias; MAR,ABR,MAI,JUN,DEZ: 4 dias; SET,OUT,NOV: 5 dias"
 
 // Hip -> Nivel 1
@@ -261,7 +262,7 @@ regras[3].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") /
 regras[3].antecedente.push(() => binding["Usuario.nivel"] > 1) // Se o nível é intermediário/avançado
 regras[3].acoesConsequente.push(normNivel, normDisp, regra3)
 regras[3].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo", "Usuario.nivel")
-regras[3].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
+regras[3].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[3].exp = "Regra 3: Para usuários que querem hipertrofia e são intermediário/avançado, JAN,FEV,JUL,AGO,DEZ: 4 dias; MAR,ABR,MAI,JUN,SET,OUT,NOV: 5 dias"
 
 // Hip -> Nivel 2/3
@@ -335,7 +336,7 @@ regras[4].antecedente.push(() => binding["Usuario.disponibilidade"].length > 0) 
 regras[4].antecedente.push(() => binding["Usuario.objetivo"] == "esporte") // Se o objetivo é hipertrofia
 regras[4].acoesConsequente.push(normNivel, normDisp, regra4)
 regras[4].nameVariaveisAntecedente.push("Usuario.disponibilidade", "Usuario.objetivo")
-regras[4].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
+regras[4].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes")
 regras[4].exp = "Regra 4: Para todos os usuários que querem aprimoramento em esportes: 3 dias de frequência semanal no ano todo"
 
 // Esp
@@ -420,7 +421,7 @@ function normNivel(){
 regras[5].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
 regras[5].acoesConsequente.push(regra5)
 regras[5].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
-regras[5].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
+regras[5].nameVariaveisConsequente.push("Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
 regras[5].exp = "Regra 5: Caso o usuário queira emagrecer, haverá uma intercalação entre fases 1 e 2 do modelo OPT durante os meses"
 
 // Função que define as fases durante os meses
@@ -440,7 +441,7 @@ function regra5() {
 regras[6].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
 regras[6].acoesConsequente.push(regra6)
 regras[6].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
-regras[6].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
+regras[6].nameVariaveisConsequente.push("Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
 regras[6].exp = "Regra 6: Caso o usuário queira hipertrofia muscular, haverá a seguinte ordem de fases opt durante os meses: 1, 2, 3, 2, 3, 4, 1, 2, 3, 4, 3, 2"
 
 // Função que define as fases durante os meses
@@ -454,7 +455,7 @@ function regra6() {
 regras[7].antecedente.push(() => binding["Usuario.objetivo"] == "esporte") 
 regras[7].acoesConsequente.push(regra7)
 regras[7].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
-regras[7].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
+regras[7].nameVariaveisConsequente.push("Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
 regras[7].exp = "Regra 7: Caso o usuário queira desenvolvimento para esportes, os primeiros dois meses serão fase 1 e 2, respectivamente. Os próximos meses utilizarão mais de 1 fase por mês, seguindo uma intercalação de fases (1, 2 e 5) com (2 e 5)"
 
 // Função que define as fases durante os meses
@@ -496,12 +497,12 @@ function calcOptTreino(){
   }
 }
 
-////Regra 8: 
+////Regra 8: Define os agrupamentos musculares trabalhados em cada treino
 regras[8].antecedente.push(() => binding["Usuario.planoTreino.freqNoMes"] != null) 
 regras[8].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Os treinos foram definidos
 regras[8].acoesConsequente.push(regra8)
-regras[8].nameVariaveisAntecedente.push("Usuario.planoTreino.freqNoMes", "Usuario.planoTreino.treinos")
-regras[8].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.agrupMusc", "Usuario.planoTreino.treinos")
+regras[8].nameVariaveisAntecedente.push("Usuario.planoTreino.freqNoMes", "Usuario.planoTreino.treinos.data")
+regras[8].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.agrupMusc")
 regras[8].exp = "Regra 8: Os agrupamentos musculares trabalhados em cada dia são definidos de acordo com a frequência diária das semanas naquele mês."
 
 // Função que define as fases durante os meses
@@ -537,6 +538,38 @@ function regra8() {
     }
   }
 }
+
+////Regra 9: Define os treinos de cardio para usuários que querem hipertrofiar
+regras[9].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[9].acoesConsequente.push(regra9)
+regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.freqNoMes")
+regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.tempoExec")
+regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar, terá cardio de 10 minutos na seção WarmUp, intensidade leve"
+
+// Função que define as fases durante os meses
+function regra9() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
+
+  for(var i = 0; i < treinos.length; i++){
+    var idRandom
+
+    do {
+      idRandom = Math.round(Math.random()*(exercicios.length - 1))
+
+    } while (exercicios[idRandom].tipoSubTreino != "Cardio")// Enquanto o exercício sorteado não for do tipo Cardio, sorteie novamente
+
+    treinos[i].tabExercicios[0].idExercicios[0] = idRandom
+    treinos[i].tabExercicios[0].nomeExercicios[0] = exercicios[idRandom].nome
+    treinos[i].tabExercicios[0].intensidade[0] = 1
+    treinos[i].tabExercicios[0].tempoDescanso[0] = 30
+    treinos[i].tabExercicios[0].repeticoes[0] = 1
+    treinos[i].tabExercicios[0].sets[0] = 1
+    treinos[i].tabExercicios[0].tempoExec[0] = 10*60
+    // Intensidade e modTempoExec são definidos por outras regras
+  }
+}
+
+
 
 export {regras}
 

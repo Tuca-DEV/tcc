@@ -1,3 +1,15 @@
+import Exercicio from './exercicio.js'
+
 var exercicios = []
 
-exercicios.push(new Exercicio())
+// WarmUp's
+
+// Cores
+
+// Resistência
+
+// Cardios
+exercicios.push(new Exercicio(0, "Esteira", [1,2,3,4,5], 1, "Máquina", "Cardio", ["FullBody"])) // Esteira
+exercicios.push(new Exercicio(1, "Bicicleta", [1,2,3,4,5], 1, "Máquina", "Cardio", ["FullBody", "Pernas"])) // Bicicleta
+
+export {exercicios}
