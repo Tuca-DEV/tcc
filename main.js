@@ -11,7 +11,7 @@ traceValues("Usuario")
 
 console.log(binding["Usuario.planoTreino.treinos"])
 /*for(var i = 0; i < binding["Usuario.planoTreino.treinos"].length; i++){      // Imprimir tabExercicios de todos os treinos
-    console.log(binding["Usuario.planoTreino.treinos"][i].tabExercicios[0])
+    console.log(binding["Usuario.planoTreino.treinos"][i].tabExercicios[3])
 }*/
 console.log("Treinos.length: ", binding["Usuario.planoTreino.treinos"].length)
 console.log("Fases por mês do plano de treinos: ", binding["Usuario.planoTreino.fases"])

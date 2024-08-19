@@ -18,7 +18,7 @@ class Regra {
   }
 
 //Knowledge base
-var regras = new Array(10).fill(null).map(() => new Regra())
+var regras = new Array(30).fill(null).map(() => new Regra())
 
 ////Regra 0: Inicializa o array de treinos calcuando os dias de treino durante 1 ano de programação para usuário que quer EMAGRECER e é INICIANTE
 regras[0].antecedente.push(() => binding["Usuario.disponibilidade"].length > 0) // Se disponibilidade foi definido
@@ -539,37 +539,104 @@ function regra8() {
   }
 }
 
-////Regra 9: Define os treinos de cardio para usuários que querem hipertrofiar
-regras[9].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+////Regra 9: Define os treinos de cardio para usuários que querem hipertrofiar ou esporte
+regras[9].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
 regras[9].acoesConsequente.push(regra9)
-regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.freqNoMes")
-regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.tempoExec")
-regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar, terá cardio de 10 minutos na seção WarmUp, intensidade leve"
+regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos")
+regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
+regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp, intensidade leve"
 
 // Função que define as fases durante os meses
 function regra9() { 
+  var selectedExerc = []
   var treinos = binding["Usuario.planoTreino.treinos"]
 
+  // Seleção de exercícios cardio com pouca dificuldade
+  exercicios.forEach((ex) => {
+    if(ex.tipoSubTreino == "Cardio" && ex.dificuldade == 1){selectedExerc.push(ex)}
+  })
+
   for(var i = 0; i < treinos.length; i++){
-    var idRandom
+    var idRandom = Math.round(Math.random()*(selectedExerc.length - 1)) // Seleção de um exercício aleatoriamente
 
-    do {
-      idRandom = Math.round(Math.random()*(exercicios.length - 1))
+    treinos[i].tabExercicios[0].idExercicios.push(idRandom)
+    treinos[i].tabExercicios[0].nomeExercicios.push(exercicios[idRandom].nome)
+    treinos[i].tabExercicios[0].intensidade.push(1)
+    treinos[i].tabExercicios[0].tempoTotal.push(600)
+    //treinos[i].tabExercicios[0].tempoDescanso[0] = 30   |
+    //treinos[i].tabExercicios[0].repeticoes[0] = 1       |==>       DEFINIDOS POR UMA REGRA QUE AVALIA FASE OPT E O EXERCÍCIO
+    //treinos[i].tabExercicios[0].sets[0] = 1             |
 
-    } while (exercicios[idRandom].tipoSubTreino != "Cardio")// Enquanto o exercício sorteado não for do tipo Cardio, sorteie novamente
-
-    treinos[i].tabExercicios[0].idExercicios[0] = idRandom
-    treinos[i].tabExercicios[0].nomeExercicios[0] = exercicios[idRandom].nome
-    treinos[i].tabExercicios[0].intensidade[0] = 1
-    treinos[i].tabExercicios[0].tempoDescanso[0] = 30
-    treinos[i].tabExercicios[0].repeticoes[0] = 1
-    treinos[i].tabExercicios[0].sets[0] = 1
-    treinos[i].tabExercicios[0].tempoExec[0] = 10*60
-    // Intensidade e modTempoExec são definidos por outras regras
+    //treinos[i].tabExercicios[0].modTempoExec[0] = "NA"   ==> DEFINIDO POR UMA REGRA EM ESPECÍFICO PARA ESTE ATRIBUTO
   }
 }
 
+////Regra 10: Define os treinos de cardio para usuários que querem emagrecer
+regras[10].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
+regras[10].acoesConsequente.push(regra10)
+regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
+regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.tempoExec")
+regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia,\n e nos outros 3: cardio de 20 minutos.\n   *Caso o usuário seja iniciante: a intensidade será reduzida a 1 nos primeiros 5 meses"
 
+// Função que define as fases durante os meses
+function regra10() { 
+  var selectedExerc =[]
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  var freqDoMes = binding["Usuario.planoTreino.freqNoMes"]
+  var diaSemana = 1
+
+  // Seleção de exercícios cardio com pouca dificuldade
+  exercicios.forEach((ex) => {
+    if(ex.tipoSubTreino == "Cardio"){selectedExerc.push(ex)}
+  })
+
+  for(var i = 0; i < treinos.length; i++){
+    var mesAtual = mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth())
+    var idRandom = Math.round(Math.random()*(selectedExerc.length - 1))
+
+    if(freqDoMes[mesAtual].length == 3){
+      treinos[i].tabExercicios[3].idExercicios.push(idRandom)
+      treinos[i].tabExercicios[3].nomeExercicios.push(exercicios[idRandom].nome)
+      if(mesAtual < 5 && binding["Usuario.nivel"] < 2){
+        treinos[i].tabExercicios[3].intensidade.push(1)
+      } else {
+        treinos[i].tabExercicios[3].intensidade.push(2)
+      }
+      treinos[i].tabExercicios[3].tempoTotal.push(1200)
+
+    } else if (freqDoMes[mesAtual].length == 4){
+      if(diaSemana < 4) { // Se não é o quarto dia de treino daquela semana
+        treinos[i].tabExercicios[3].idExercicios.push(idRandom)
+        treinos[i].tabExercicios[3].nomeExercicios.push(exercicios[idRandom].nome)
+        treinos[i].tabExercicios[3].intensidade.push(2)
+        treinos[i].tabExercicios[3].tempoTotal.push(1200)
+
+      } else {
+        var treinoTempoTotal = 0
+        treinos[i].agrupMusc = ["Cardio"]
+
+        while(treinoTempoTotal < (60*60)){ // Enquanto o tempo total não ultrapassar 1 hora
+          idRandom = Math.round(Math.random()*(selectedExerc.length - 1))
+
+          treinos[i].tabExercicios[3].idExercicios.push(idRandom)
+          treinos[i].tabExercicios[3].nomeExercicios.push(exercicios[idRandom].nome)
+          treinos[i].tabExercicios[3].intensidade.push(2)
+          treinos[i].tabExercicios[3].tempoTotal.push(20*60)
+
+          treinoTempoTotal += (20*60)
+        }
+
+      }
+
+      diaSemana++
+      if(diaSemana > 4){diaSemana = 1}
+      
+    } else {
+      console.log("ERRO: Valor de frequência errado!\n")
+    }
+
+  }
+}
 
 export {regras}
 
