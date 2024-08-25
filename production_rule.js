@@ -539,7 +539,7 @@ function regra8() {
   }
 }
 
-////Regra 9: Define os treinos de cardio para usuários que querem hipertrofiar ou esporte
+////Regra 9: Seleciona os exercícios de cardio para usuários que querem hipertrofiar ou esporte
 regras[9].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
 regras[9].acoesConsequente.push(regra9)
 regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos")
@@ -571,12 +571,12 @@ function regra9() {
   }
 }
 
-////Regra 10: Define os treinos de cardio para usuários que querem emagrecer
+////Regra 10: Seleciona os exercícios de cardio para usuários que querem emagrecer
 regras[10].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
 regras[10].acoesConsequente.push(regra10)
 regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
 regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
-regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia,\n e nos outros 3: cardio de 20 minutos.\n   *Caso o usuário seja iniciante: a intensidade será reduzida a 1 nos primeiros 5 meses"
+regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 20 minutos.   *Caso o usuário seja iniciante: a intensidade será reduzida a 1 nos primeiros 5 meses"
 
 // Função que define as fases durante os meses
 function regra10() { 
@@ -637,6 +637,19 @@ function regra10() {
 
   }
 }
+
+/*
+////Regra 11: Seleciona os exercícios para o core
+regras[11].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
+regras[11].acoesConsequente.push(regra11)
+regras[11].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos")
+regras[11].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
+regras[11].exp = "Regra 11: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp, intensidade leve"
+
+function regra11() { 
+  
+}
+*/
 
 export {regras}
 
