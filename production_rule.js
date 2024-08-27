@@ -638,18 +638,85 @@ function regra10() {
   }
 }
 
-/*
-////Regra 11: Seleciona os exercícios para o core
+
+////Regra 11: Seleciona os exercícios para o core de cada treino
 regras[11].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
 regras[11].acoesConsequente.push(regra11)
-regras[11].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos")
-regras[11].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
-regras[11].exp = "Regra 11: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp, intensidade leve"
+regras[11].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.fase")
+regras[11].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[11].exp = "Regra 11: Seleção de exercícios para o Core dos treinos com base nas notas"
 
 function regra11() { 
-  
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  var quantExercs
+
+  for(var i = 0; i < treinos.length; i++){
+    condElimina = [function(id){(exercicios[id].tipoSubTreino != "Core")}]// Se o exercício não é da seção Core, elimine
+    condNota = [function(id){exercicios[id].niveisOpt.includes(treinos.fase); return 0.65}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício
+    condNota.push(function(id){})
+
+    // Se o treino é de Cardio ou Pernas, não haverá treino para Core
+    if(treinos[i].agrupMusc == "Cardio" || treinos[i].agrupMusc == "Perna"){ // Baseado na ideia de que treinos de Cardio e Perna tem muito impacto, logo, sobrecarga na coluna. Caso o sistema de sustentação do corpo (Core) esteja enfraquecido, lesões podem ocorrer na coluna vertebral do aluno
+      continue
+    }
+
+    var exerciciosComNota = notaExerc(condElimina, condNota)
+
+    //Definindo a quantidade de Exercícios para o Core neste treino
+    if(treinos[i].fase == 1){
+      quantExercs = 4
+    } else if (treinos[i].fase == 5){
+      quantExercs = 3
+    } else { // Fases OPT 2, 3 ou 4
+      if(Math.random() >= 0.5){ // Aleatoriedade de 50% para ser 2 ou 3 exercícios de Core neste treino em específico
+        quantExercs = 3
+      } else {
+        quantExercs = 2
+      }
+    }
+
+    while(quantExercs > 0){
+      quantExercs--
+      treinos.tabExercicios[1].idExercicios = exerciciosComNota[quantExercs]
+      treinos.tabExercicios[1].nomeExercicios = exerciciosComNota[quantExercs]
+    }
+
+  }
 }
-*/
+
+function notaExerc(condElimina, condNota){
+  var selecaoExercs = Array.from({ length: exercicios.length }, () => [-10, -10])
+
+  for(var i = 0; i < exercicios.length; i++){
+
+    var nota = 0; 
+    // Se alguma condição de eliminação for satisfeita, nota recebe -0.9
+    condElimina.forEach(cond => {
+      if(cond(exercicios[i].idExerc)){nota = -0.9}  
+    })
+
+    if(nota == -0.9){continue} // Se a nota for -0.9, não selecionar este exercício e ver o próximo
+
+    condNota.forEach(cond => {
+      nota += cond(exercicios[i].idExerc)
+    })
+
+    if(nota > 0){ // Se o exercício tem nota positiva, selecione-o
+
+      for(var c = 0; c < selecaoExercs.length; c++){
+        if(nota >= selecaoExercs[c][1]){ // Se a nota dada a este exercício for maior que um dos exercício selecionados
+          selecaoExercs.splice(c, 0, [exercicios[c].idExerc, nota]) // Insere o exercício nesta posição
+          break
+        }
+      }
+      
+    }
+
+  }
+
+  return selecaoExercs
+}
+
 
 export {regras}
 
