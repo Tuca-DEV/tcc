@@ -419,6 +419,7 @@ function normNivel(){
 
 ////Regra 5: Definição das fases OPT a serem utilizadas por usuários com objetivo de emagrecimento
 regras[5].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
+regras[5].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[5].acoesConsequente.push(regra5)
 regras[5].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
 regras[5].nameVariaveisConsequente.push("Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
@@ -439,6 +440,7 @@ function regra5() {
 
 ////Regra 6: Definição das fases OPT a serem utilizadas por usuários com objetivo de hipertrofia
 regras[6].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia") 
+regras[6].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[6].acoesConsequente.push(regra6)
 regras[6].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
 regras[6].nameVariaveisConsequente.push("Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
@@ -453,6 +455,7 @@ function regra6() {
 
 ////Regra 7: Definição das fases OPT a serem utilizadas por usuários com objetivo de esporte
 regras[7].antecedente.push(() => binding["Usuario.objetivo"] == "esporte") 
+regras[7].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[7].acoesConsequente.push(regra7)
 regras[7].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
 regras[7].nameVariaveisConsequente.push("Usuario.planoTreino.fases", "Usuario.planoTreino.treinos.fase")
@@ -498,7 +501,7 @@ function calcOptTreino(){
 }
 
 ////Regra 8: Define os agrupamentos musculares trabalhados em cada treino
-regras[8].antecedente.push(() => binding["Usuario.planoTreino.freqNoMes"] != null) 
+regras[8].antecedente.push(() => binding["Usuario.planoTreino.freqNoMes"] != null)  // Frequência no mês definida
 regras[8].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Os treinos foram definidos
 regras[8].acoesConsequente.push(regra8)
 regras[8].nameVariaveisAntecedente.push("Usuario.planoTreino.freqNoMes", "Usuario.planoTreino.treinos.data")
@@ -541,8 +544,9 @@ function regra8() {
 
 ////Regra 9: Seleciona os exercícios de cardio para usuários que querem hipertrofiar ou esporte
 regras[9].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
+regras[9].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[9].acoesConsequente.push(regra9)
-regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos")
+regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
 regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
 regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp, intensidade leve"
 
@@ -573,8 +577,11 @@ function regra9() {
 
 ////Regra 10: Seleciona os exercícios de cardio para usuários que querem emagrecer
 regras[10].antecedente.push(() => binding["Usuario.objetivo"] == "emagrecimento") 
+regras[10].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
+regras[10].antecedente.push(() => binding["Usuario.planoTreino.freqNoMes"] != null)  // Frequência no mês definida
+regras[10].antecedente.push(() => binding["Usuario.nivel"] > 0)  // Nível do usuário definido
 regras[10].acoesConsequente.push(regra10)
-regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
+regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
 regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
 regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 20 minutos.   *Caso o usuário seja iniciante: a intensidade será reduzida a 1 nos primeiros 5 meses"
 
@@ -641,8 +648,12 @@ function regra10() {
 
 ////Regra 11: Seleciona os exercícios para o core de cada treino
 regras[11].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
+regras[11].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
+regras[11].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases dos treinos definidas
+regras[11].antecedente.push(() => binding["Usuario.idade"] > 0) // Idade do usuário definida
+regras[11].antecedente.push(() => binding["Usuario.nivel"] > 0) // Nível do usuário definido
 regras[11].acoesConsequente.push(regra11)
-regras[11].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.fase")
+regras[11].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.idade", "Usuario.nivel")
 regras[11].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[11].exp = "Regra 11: Seleção de exercícios para o Core dos treinos com base nas notas"
 
@@ -651,9 +662,17 @@ function regra11() {
   var quantExercs
 
   for(var i = 0; i < treinos.length; i++){
-    condElimina = [function(id){(exercicios[id].tipoSubTreino != "Core")}]// Se o exercício não é da seção Core, elimine
-    condNota = [function(id){exercicios[id].niveisOpt.includes(treinos.fase); return 0.65}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício
-    condNota.push(function(id){})
+    //Condições de Eliminação caso verdadeiras
+    var condElimina = [function(id){if(exercicios[id].tipoSubTreino != "Core"){return true} return false}]// Se o exercício não é da seção Core, elimine
+
+    //Condições de nota
+    var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.65} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
+    condNota.push(function(id){if(binding["Usuario"].idade > 60 && exercicios[id].dificuldade == 3){return -0.65}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 3, -0.65
+    condNota.push(function(id){if(binding["Usuario"].idade > 60 && exercicios[id].dificuldade == 2){return -0.15}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 2, -0.15
+    condNota.push(function(id){if(binding["Usuario"].nivel >= exercicios[id].dificuldade){return +0.2} return -0.2}) // Se o usuário tem um nível igual ou superior a dificuldade deste exercício, +0.2. Se não, -0.2
+    condNota.push(function(id){if(binding["Usuario"].nivel == 1 && exercicios[id].tipo == "Kettlebell" || exercicios[id].tipo == "PesoLivre"){return -0.1} return +0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com pesos livres ou Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
+   
+    
 
     // Se o treino é de Cardio ou Pernas, não haverá treino para Core
     if(treinos[i].agrupMusc == "Cardio" || treinos[i].agrupMusc == "Perna"){ // Baseado na ideia de que treinos de Cardio e Perna tem muito impacto, logo, sobrecarga na coluna. Caso o sistema de sustentação do corpo (Core) esteja enfraquecido, lesões podem ocorrer na coluna vertebral do aluno
@@ -677,8 +696,9 @@ function regra11() {
 
     while(quantExercs > 0){
       quantExercs--
-      treinos.tabExercicios[1].idExercicios = exerciciosComNota[quantExercs]
-      treinos.tabExercicios[1].nomeExercicios = exerciciosComNota[quantExercs]
+      var id = exerciciosComNota[quantExercs][0]
+      treinos[i].tabExercicios[1].idExercicios.push(id) 
+      treinos[i].tabExercicios[1].nomeExercicios.push(exercicios[id].nome)
     }
 
   }
@@ -690,22 +710,25 @@ function notaExerc(condElimina, condNota){
   for(var i = 0; i < exercicios.length; i++){
 
     var nota = 0; 
+
     // Se alguma condição de eliminação for satisfeita, nota recebe -0.9
-    condElimina.forEach(cond => {
-      if(cond(exercicios[i].idExerc)){nota = -0.9}  
-    })
+    for(var c = 0; c < condElimina.length; c++){
+      if(condElimina[c](exercicios[i].idExerc)){nota = -0.9; break;}  
+    }
 
     if(nota == -0.9){continue} // Se a nota for -0.9, não selecionar este exercício e ver o próximo
 
-    condNota.forEach(cond => {
-      nota += cond(exercicios[i].idExerc)
-    })
+   
+    for(var c = 0; c < condNota.length; c++){
+      nota += condNota[c](exercicios[i].idExerc)
+    }
+    
 
     if(nota > 0){ // Se o exercício tem nota positiva, selecione-o
 
       for(var c = 0; c < selecaoExercs.length; c++){
         if(nota >= selecaoExercs[c][1]){ // Se a nota dada a este exercício for maior que um dos exercício selecionados
-          selecaoExercs.splice(c, 0, [exercicios[c].idExerc, nota]) // Insere o exercício nesta posição
+          selecaoExercs.splice(c, 0, [exercicios[i].idExerc, nota]) // Insere o exercício nesta posição
           break
         }
       }
@@ -716,6 +739,7 @@ function notaExerc(condElimina, condNota){
 
   return selecaoExercs
 }
+
 
 
 export {regras}
