@@ -669,7 +669,7 @@ function regra11() {
     var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.65} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
     condNota.push(function(id){if(binding["Usuario"].idade > 60 && exercicios[id].dificuldade == 3){return -0.65}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 3, -0.65
     condNota.push(function(id){if(binding["Usuario"].idade > 60 && exercicios[id].dificuldade == 2){return -0.15}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 2, -0.15
-    condNota.push(function(id){if(binding["Usuario"].nivel >= exercicios[id].dificuldade){return +0.2} return -0.2}) // Se o usuário tem um nível igual ou superior a dificuldade deste exercício, +0.2. Se não, -0.2
+    condNota.push(function(id){if(binding["Usuario"].nivel >= exercicios[id].dificuldade){return +0.15} return -0.15}) // Se o usuário tem um nível igual ou superior a dificuldade deste exercício, +0.2. Se não, -0.2
     condNota.push(function(id){if(binding["Usuario"].nivel == 1 && exercicios[id].tipo == "Kettlebell" || exercicios[id].tipo == "PesoLivre"){return -0.1} return +0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com pesos livres ou Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
    
     
@@ -680,7 +680,7 @@ function regra11() {
     }
 
     var exerciciosComNota = notaExerc(condElimina, condNota)
-
+    
     //Definindo a quantidade de Exercícios para o Core neste treino
     if(treinos[i].fase == 1){
       quantExercs = 4
@@ -722,6 +722,10 @@ function notaExerc(condElimina, condNota){
     for(var c = 0; c < condNota.length; c++){
       nota += condNota[c](exercicios[i].idExerc)
     }
+
+    // A nota recebe entre [-0.1, 0.1] pontos aleatórios
+    var polar = (Math.random() > 0.5) ? -1 : 1
+    nota += polar*Math.random()*0.1
     
 
     if(nota > 0){ // Se o exercício tem nota positiva, selecione-o
