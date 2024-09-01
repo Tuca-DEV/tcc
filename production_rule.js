@@ -647,7 +647,7 @@ function regra10() {
 
 
 ////Regra 11: Seleciona os exercícios para o core de cada treino
-regras[11].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" || binding["Usuario.objetivo"] == "esporte") 
+regras[11].antecedente.push(() => binding["Usuario.objetivo"] != null) 
 regras[11].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[11].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases dos treinos definidas
 regras[11].antecedente.push(() => binding["Usuario.idade"] > 0) // Idade do usuário definida
