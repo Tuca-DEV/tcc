@@ -508,7 +508,7 @@ regras[8].nameVariaveisAntecedente.push("Usuario.planoTreino.freqNoMes", "Usuari
 regras[8].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.agrupMusc")
 regras[8].exp = "Regra 8: Os agrupamentos musculares trabalhados em cada dia são definidos de acordo com a frequência diária das semanas naquele mês."
 
-// Função que define as fases durante os meses
+// Função que define os agrupamentos musculares de cada treino
 function regra8() { 
   var semanaNoMes = binding["Usuario.planoTreino.freqNoMes"]
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -647,7 +647,7 @@ function regra10() {
 
 
 ////Regra 11: Seleciona os exercícios para o core de cada treino
-regras[11].antecedente.push(() => binding["Usuario.objetivo"] != null) 
+regras[11].antecedente.push(() => binding["Usuario.objetivo"] != null) // Objetivo definido
 regras[11].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[11].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases dos treinos definidas
 regras[11].antecedente.push(() => binding["Usuario.idade"] > 0) // Idade do usuário definida
@@ -655,7 +655,7 @@ regras[11].antecedente.push(() => binding["Usuario.nivel"] > 0) // Nível do usu
 regras[11].acoesConsequente.push(regra11)
 regras[11].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.idade", "Usuario.nivel")
 regras[11].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
-regras[11].exp = "Regra 11: Seleção de exercícios para o Core dos treinos com base nas notas"
+regras[11].exp = "Regra 11: Filtragem dos exercícios para o Core mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 3 e o usuário é idoso: nota - 0.65\n Se o exercício tem dificuldade 2 e o usuário é idoso: nota -0.15.\n Se o nível do usuário é superior ou igual a dificuldade do exercício: nota + 0.15. Se não: nota - 0.15\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.1. Se não: +0.1"
 
 function regra11() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -679,8 +679,8 @@ function regra11() {
       continue
     }
 
-    var exerciciosComNota = notaExerc(condElimina, condNota)
-    
+    var exerciciosComNota = notaExerc(condElimina, condNota, 0.1)
+
     //Definindo a quantidade de Exercícios para o Core neste treino
     if(treinos[i].fase == 1){
       quantExercs = 4
@@ -704,7 +704,84 @@ function regra11() {
   }
 }
 
-function notaExerc(condElimina, condNota){
+////Regra 12: Seleciona os exercícios de resistência de cada treino
+regras[12].antecedente.push(() => binding["Usuario.objetivo"] != null) // Objetivo definido
+regras[12].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
+regras[12].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases dos treinos definidas
+regras[12].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].agrupMusc.length > 0) // Agrupamento muscular definido
+regras[12].antecedente.push(() => binding["Usuario.idade"] > 0) // Idade do usuário definida
+regras[12].antecedente.push(() => binding["Usuario.nivel"] > 0) // Nível do usuário definido
+regras[12].acoesConsequente.push(regra12)
+regras[12].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.agrupMusc","Usuario.idade", "Usuario.nivel")
+regras[12].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[12].exp = "Regra 12: Filtragem dos exercícios da seção Resistência mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 3 e o usuário é idoso: nota - 0.65\n Se o exercício tem dificuldade 2 e o usuário é idoso: nota -0.15.\n Se o nível do usuário é superior ou igual a dificuldade do exercício: nota + 0.15. Se não: nota - 0.15\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.1. Se não: +0.1"
+
+function regra12() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  var quantExercs
+
+  for(var i = 0; i < treinos.length; i++){
+    //Condições de Eliminação caso verdadeiras
+    var condElimina = [function(id){if(exercicios[id].tipoSubTreino != "Resistência"){return true} return false}]// Se o exercício não é da seção Resistência, elimine
+    condElimina.push(function(id){ // Se o treino não apresenta nenhum dos agrupamentos musculares trabalhados no exercício, elimine-o
+      if(treinos[i].agrupMusc.includes("Pernas")){treinos[i].agrupMusc.push("Isquiotibiais", "Quadríceps", "Panturrilha")}
+
+      for(var c = 0; c < exercicios[id].agrupMusc.length; c++){
+        if(treinos[i].agrupMusc.includes(exercicios[id].agrupMusc[c].toString())){return false}
+      }
+      return true
+    })
+
+    //Condições de nota
+    var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.35} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
+    condNota.push(function(id){if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 3){return -0.65}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 3, -0.65
+    condNota.push(function(id){if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2){return -0.15}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 2, -0.15
+    condNota.push(function(id){if(binding["Usuario.nivel"] >= exercicios[id].dificuldade){return +0.3} return -0.3}) // Se o usuário tem um nível igual ou superior a dificuldade deste exercício, +0.2. Se não, -0.2
+    condNota.push(function(id){if(binding["Usuario.nivel"] == 1 && exercicios[id].tipo == "Kettlebell" || exercicios[id].tipo == "PesoLivre"){return -0.1} return +0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com pesos livres ou Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
+   
+    if(treinos[i].agrupMusc == "Cardio"){ // Se o treino é de Cardio, não terá anaeróbico
+      continue
+    }
+
+    var exerciciosComNota = notaExerc(condElimina, condNota, 0.2)
+
+    //Definindo a quantidade de Exercícios de Resistência neste treino
+    switch(treinos[i].fase){
+      case 1:
+        quantExercs = 5
+        break
+      case 2:
+        quantExercs = 7
+        break
+      case 3: 
+        if(Math.random() > 0.5){
+          quantExercs = 8
+        } else {
+          quantExercs = 7
+        }
+        break
+      case 4:
+        quantExercs = 6
+        break
+      case 5:
+        quantExercs = 7
+        break
+      default:
+        console.log("ERRO: fase em regra 12 com valor indefinido!")
+        return
+    }
+
+    while(quantExercs > 0){
+      quantExercs--
+      var id = exerciciosComNota[quantExercs][0]
+      treinos[i].tabExercicios[1].idExercicios.push(id) 
+      treinos[i].tabExercicios[1].nomeExercicios.push(exercicios[id].nome)
+    }
+
+  }
+}
+
+function notaExerc(condElimina, condNota, rand){
   var selecaoExercs = Array.from({ length: exercicios.length }, () => [-10, -10])
 
   for(var i = 0; i < exercicios.length; i++){
@@ -725,7 +802,7 @@ function notaExerc(condElimina, condNota){
 
     // A nota recebe entre [-0.1, 0.1] pontos aleatórios
     var polar = (Math.random() > 0.5) ? -1 : 1
-    nota += polar*Math.random()*0.1
+    nota += polar*Math.random()*rand
     
 
     if(nota > 0){ // Se o exercício tem nota positiva, selecione-o
@@ -743,6 +820,8 @@ function notaExerc(condElimina, condNota){
 
   return selecaoExercs
 }
+
+
 
 
 
