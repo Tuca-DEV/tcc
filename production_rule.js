@@ -736,7 +736,8 @@ function regra12() {
     var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.35} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
     condNota.push(function(id){if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 3){return -0.65}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 3, -0.65
     condNota.push(function(id){if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2){return -0.15}; return 0}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 2, -0.15
-    condNota.push(function(id){if(binding["Usuario.nivel"] >= exercicios[id].dificuldade){return +0.3} return -0.3}) // Se o usuário tem um nível igual ou superior a dificuldade deste exercício, +0.2. Se não, -0.2
+    condNota.push(function(id){if(binding["Usuario.nivel"] == exercicios[id].dificuldade){return +0.25} return 0}) // Se o usuário tem um nível igual a dificuldade deste exercício, +0.25.
+    condNota.push(function(id){if(binding["Usuario.nivel"] < exercicios[id].dificuldade){return -0.1} return 0}) // Se o usuário tem um nível menor do que a dificuldade deste exercício, - 0.1
     condNota.push(function(id){if(binding["Usuario.nivel"] == 1 && exercicios[id].tipo == "Kettlebell" || exercicios[id].tipo == "PesoLivre"){return -0.1} return +0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com pesos livres ou Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
    
     if(treinos[i].agrupMusc == "Cardio"){ // Se o treino é de Cardio, não terá anaeróbico
@@ -774,6 +775,12 @@ function regra12() {
     while(quantExercs > 0){
       quantExercs--
       var id = exerciciosComNota[quantExercs][0]
+      // Debug
+      if(id < 0){
+        console.log("Id exercício: "+id)
+        console.log("Treino: "+ i)
+        console.log(treinos[i])
+      }
       treinos[i].tabExercicios[1].idExercicios.push(id) 
       treinos[i].tabExercicios[1].nomeExercicios.push(exercicios[id].nome)
     }
