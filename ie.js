@@ -44,10 +44,10 @@ function traceValues(nameVariable) {
     } else if (binding[nameVariable] instanceof Object && binding[nameVariable].length == undefined) {
         activate(binding[nameVariable], nameVariable)    
 
-    } else if (!tracedVars.includes(nameVariable)) {
-        console.log("Não foi possível traçar a variável: " + nameVariable)
+    } else {
     } 
 
+    console.log("Variável "+nameVariable+ " traçada!")
     tracedVars.push(nameVariable)
 }
 
