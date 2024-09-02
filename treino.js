@@ -3,40 +3,14 @@ import TabExercicios from './tabexercicios.js';
 class Treino {
     // Var's objetivo: tabExercicios
     constructor(data) {
-      this.data = data;
-      this.fase = null;
-      this.tempoTotal = null;
-      this.volume = null;
-      this.intensidade = null;
-      this.agrupMusc = [];
-      this.tabExercicios = [new TabExercicios("WarmUp"), new TabExercicios("Core"), new TabExercicios("Resistência"), new TabExercicios("Cardio")]; 
+      this.data = data; // Dia, mês e ano do treino
+      this.fase = null; // Fase OPT
+      this.tempoTotal = null; // Tempo total somando todas as execuções de todos os exercícios mais os tempos de descanso
+      this.volume = null; // Quantidade de sets total somando das seções Core e Resistência
+      this.intensidade = null; // Intensidade de carga/consumo de O2 por tempo 
+      this.agrupMusc = []; // Array que contém os agrupamentos musculares a serem trabalhados no treino
+      this.tabExercicios = [new TabExercicios("WarmUp"), new TabExercicios("Core"), new TabExercicios("Resistência"), new TabExercicios("Cardio")]; // Seções da folha de treino
     }
-  
-    /*
-    // Método para adicionar um TabExercicios
-    adicionarTabExercicios(index, tabExercicios) {
-      if (index >= 0 && index < this.tab_exercicios.length) {
-        this.tab_exercicios[index] = tabExercicios;
-      } else {
-        console.error("Índice fora do intervalo");
-      }
-    }
-  
-    // Método para obter um TabExercicios
-    obterTabExercicios(index) {
-      if (index >= 0 && index < this.tab_exercicios.length) {
-        return this.tab_exercicios[index];
-      } else {
-        console.error("Índice fora do intervalo");
-        return null;
-      }
-    }
-  
-    // Método para listar todos os TabExercicios
-    listarTodosTabExercicios() {
-      return this.tab_exercicios;
-    }
-      */
-  }
+}
   
 export default Treino
