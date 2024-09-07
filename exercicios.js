@@ -49,7 +49,7 @@ exercicios.push(new Exercicio(28, "Voador na bola suiça", "rep", [1], 1, "PesoL
 exercicios.push(new Exercicio(29, "Puxada na bola suiça", "rep", [1], 1, "PesoLivre", "Resistência", ["Costas"])) // Puxar os pesos com o cotovelo mais próximo do abdômen na bola suiça
 exercicios.push(new Exercicio(30, "Barra (Pull-up)", "rep", [2,3,4,5], 3, "BodyWeight", "Resistência", ["Costas", "Bíceps"])) // Barra (Pull-up)
 exercicios.push(new Exercicio(31, "Puxador vertical", "rep", [2,3,4,5], 1, "Máquina", "Resistência", ["Costas", "Bíceps"])) // Pull-up na máquina
-exercicios.push(new Exercicio(32, "Remada (barra)", "rep", [2,3,4,5], 2, "PesoLivre", "Resistência", ["Costas", "Bíceps"])) // Remada com barra de peso livre
+exercicios.push(new Exercicio(32, "Remada (barra)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Costas", "Bíceps"])) // Remada com barra de peso livre
 exercicios.push(new Exercicio(33, "Remada (máquina)", "rep", [2,3,4,5], 1, "Máquina", "Resistência", ["Costas", "Bíceps"])) // Remada na máquina
 exercicios.push(new Exercicio(34, "Crucifixo inverso (máquina)", "rep", [2,3,4], 1, "Máquina", "Resistencia", ["Costas"])) // Crucifixo inverso na máquina
 exercicios.push(new Exercicio(35, "Crucifixo inverso (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Costas"])) // Crucifixo inverso com halteres
