@@ -16,6 +16,8 @@ var treinos = binding["Usuario.planoTreino.treinos"]
 for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
     console.log(treinos[i])
     console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
+    console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
+    console.log("Cardio Exercises: "+ treinos[i].tabExercicios[3].nomeExercicios)
     
 }
 console.log("Treinos.length: ", binding["Usuario.planoTreino.treinos"].length)

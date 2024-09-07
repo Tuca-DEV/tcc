@@ -30,22 +30,13 @@ function traceValues(nameVariable) {
         }
     // Caso seja um array de objetos
     } else if (binding[nameVariable] instanceof Array && binding[nameVariable][0] instanceof Object) {
-        //Para cada objeto no array de objetos faça
-        /*for(i in binding[nameVariable]) {
-            console.log("\ni = "+i+"\n")
-            activate(i, nameVariable)
-        }
-            */
-        //binding[nameVariable].forEach(x => {
-            activate(binding[nameVariable][0], nameVariable)
-        //})
+        activate(binding[nameVariable][0], nameVariable)
 
     // Caso seja um objeto
     } else if (binding[nameVariable] instanceof Object && binding[nameVariable].length == undefined) {
         activate(binding[nameVariable], nameVariable)    
 
-    } else {
-    } 
+    }
 
     console.log("Variável "+nameVariable+ " traçada!")
     tracedVars.push(nameVariable)
