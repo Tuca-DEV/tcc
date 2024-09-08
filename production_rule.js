@@ -660,7 +660,7 @@ regras[11].antecedente.push(() => binding["Usuario.nivel"] > 0) // Nível do usu
 regras[11].acoesConsequente.push(regra11)
 regras[11].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.idade", "Usuario.nivel")
 regras[11].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
-regras[11].exp = "Regra 11: Filtragem dos exercícios para o Core mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 3 e o usuário é idoso: nota - 0.65\n Se o exercício tem dificuldade 2 e o usuário é idoso: nota -0.15.\n Se o nível do usuário é superior ou igual a dificuldade do exercício: nota + 0.15. Se não: nota - 0.15\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.1. Se não: +0.1\n"
+regras[11].exp = "Regra 11: Filtragem dos exercícios para o Core mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 2, o usuário é idoso e o treino é dos primeiros meses: nota - 0.65\n Se o nível do usuário é superior ou igual a dificuldade do exercício: nota + 0.15. Se não: nota - 0.15\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.1. Se não: +0.1\nCaso o exercício não seja de core ou o usuário é idoso e o exercício é dificuldade 3, não selecionar o exercício"
 
 function regra11() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -723,7 +723,7 @@ regras[12].antecedente.push(() => binding["Usuario.nivel"] > 0) // Nível do usu
 regras[12].acoesConsequente.push(regra12)
 regras[12].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.agrupMusc","Usuario.idade", "Usuario.nivel")
 regras[12].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
-regras[12].exp = "Regra 12: Filtragem dos exercícios da seção Resistência mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 3 e o usuário é idoso: nota - 0.65\n Se o exercício tem dificuldade 2 e o usuário é idoso: nota -0.15.\n Se o nível do usuário é superior ou igual a dificuldade do exercício: nota + 0.15. Se não: nota - 0.15\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.1. Se não: +0.1\n"
+regras[12].exp = "Regra 12: Filtragem dos exercícios da seção Resistência mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 2, o usuário é idoso e o exercício é dos primeiros mêses: nota -0.2.\n Se o nível do usuário é superior a da dificuldade do exercício: nota + 0.1.\n Se o exercício tem a mesma dificuldade que o nível do usuário: +0.2\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.2. Se não: +0.1\n"
 
 function regra12() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
