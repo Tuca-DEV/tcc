@@ -12,18 +12,20 @@ traceValues("Usuario")
 
 var treinos = binding["Usuario.planoTreino.treinos"]
 
-//console.log(binding["Usuario.planoTreino.treinos"])
 for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
     console.log(treinos[i])
+    console.log("WarmUp Exercises: "+treinos[i].tabExercicios[0].nomeExercicios)
     console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
     console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
     console.log("Cardio Exercises: "+ treinos[i].tabExercicios[3].nomeExercicios)
-    
 }
 console.log("Treinos.length: ", binding["Usuario.planoTreino.treinos"].length)
 console.log("Fases por mês do plano de treinos: ", binding["Usuario.planoTreino.fases"])
 console.log("Objetivo: ", binding["Usuario.objetivo"])
 console.log("Disponibilidade: ", binding["Usuario.disponibilidade"])
+for(var i = 0; i < binding["Usuario.planoTreino.freqNoMes"].length; i++){
+    console.log("Frequência no mês "+i+": "+binding["Usuario.planoTreino.freqNoMes"][i])
+}
 console.log("Explicação: ", explanations)
 
 

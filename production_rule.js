@@ -218,6 +218,12 @@ function regra2() {
     }
 
   } else { // Usuário tem 3 ou menos dias disponíveis
+
+    while(disp.length < 3){ // Adiciona dias aleatórios da semana para cobrir os treinos necessários
+      var i = Math.floor(Math.random() * 7)
+      if(!disp.includes(i)){disp.push(i)}
+    }
+
     for(var i = 0; i < 12; i++){
       if(i == 0 || i == 1 || i == 6 || i == 7){ // Para os meses JAN, FEV, JUL, AUG
         for(var item of disp){
@@ -566,10 +572,10 @@ function regra9() {
   })
 
   for(var i = 0; i < treinos.length; i++){
-    var idRandom = Math.round(Math.random()*(selectedExerc.length - 1)) // Seleção de um exercício aleatoriamente
+    var index = Math.round(Math.random()*(selectedExerc.length - 1)) // Seleção de um exercício aleatoriamente
 
-    treinos[i].tabExercicios[0].idExercicios.push(idRandom)
-    treinos[i].tabExercicios[0].nomeExercicios.push(exercicios[idRandom].nome)
+    treinos[i].tabExercicios[0].idExercicios.push(selectedExerc[index].idExerc)
+    treinos[i].tabExercicios[0].nomeExercicios.push(selectedExerc[index].nome)
     treinos[i].tabExercicios[0].intensidade.push(1)
     treinos[i].tabExercicios[0].tempoTotal.push(600)
     //treinos[i].tabExercicios[0].tempoDescanso[0] = 30   |
@@ -730,11 +736,6 @@ function regra12() {
   var quantExercs
 
   for(var i = 0; i < treinos.length; i++){
-    /*
-    if(treinos[i].agrupMusc.includes("Pernas") && treinos[i].agrupMusc.length == 1){ // Se o treino é de Pernas, e somente pernas, adicione os sub agrupamentos musculares da perna
-      treinos[i].agrupMusc.push("Isquiotibiais", "Quadríceps", "Panturrilha")
-    } */
-
     //Condições de Eliminação caso verdadeiras
     var condElimina = [function(id){if(exercicios[id].tipoSubTreino != "Resistência"){return true} return false}]// Se o exercício não é da seção Resistência, elimine
     condElimina.push(function(id){ // Se o treino não apresenta nenhum dos agrupamentos musculares trabalhados no exercício, elimine-o
@@ -801,12 +802,13 @@ function regra12() {
 
 
 ////Regra 13: Seleciona os exercícios de WarmUp de cada treino
-regras[13].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].agrupMusc.length > 0) // Agrupamento muscular definido
 regras[13].antecedente.push(() => binding["Usuario.nivel"] > 0) // Nível do usuário definido
-regras[13].acoesConsequente.push()
-regras[13].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.agrupMusc","Usuario.nivel")
+regras[13].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases dos treinos definidas
+regras[13].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].agrupMusc.length > 0) // Agrupamento muscular definido
+regras[13].acoesConsequente.push(regra13)
+regras[13].nameVariaveisAntecedente.push("Usuario.nivel", "Usuario.planoTreino.treinos.fase","Usuario.planoTreino.treinos.agrupMusc")
 regras[13].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios")
-regras[13].exp = "Regra 13: Filtragem dos exercícios da seção Resistência mais adequado para cada treino com base nas notas\n Se o exercício é recomendado para a fase OPT do treino: nota + 0.65\n Se o exercício tem dificuldade 2, o usuário é idoso e o exercício é dos primeiros mêses: nota -0.2.\n Se o nível do usuário é superior a da dificuldade do exercício: nota + 0.1.\n Se o exercício tem a mesma dificuldade que o nível do usuário: +0.2\n Se o exercício é realizado com pesos livres ou kettlebell e o usuário é iniciante: nota -0.2. Se não: +0.1\n"
+regras[13].exp = "Regra 13: Filtragem dos exercícios da seção WarmUp mais adequado para cada treino de acordo com os músculos a serem utilizados no treino.\n Se o nível do usuário for maior ou igual à dificuldade do exercício, ele recebe mais chances de ser selecionado"
 
 function regra13() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -814,78 +816,57 @@ function regra13() {
 
   for(var i = 0; i < treinos.length; i++){
 
-    if(treinos[i].agrupMusc.includes("Pernas") && treinos[i].agrupMusc.length == 1){ // Se o treino é de Pernas, e somente pernas, adicione os sub agrupamentos musculares da perna
-      treinos[i].agrupMusc.push("Isquiotibiais", "Quadríceps", "Panturrilha")
-    }
-
     //Condições de Eliminação caso verdadeiras
-    var condElimina = [function(id){if(exercicios[id].tipoSubTreino != "Resistência"){return true} return false}]// Se o exercício não é da seção Resistência, elimine
+    var condElimina = [function(id){if(exercicios[id].tipoSubTreino != "Alongamento" && exercicios[id].tipoSubTreino != "Mobilidade"){return true} return false}]// Se o exercício não é da seção Resistência, elimine-o
     condElimina.push(function(id){ // Se o treino não apresenta nenhum dos agrupamentos musculares trabalhados no exercício, elimine-o
+      var treinoAgrupMusc = []
+      
+      if(treinos[i].agrupMusc[0] == "Cardio"){ // Caso o agrupamento seja "Cardio", um ajuste deve ser feito para podermos analisar os agrupamentos de fato
+        treinoAgrupMusc.push("Pernas", "Isquiotibiais", "Quadríceps", "Panturrilha")
+      } else {
+        treinoAgrupMusc = treinos[i].agrupMusc
+      }
+
       for(var c = 0; c < exercicios[id].agrupMusc.length; c++){
-        if(treinos[i].agrupMusc.includes(exercicios[id].agrupMusc[c].toString())){return false}
+        if(treinoAgrupMusc.includes(exercicios[id].agrupMusc[c])){return false}
       }
       return true
     })
-    condElimina.push(function(id){if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 3){return true}; return false}) // Se o Usuário é idoso (>60) e esse é um exercício de dificuldade 3, elimine-o
 
     //Condições de nota
-    var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.4} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
-    condNota.push(function(id){ // Se o usuário é idoso, o exercício é de dificuldade 2, e o treino é dos 3 primeiros mêses, -0.2
-      if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth() < 4)){
-        return -0.2
-      }
-      return 0}) 
-    condNota.push(function(id){if(binding["Usuario.nivel"] == exercicios[id].dificuldade){return 0.2} return 0}) // Se o usuário tem um nível igual a dificuldade deste exercício, +0.25.
-    condNota.push(function(id){if(binding["Usuario.nivel"] > exercicios[id].dificuldade){return 0.1} return 0}) // Se o usuário tem um nível superior a dificuldade deste exercício, +0.1.
-    condNota.push(function(id){if(binding["Usuario.nivel"] == 1 && (exercicios[id].tipo == "Kettlebell" || exercicios[id].tipo == "PesoLivre")){return -0.2} return 0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com pesos livres ou Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
+    var condNota = [function(id){if(binding["Usuario.nivel"] >= exercicios[id].dificuldade){return 0.1} return 0}] // Se o nível do usuário é maior ou igual à dificuldade do exercício, +0.1
    
-    if(treinos[i].agrupMusc == "Cardio"){ // Se o treino é de Cardio, não terá anaeróbico
-      continue
-    }
-
-    var exerciciosComNota = notaExerc(condElimina, condNota, 0.2)
+    var exerciciosComNota = notaExerc(condElimina, condNota, 0.1)
 
     //Definindo a quantidade de Exercícios de Resistência neste treino
-    switch(treinos[i].fase){
-      case 1:
-        quantExercs = 5
-        break
-      case 2:
-        quantExercs = 6
-        break
-      case 3: 
-        if(Math.random() > 0.6){
-          quantExercs = 8
-        } else {
-          quantExercs = 7
-        }
-        break
-      case 4:
-        quantExercs = 6
-        break
-      case 5:
-        quantExercs = 7
-        break
-      default:
-        console.log("ERRO: fase em regra 12 com valor indefinido!")
+    if(treinos[i].fase == 1){
+      quantExercs = 2
+    } else if (treinos[i].fase == 5){
+      quantExercs = 4
+    } else if (treinos[i].fase >= 2 && treinos[i].fase <= 4){
+      quantExercs = 3
+    } else {
+      console.log("ERRO: fase em regra 12 com valor indefinido!")
         return
     }
 
     while(quantExercs > 0){
       quantExercs--
       var id = exerciciosComNota[quantExercs][0]
-      // Debug
+
       if(id < 0){
-        console.log("Id exercício: "+id)
-        console.log("Treino: "+ i)
         console.log(treinos[i])
+        console.log()
+        console.log()
       }
-      treinos[i].tabExercicios[2].idExercicios.push(id) 
-      treinos[i].tabExercicios[2].nomeExercicios.push(exercicios[id].nome)
+      
+      treinos[i].tabExercicios[0].idExercicios.push(id) 
+      treinos[i].tabExercicios[0].nomeExercicios.push(exercicios[id].nome)
     }
 
   }
 }
+  
   
 
 function notaExerc(condElimina, condNota, rand){
@@ -907,9 +888,7 @@ function notaExerc(condElimina, condNota, rand){
       nota += condNota[c](exercicios[i].idExerc)
     }
 
-    // A nota recebe entre [-0.1, 0.1] pontos aleatórios
-    var polar = 1//(Math.random() > 0.5) ? -1 : 1
-    nota += polar*Math.random()*rand
+    nota += Math.random()*rand
     
 
     if(nota >= 0){ // Se o exercício tem nota positiva, selecione-o
