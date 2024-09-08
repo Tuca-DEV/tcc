@@ -563,21 +563,21 @@ regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar ou esportes, terá car
 
 // Função que define as fases durante os meses
 function regra9() { 
-  var selectedExerc = []
+  var selectedExercs = []
   var treinos = binding["Usuario.planoTreino.treinos"]
 
   // Seleção de exercícios cardio com pouca dificuldade
   exercicios.forEach((ex) => {
-    if(ex.tipoSubTreino == "Cardio" && ex.dificuldade == 1){selectedExerc.push(ex)}
+    if(ex.tipoSubTreino == "Cardio" && ex.dificuldade == 1){selectedExercs.push(ex)}
   })
 
   for(var i = 0; i < treinos.length; i++){
-    var index = Math.round(Math.random()*(selectedExerc.length - 1)) // Seleção de um exercício aleatoriamente
+    var index = Math.round(Math.random()*(selectedExercs.length - 1)) // Seleção de um exercício aleatoriamente
 
-    treinos[i].tabExercicios[0].idExercicios.push(selectedExerc[index].idExerc)
-    treinos[i].tabExercicios[0].nomeExercicios.push(selectedExerc[index].nome)
+    treinos[i].tabExercicios[0].idExercicios.push(selectedExercs[index].idExerc)
+    treinos[i].tabExercicios[0].nomeExercicios.push(selectedExercs[index].nome)
     treinos[i].tabExercicios[0].intensidade.push(1)
-    treinos[i].tabExercicios[0].tempoTotal.push(600)
+    treinos[i].tabExercicios[0].tempoTotal.push(10*60)
     //treinos[i].tabExercicios[0].tempoDescanso[0] = 30   |
     //treinos[i].tabExercicios[0].repeticoes[0] = 1       |==>       DEFINIDOS POR UMA REGRA QUE AVALIA FASE OPT E O EXERCÍCIO
     //treinos[i].tabExercicios[0].sets[0] = 1             |
