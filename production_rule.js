@@ -558,7 +558,7 @@ regras[9].antecedente.push(() => binding["Usuario.objetivo"] == "hipertrofia" ||
 regras[9].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Datas definidas 
 regras[9].acoesConsequente.push(regra9)
 regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
-regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
+regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
 regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp, intensidade leve"
 
 // Função que define as fases durante os meses
@@ -576,13 +576,7 @@ function regra9() {
 
     treinos[i].tabExercicios[0].idExercicios.push(selectedExercs[index].idExerc)
     treinos[i].tabExercicios[0].nomeExercicios.push(selectedExercs[index].nome)
-    treinos[i].tabExercicios[0].intensidade.push(1)
     treinos[i].tabExercicios[0].tempoTotal.push(10*60)
-    //treinos[i].tabExercicios[0].tempoDescanso[0] = 30   |
-    //treinos[i].tabExercicios[0].repeticoes[0] = 1       |==>       DEFINIDOS POR UMA REGRA QUE AVALIA FASE OPT E O EXERCÍCIO
-    //treinos[i].tabExercicios[0].sets[0] = 1             |
-
-    //treinos[i].tabExercicios[0].modTempoExec[0] = "NA"   ==> DEFINIDO POR UMA REGRA EM ESPECÍFICO PARA ESTE ATRIBUTO
   }
 }
 
@@ -593,7 +587,7 @@ regras[10].antecedente.push(() => binding["Usuario.planoTreino.freqNoMes"] != nu
 regras[10].antecedente.push(() => binding["Usuario.nivel"] > 0)  // Nível do usuário definido
 regras[10].acoesConsequente.push(regra10)
 regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
-regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
+regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
 regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 20 minutos.   *Caso o usuário seja iniciante: a intensidade será reduzida a 1 nos primeiros 5 meses"
 
 // Função que define os cardios nos treinos
@@ -615,18 +609,12 @@ function regra10() {
     if(freqDoMes[mesAtual].length == 3){
       treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].id)
       treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
-      if(mesAtual < 5 && binding["Usuario.nivel"] < 2){
-        treinos[i].tabExercicios[3].intensidade.push(1)
-      } else {
-        treinos[i].tabExercicios[3].intensidade.push(2)
-      }
       treinos[i].tabExercicios[3].tempoTotal.push(1200)
 
     } else if (freqDoMes[mesAtual].length == 4){
       if(diaSemana < 4) { // Se não é o quarto dia de treino daquela semana
         treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].id)
         treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
-        treinos[i].tabExercicios[3].intensidade.push(2)
         treinos[i].tabExercicios[3].tempoTotal.push(1200)
 
       } else {
@@ -638,7 +626,6 @@ function regra10() {
 
           treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].id)
           treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
-          treinos[i].tabExercicios[3].intensidade.push(2)
           treinos[i].tabExercicios[3].tempoTotal.push(20*60)
 
           treinoTempoTotal += (20*60)
@@ -906,6 +893,223 @@ function notaExerc(condElimina, condNota, rand){
 
   return selecaoExercs
 }
+
+////Regra 14: Define as intensidades e modo de Execução de todos os exercícios
+regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
+regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
+regras[14].acoesConsequente.push(regra14)
+regras[14].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[14].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
+regras[14].exp = "Regra 14: Se a fase do treino é 1:"
+
+function regra14() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  
+  for(var i = 0; i < treinos.length; i++){
+
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao] // Tabela da seção "secao"
+      var mes = mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) // Mês relativo do treino (primeiro(0), segundo(1), terceiro(2)...)
+      var c = 0;
+
+      switch(secao){
+        case 0: // WarmUp
+          
+          // Para todas as fases OPT, caso o exercício não seja Cardio, ele receberá intensidade NA, caso seja Cardio, intensidade 1
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){ // Se o exercício é tipo Cardio
+              tabela.intensidade[c] = 1
+            } else {
+              tabela.intensidade[c] = "NA"
+            }
+            c++
+          }
+          break
+
+        case 1: // Core
+
+          // Para todas as fases OPT, Core exercises receberão intensidade NA
+          while(c < tabela.idExercicios.length){
+            tabela.intensidade[c] = "NA"
+            c++
+          }
+          break
+
+        case 2: // Resistência
+        
+          switch(treinos[i].fase){ // Fases OPT do treino
+            case 1:
+              var intensidade = 0; 
+              if(mes >= 0 && mes <= 3){ // Para os primeiros mêses, 50% de intensidade
+                intensidade = 50
+              } else if (mes >= 4 && mes <= 7){ // Para os 4 mêses do meio do ano, 60% de intensidade
+                intensidade = 60 
+              } else if (mes >= 8 && mes <= 11){ // Para os 4 últimos meses do ano, 70% de intensidade
+                intensidade = 70
+              }
+
+              while(c < tabela.idExercicios.length){
+                tabela.intensidade[c] = intensidade + "%"
+                c++
+              }
+              break
+
+            case 2:
+
+              var intensidade = 0; 
+              if(mes >= 0 && mes <= 3){ // Para os primeiros mêses, 70% de intensidade
+                intensidade = 70
+              } else if (mes >= 4 && mes <= 7){ // Para os 4 mêses do meio do ano, 75% de intensidade
+                intensidade = 75 
+              } else if (mes >= 8 && mes <= 11){ // Para os 4 últimos meses do ano, 80% de intensidade
+                intensidade = 80
+              }
+
+              while(c < tabela.idExercicios.length){
+                tabela.intensidade[c] = intensidade + "%"
+                c++
+              }
+              break
+
+            case 3:
+
+              var intensidade = 0; 
+              if(mes >= 0 && mes <= 3){ // Para os primeiros mêses, 75% de intensidade
+                intensidade = 75
+              } else if (mes >= 4 && mes <= 7){ // Para os 4 mêses do meio do ano, 80% de intensidade
+                intensidade = 80 
+              } else if (mes >= 8 && mes <= 11){ // Para os 4 últimos meses do ano, 85% de intensidade
+                intensidade = 85
+              }
+
+              while(c < tabela.idExercicios.length){
+                tabela.intensidade[c] = intensidade + "%"
+                c++
+              }
+              break
+
+            case 4:
+
+              var intensidade = 0; 
+              if(mes >= 0 && mes <= 3){ // Para os primeiros mêses, 85% de intensidade
+                intensidade = 85
+              } else if (mes >= 4 && mes <= 7){ // Para os 4 mêses do meio do ano, 95% de intensidade
+                intensidade = 95 
+              } else if (mes >= 8 && mes <= 11){ // Para os 4 últimos meses do ano, 100% de intensidade
+                intensidade = 100
+              }
+
+              while(c < tabela.idExercicios.length){
+                tabela.intensidade[c] = intensidade + "%"
+                c++
+              }
+              break
+
+            case 5:
+              var intensidade = 0
+              while(c < tabela.idExercicios.length){
+                if(c%2 == 0){ // Alterna entre 85-100% e 30-45% de intensidade para cada exercício
+                  if(mes >= 0 && mes <= 3){ // Para os primeiros mêses, 85% de intensidade
+                    intensidade = 85
+                  } else if (mes >= 4 && mes <= 7){ // Para os 4 mêses do meio do ano, 95% de intensidade
+                    intensidade = 95 
+                  } else if (mes >= 8 && mes <= 11){ // Para os 4 últimos meses do ano, 100% de intensidade
+                    intensidade = 100
+                  }
+  
+                }else{
+                  if(mes >= 0 && mes <= 3){ // Para os primeiros mêses, 30% de intensidade
+                    intensidade = 30
+                  } else if (mes >= 4 && mes <= 7){ // Para os 4 mêses do meio do ano, 40% de intensidade
+                    intensidade = 40 
+                  } else if (mes >= 8 && mes <= 11){ // Para os 4 últimos meses do ano, 45% de intensidade
+                    intensidade = 45
+                  }
+                }
+
+                while(c < tabela.idExercicios.length){
+                  tabela.intensidade[c] = intensidade + "%"
+                  c++
+                }
+
+                c++
+              }
+              break
+            
+          default:
+            console.log("Erro regra 14, fase do treino inválida")
+            return -1
+        }
+          break
+        case 3: // Cardio
+
+          switch(treinos[i].fase){ // Fases OPT do treino
+            case 1:
+
+              while(c < tabela.idExercicios.length){
+                tabela.intensidade[c] = 1
+                c++
+              }
+              break
+
+            case 2:
+
+              while(c < tabela.idExercicios.length){
+                if(c%2 == 0){
+                  tabela.intensidade[c] = 1
+                }else{
+                  tabela.intensidade[c] = 2
+                }
+                c++
+              }
+              break
+
+            case 3:
+
+              while(c < tabela.idExercicios.length){
+                if(c%2 == 0){
+                  tabela.intensidade[c] = 1
+                }else{
+                  tabela.intensidade[c] = 2
+                }
+                c++
+              }
+              break
+
+            case 4:
+              while(c < tabela.idExercicios.length){
+                tabela.intensidade[c] = 2
+                c++
+              }
+              break
+
+            case 5:
+              while(c < tabela.idExercicios.length){
+                if(c%2 == 0){
+                  tabela.intensidade[c] = 2
+                }else{
+                  tabela.intensidade[c] = 3
+                }
+                c++
+              }
+              break
+
+            default:
+              console.log("Erro regra 14, fase do treino inválida")
+              return -1
+          }
+          break
+
+        default:
+          console.log("Erro regra 14, seção inválida!")
+          return -1
+      }
+    }
+
+  }
+}
+  
+  
 
 
 
