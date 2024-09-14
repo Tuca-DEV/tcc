@@ -388,9 +388,7 @@ function calc_qtd_treinos_anual(semanaNoMes){
       // Obter o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
       var diaSemana = dataIterada.getDay();
       var mes = mesRelativo(dataIterada.getMonth(), pMes); //Retorna o mês relativo ao primeiro mês de criação do treino
-      if(mes == 11){
-        console.log("DEBUG")
-      }
+      
       // Se o planejamento inclui este dia dessa semana e estamos definindo o primeiro treino dele
       if (semanaNoMes[mes].includes(diaSemana) && first) {
         binding["Usuario.planoTreino.treinos"][0].data = new Date(dataIterada.valueOf())
@@ -903,7 +901,7 @@ regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExerci
 regras[14].acoesConsequente.push(regra14)
 regras[14].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[14].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.intensidade")
-regras[14].exp = "Regra 14: Se a fase do treino é 1:"
+regras[14].exp = "Regra 14: Para todo WarmUp: NA \n Para Core, na fase 1:"
 
 function regra14() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -1080,7 +1078,120 @@ function regra14() {
   }
 }
   
+////Regra 15: Define as intensidades de todos os exercícios
+regras[15].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
+regras[15].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
+regras[15].acoesConsequente.push(regra15)
+regras[15].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[15].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
+regras[15].exp = "Regra 15: Para WarmUp, na fase 1: LE; 2, 3 e 4: R; 5: C\n Para Core, na fase 1: LE; 2, 3 e 4: M; 5: R\n Para Resistência, na fase 1: LE; 2: LE/C; 3: C; 4 e 5: R\n Para todo exercício Cardio: NA"
+
+function regra15() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
   
+  for(var i = 0; i < treinos.length; i++){
+
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao] // Tabela da seção "secao"
+      var c = 0;
+
+      switch(secao){
+        case 0: // WarmUp
+
+          var mod = null
+          if(treinos[i].fase == 1){
+            mod = "LE"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 4){
+            mod = "R"
+          } else if (treinos[i].fase == 5){
+            mod = "C"
+          } else {
+            console.log("Erro na regra 15. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){ //Se é tipo Cardio, recebe NA
+              tabela.modTempoExec[c] = "NA"
+            } else {
+              tabela.modTempoExec[c] = mod
+            }
+            c++
+          }
+
+          break
+
+        case 1: // Core
+
+          var mod = null
+          if(treinos[i].fase == 1){
+            mod = "LE"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 4){
+            mod = "M"
+          } else if (treinos[i].fase == 5){
+            mod = "C"
+          } else {
+            console.log("Erro na regra 15. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            tabela.modTempoExec[c] = mod
+            c++
+          }
+          
+          break
+
+        case 2: // Resistência
+          var mod = null
+          if(treinos[i].fase == 1){
+            mod = "LE"
+          } else if (treinos[i].fase == 2){
+            mod = "LE/C"
+          } else if (treinos[i].fase == 3){
+            mod = "C"
+          } else if (treinos[i].fase <= 5){
+            mod = "R"
+          } else {
+            console.log("Erro na regra 15. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(mod == "LE/C"){ 
+              if(c%2==0){
+                tabela.modTempoExec[c] = "LE"
+              } else {
+                tabela.modTempoExec[c] = "C"
+              }
+
+            } else {
+              tabela.modTempoExec[c] = mod
+            }
+
+            c++
+          }
+          
+          break
+
+        case 3: // Cardio
+
+          // Para todos os cardios, modTempoExec recebe NA
+          while(c < tabela.idExercicios.length){
+            tabela.modTempoExec[c] = "NA"
+            c++
+          }
+
+          break
+
+        default:
+          console.log("Erro regra 14, seção inválida!")
+          return -1
+      }
+    }
+
+  }
+}  
 
 
 
