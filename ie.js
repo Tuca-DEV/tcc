@@ -45,6 +45,7 @@ function traceValues(nameVariable) {
 //Método para inferir o valor da variável
 function infer(nameVariable){
     var selected_regras = []
+    
     select(regras, nameVariable, selected_regras) //Seleciona as regras para dentro do vetor selected_regras
     selected_regras.forEach(r => { //Para cada regra selecionada, aplique-a
         if(!r.used){r.used = true; apply(r)} // Se a regra não foi utilizada anteriormente
@@ -74,7 +75,8 @@ function apply(regra){
 }
 
 //Avalia se todos os testes lógicos na regra retornam valor verdadeiro
-function evalconditions(regra) {    
+function evalconditions(regra) {   
+    
     for(var i=0; i < regra.antecedente.length; i++){
         if(!tracedVars.includes(regra.nameVariaveisAntecedente[i])){traceValues(regra.nameVariaveisAntecedente[i])} // Se a variável não foi traçada, trace seu valor
         if(!regra.antecedente[i]()) {
@@ -87,7 +89,6 @@ function evalconditions(regra) {
 function activate(objeto, nameVariable) {
     //Teste para ver se o if no traceValues funciona corretamente
     if(!(objeto instanceof Object)) {return console.log("\nERRO! NÃO É OBJETO: "+nameVariable+"||"+objeto)}
-
     //Atributos do objeto
     var atr = Object.keys(objeto)
     atr.forEach(nameAtr => {

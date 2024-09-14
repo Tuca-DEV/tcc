@@ -388,7 +388,9 @@ function calc_qtd_treinos_anual(semanaNoMes){
       // Obter o dia da semana (0 = domingo, 1 = segunda, ..., 6 = sábado)
       var diaSemana = dataIterada.getDay();
       var mes = mesRelativo(dataIterada.getMonth(), pMes); //Retorna o mês relativo ao primeiro mês de criação do treino
-  
+      if(mes == 11){
+        console.log("DEBUG")
+      }
       // Se o planejamento inclui este dia dessa semana e estamos definindo o primeiro treino dele
       if (semanaNoMes[mes].includes(diaSemana) && first) {
         binding["Usuario.planoTreino.treinos"][0].data = new Date(dataIterada.valueOf())
@@ -559,7 +561,7 @@ regras[9].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data 
 regras[9].acoesConsequente.push(regra9)
 regras[9].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data")
 regras[9].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
-regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp, intensidade leve"
+regras[9].exp = "Regra 9: Se o usuário quer hipertrofiar ou esportes, terá cardio de 10 minutos em todos os treinos na seção WarmUp"
 
 // Função que define as fases durante os meses
 function regra9() { 
@@ -588,7 +590,7 @@ regras[10].antecedente.push(() => binding["Usuario.nivel"] > 0)  // Nível do us
 regras[10].acoesConsequente.push(regra10)
 regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
 regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
-regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 20 minutos.   *Caso o usuário seja iniciante: a intensidade será reduzida a 1 nos primeiros 5 meses"
+regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 20 minutos."
 
 // Função que define os cardios nos treinos
 function regra10() { 
@@ -667,7 +669,7 @@ function regra11() {
     //Condições de nota
     var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.65} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
     condNota.push(function(id){ // Se o usuário é idoso, o exercício é de dificuldade 2, e o treino é dos 3 primeiros mêses, -0.2
-      if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth() < 4)){
+      if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) < 4){
         return -0.2
       }
       return 0}) 
@@ -736,7 +738,7 @@ function regra12() {
     //Condições de nota
     var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.4} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
     condNota.push(function(id){ // Se o usuário é idoso, o exercício é de dificuldade 2, e o treino é dos 3 primeiros mêses, -0.2
-      if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth() < 4)){
+      if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) < 4){
         return -0.2
       }
       return 0}) 
@@ -894,12 +896,13 @@ function notaExerc(condElimina, condNota, rand){
   return selecaoExercs
 }
 
-////Regra 14: Define as intensidades e modo de Execução de todos os exercícios
+////Regra 14: Define as intensidades de todos os exercícios
+regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data != null) // Datas definidas
 regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
 regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
 regras[14].acoesConsequente.push(regra14)
-regras[14].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
-regras[14].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
+regras[14].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[14].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.intensidade")
 regras[14].exp = "Regra 14: Se a fase do treino é 1:"
 
 function regra14() { 
@@ -1027,10 +1030,7 @@ function regra14() {
                   }
                 }
 
-                while(c < tabela.idExercicios.length){
-                  tabela.intensidade[c] = intensidade + "%"
-                  c++
-                }
+                tabela.intensidade[c] = intensidade + "%"
 
                 c++
               }
@@ -1039,65 +1039,36 @@ function regra14() {
           default:
             console.log("Erro regra 14, fase do treino inválida")
             return -1
-        }
+          }
           break
         case 3: // Cardio
-
-          switch(treinos[i].fase){ // Fases OPT do treino
-            case 1:
-
-              while(c < tabela.idExercicios.length){
-                tabela.intensidade[c] = 1
-                c++
-              }
-              break
-
-            case 2:
-
-              while(c < tabela.idExercicios.length){
-                if(c%2 == 0){
-                  tabela.intensidade[c] = 1
-                }else{
-                  tabela.intensidade[c] = 2
-                }
-                c++
-              }
-              break
-
-            case 3:
-
-              while(c < tabela.idExercicios.length){
-                if(c%2 == 0){
-                  tabela.intensidade[c] = 1
-                }else{
-                  tabela.intensidade[c] = 2
-                }
-                c++
-              }
-              break
-
-            case 4:
-              while(c < tabela.idExercicios.length){
-                tabela.intensidade[c] = 2
-                c++
-              }
-              break
-
-            case 5:
-              while(c < tabela.idExercicios.length){
-                if(c%2 == 0){
-                  tabela.intensidade[c] = 2
-                }else{
-                  tabela.intensidade[c] = 3
-                }
-                c++
-              }
-              break
-
-            default:
-              console.log("Erro regra 14, fase do treino inválida")
-              return -1
+          if(tabela.idExercicios.length < 1){
+            break
           }
+
+          if(treinos[i].fase == 1){
+            while(c < tabela.idExercicios.length){
+              if(c%2 == 0){
+                tabela.intensidade[c] = 1
+              }else{
+                tabela.intensidade[c] = 2
+              }
+              c++
+            }
+          } else if (treinos[i].fase == 2){
+            while(c < tabela.idExercicios.length){
+              if(c%2 == 0){
+                tabela.intensidade[c] = 2
+              }else{
+                tabela.intensidade[c] = 3
+              }
+              c++
+            }
+          } else {
+            console.log("Erro regra 14, fase do treino inválida em seção Cardio!")
+            return -1
+          }
+  
           break
 
         default:
