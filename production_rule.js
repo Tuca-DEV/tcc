@@ -1136,7 +1136,12 @@ function regra15() {
           }
 
           while(c < tabela.idExercicios.length){
-            tabela.modTempoExec[c] = mod
+            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){
+              tabela.modTempoExec[c] = "NA"
+            } else {
+              tabela.modTempoExec[c] = mod
+            }
+            
             c++
           }
           
