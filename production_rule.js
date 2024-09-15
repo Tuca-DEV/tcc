@@ -1078,7 +1078,7 @@ function regra14() {
   }
 }
   
-////Regra 15: Define as intensidades de todos os exercícios
+////Regra 15: Define os modos de execução de todos os exercícios
 regras[15].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
 regras[15].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
 regras[15].acoesConsequente.push(regra15)
@@ -1160,9 +1160,9 @@ function regra15() {
           while(c < tabela.idExercicios.length){
             if(mod == "LE/C"){ 
               if(c%2==0){
-                tabela.modTempoExec[c] = "LE"
-              } else {
                 tabela.modTempoExec[c] = "C"
+              } else {
+                tabela.modTempoExec[c] = "LE"
               }
 
             } else {
@@ -1182,6 +1182,248 @@ function regra15() {
             c++
           }
 
+          break
+
+        default:
+          console.log("Erro regra 14, seção inválida!")
+          return -1
+      }
+    }
+
+  }
+}  
+
+////Regra 16: Define a quantidade de repetições de todos os exercícios
+regras[16].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data != null) // Datas definidas
+regras[16].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
+regras[16].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
+regras[16].acoesConsequente.push(regra16)
+regras[16].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[16].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.repeticoes")
+regras[16].exp = "Regra 16: Para WarmUp, na fase 1: 1 ou 5-8; 2, 3 e 4: 5-10; 5: 10-15\n Para Core, na fase 1: 12-20; nas demais: 8-12\n Para Resistência, na fase 1: 12-20; 2: 8-12; 3: 6-12; 4: 4-6; 5: 1-5 ou 8-10\n Para Core, na fase 1: 12-20; nas demais: 8-12.\n * Se o exercício for de contagem de tempo, recebe 1 repetição"
+
+function regra16() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  
+  for(var i = 0; i < treinos.length; i++){
+
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao] // Tabela da seção "secao"
+      var mes = mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) // Mês relativo do treino (primeiro(0), segundo(1), terceiro(2)...)
+      var c = 0;
+
+      switch(secao){
+        case 0: // WarmUp
+
+          var reps = 0
+
+          if(treinos[i].fase == 1){
+            reps = "1/5-8"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 4){
+            reps = "5-10"
+          } else if (treinos[i].fase == 5){
+            reps = "10-15"
+          } else {
+            console.log("Erro na regra 16. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){
+              tabela.repeticoes[c] = 1
+            } else if(reps == "1/5-8"){ // Se o grupo de valores para as repetições é (1 ou 5 a 8)
+              if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){
+                tabela.repeticoes[c] = 1
+              } else if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 5
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 6
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 8
+              }
+            } else if (reps == "5-10"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 5
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 8
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 10
+              }
+            } else if (reps == "10-15"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 10
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 13
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 15
+              }
+            }
+
+            c++
+          }
+
+          break
+
+        case 1: // Core
+          var reps = 0
+
+          if(treinos[i].fase == 1){
+            reps = "12-20"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5){
+            reps = "8-12"
+          } else {
+            console.log("Erro na regra 16. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){
+              tabela.repeticoes[c] = 1
+
+            } else if(reps == "12-20"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 12
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 16
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 20
+              }
+              
+            } else if (reps == "8-12"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 8
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 10
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 12
+              }
+            }
+
+            c++
+          }    
+
+          break
+
+        case 2: // Resistência
+
+          var reps = 0
+
+          if(treinos[i].fase == 1){
+            reps = "12-20"
+          } else if (treinos[i].fase == 2){
+            reps = "8-12"
+          } else if (treinos[i].fase == 3){
+            reps = "6-12"
+          } else if(treinos[i].fase == 4) {
+            reps = "4-6"
+          } else if(treinos[i].fase == 5) {
+            reps = "1-5/8-10"
+          } else {
+            console.log("Erro na regra 16. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){
+              tabela.repeticoes[c] = 1
+
+            } else if(reps == "12-20"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 12
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 16
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 20
+              }
+              
+            } else if (reps == "8-12"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 8
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 10
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 12
+              }
+            } else if (reps == "6-12"){
+              if(mes >= 0 && mes <= 2){ // Primeiros 3 meses
+                tabela.repeticoes[c] = 6
+              }else if (mes >= 3 && mes <= 5){ // 4°, 5° e 6° mêses treinando
+                tabela.repeticoes[c] = 8
+              }else if (mes >= 6 && mes <= 8) { // 7°, 8° e 9° mêses treinando
+                tabela.repeticoes[c] = 10
+              }else if(mes >= 9 && mes <= 12){ // últimos meses
+                tabela.repeticoes[c] = 12
+              }
+            } else if (reps == "4-6") {
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 4
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 5
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 6
+              }
+            } else if (reps == "1-5/8-10"){
+              if(c%2 == 0){ // 1-5
+                if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                  tabela.repeticoes[c] = 1
+                }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                  tabela.repeticoes[c] = 3
+                } else { // Últimos 4 meses
+                  tabela.repeticoes[c] = 5
+                }
+              } else { // 8-10
+                if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                  tabela.repeticoes[c] = 8
+                }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                  tabela.repeticoes[c] = 9
+                } else { // Últimos 4 meses
+                  tabela.repeticoes[c] = 10
+                }
+              }
+            }
+
+            c++
+          }    
+          break
+
+        case 3: // Cardio
+
+          var reps = 0
+
+          if(treinos[i].fase == 1){
+            reps = "12-20"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5){
+            reps = "8-12"
+          } else {
+            console.log("Erro na regra 16. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){
+              tabela.repeticoes[c] = 1
+
+            } else if(reps == "12-20"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 12
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 16
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 20
+              }
+              
+            } else if (reps == "8-12"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.repeticoes[c] = 8
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.repeticoes[c] = 10
+              } else { // Últimos 4 meses
+                tabela.repeticoes[c] = 12
+              }
+            }
+
+            c++
+          }    
           break
 
         default:
