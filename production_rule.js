@@ -931,7 +931,11 @@ function regra14() {
 
           // Para todas as fases OPT, Core exercises receberão intensidade NA
           while(c < tabela.idExercicios.length){
-            tabela.intensidade[c] = "NA"
+            if(exercicios[tabela.idExercicios[c]].tipo == "Bola"){
+              tabela.intensidade[c] = "10% BW"
+            }else {
+              tabela.intensidade[c] = "NA"
+            }
             c++
           }
           break
@@ -950,7 +954,7 @@ function regra14() {
               }
 
               while(c < tabela.idExercicios.length){
-                tabela.intensidade[c] = intensidade + "%"
+                tabela.intensidade[c] = intensidade + "% RM"
                 c++
               }
               break
@@ -967,7 +971,7 @@ function regra14() {
               }
 
               while(c < tabela.idExercicios.length){
-                tabela.intensidade[c] = intensidade + "%"
+                tabela.intensidade[c] = intensidade + "% RM"
                 c++
               }
               break
@@ -984,7 +988,7 @@ function regra14() {
               }
 
               while(c < tabela.idExercicios.length){
-                tabela.intensidade[c] = intensidade + "%"
+                tabela.intensidade[c] = intensidade + "% RM"
                 c++
               }
               break
@@ -1001,7 +1005,7 @@ function regra14() {
               }
 
               while(c < tabela.idExercicios.length){
-                tabela.intensidade[c] = intensidade + "%"
+                tabela.intensidade[c] = intensidade + "% RM"
                 c++
               }
               break
@@ -1027,8 +1031,12 @@ function regra14() {
                     intensidade = 45
                   }
                 }
-
-                tabela.intensidade[c] = intensidade + "%"
+                
+                if(exercicios[tabela.idExercicios[c]].tipo == "Bola"){
+                  tabela.intensidade[c] = "10% BW"
+                } else {
+                  tabela.intensidade[c] = intensidade + "% RM"
+                }
 
                 c++
               }
@@ -1190,7 +1198,7 @@ function regra15() {
           break
 
         default:
-          console.log("Erro regra 14, seção inválida!")
+          console.log("Erro regra 15, seção inválida!")
           return -1
       }
     }
