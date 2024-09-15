@@ -901,7 +901,7 @@ regras[14].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExerci
 regras[14].acoesConsequente.push(regra14)
 regras[14].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[14].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.intensidade")
-regras[14].exp = "Regra 14: Para todo WarmUp: NA \n Para Core, na fase 1:"
+regras[14].exp = "Regra 14: Para todo WarmUp: NA \n Para Core, na fase 1: NA ou 10%BW para exercícios com bola medicinal\n Para Resistência, na fase 1: 50-70%RM; 2: 70-80%RM; 3: 75-85%RM; 4: 85-100%; 5: 30-45%RM/85-100%RM\n Para cardio, na fase 1: 1-2; na fase 2: 2-3\n * Em WarmUp, caso o exercício seja cardio, intensidade é 1"
 
 function regra14() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -1092,7 +1092,7 @@ regras[15].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExerci
 regras[15].acoesConsequente.push(regra15)
 regras[15].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[15].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
-regras[15].exp = "Regra 15: Para WarmUp, na fase 1: LE; 2, 3 e 4: R; 5: C\n Para Core, na fase 1: LE; 2, 3 e 4: M; 5: R\n Para Resistência, na fase 1: LE; 2: LE/C; 3: C; 4 e 5: R\n Para todo exercício Cardio: NA"
+regras[15].exp = "Regra 15(modo de execução): Para WarmUp, na fase 1: LE; 2, 3 e 4: R; 5: C\n Para Core, na fase 1: LE; 2, 3 e 4: M; 5: R\n Para Resistência, na fase 1: LE; 2: LE/C; 3: C; 4 e 5: R\n Para todo exercício Cardio: NA"
 
 function regra15() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -1213,7 +1213,7 @@ regras[16].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExerci
 regras[16].acoesConsequente.push(regra16)
 regras[16].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[16].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.repeticoes")
-regras[16].exp = "Regra 16: Para WarmUp, na fase 1: 1 ou 5-8; 2, 3 e 4: 5-10; 5: 10-15\n Para Core, na fase 1: 12-20; nas demais: 8-12\n Para Resistência, na fase 1: 12-20; 2: 8-12; 3: 6-12; 4: 4-6; 5: 1-5 ou 8-10\n Para Core, na fase 1: 12-20; nas demais: 8-12.\n * Se o exercício for de contagem de tempo, recebe 1 repetição"
+regras[16].exp = "Regra 16(repetições): Para WarmUp, na fase 1: 1 ou 5-8; 2, 3 e 4: 5-10; 5: 10-15\n Para Core, na fase 1: 12-20; nas demais: 8-12\n Para Resistência, na fase 1: 12-20; 2: 8-12; 3: 6-12; 4: 4-6; 5: 1-5 ou 8-10\n Para Cardio, na fase 1: 12-20; nas demais: 8-12.\n * Se o exercício for de contagem de tempo, recebe 1 repetição"
 
 function regra16() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -1455,7 +1455,7 @@ regras[17].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExerci
 regras[17].acoesConsequente.push(regra17)
 regras[17].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[17].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.sets")
-regras[17].exp = "Regra 17: Para WarmUp, na fase 1: nas demais: 1-2 para f\n Para Core, na fase 1: 12-20; nas demais: 8-12\n Para Resistência, na fase 1: 12-20; 2: 8-12; 3: 6-12; 4: 4-6; 5: 1-5 ou 8-10\n Para Core, na fase 1: 12-20; nas demais: 8-12.\n * Se o exercício for de contagem de tempo, recebe 1 repetição"
+regras[17].exp = "Regra 17(número de sets): Para WarmUp, na fase 1: 1-3; nas demais: 1-2 para alongamentos e 2-3 para pliométricos\n Para Core, na fase 1: 1-4; nas demais: 2-3\n Para Resistência, na fase 1: 1-3; 2: 2-4; 3: 3-5; 4: 4-6; 5: 3-5\n Para Cardio, na fase 1: 1-2; 2: 2-3; 3: 2; 4: 1; 5: 2-3"
 
 function regra17() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -1656,6 +1656,449 @@ function regra17() {
           }
 
   
+          break
+
+        default:
+          console.log("Erro regra 14, seção inválida!")
+          return -1
+      }
+    }
+
+  }
+}  
+
+////Regra 18: Define o tempo de descanso entre as séries de todos os exercícios
+regras[18].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
+regras[18].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
+regras[18].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].intensidade[0] != null) // Intensidades definidas 
+regras[18].acoesConsequente.push(regra18)
+regras[18].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
+regras[18].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.tempoDescanso")
+regras[18].exp = "Regra 18: Para WarmUp, na fase 1: NA para alongamentos e 0-90s para os outros exercícios; nas demais fases: NA para alongamentos e 0-60s para os outros exercícios\n Para Core, na fase 1: 0-90s; nas demais: 0-60s\n Para Resistência, na fase 1: 0-90s; 2 e 3: 0-60s; 4: 3-5min; 5: 1-2min ou 3-5 min para exercícios power\n Para Cardio, na fase 1: 0-90s; nas demais: 0-60s\n * Os valores exatos também são baseados nas intensidades de cada exercício"
+
+function regra18() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  
+  for(var i = 0; i < treinos.length; i++){
+
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao] // Tabela da seção "secao"
+      var c = 0;
+
+      switch(secao){
+        case 0: // WarmUp
+
+          var tempoDescanso = 0
+
+          if(treinos[i].fase == 1){ // NA ou 0-90s
+            while(c < tabela.idExercicios.length){
+              if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){ // Se o Exercício é do tipo alongamento
+                tempoDescanso = "NA"
+
+              } else {
+                if(tabela.intensidade[c] == "NA"){
+                  tempoDescanso = 30
+                } else if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                  var intensidade = tabela.intensidade[c]
+                  if(intensidade == 1){
+                    tempoDescanso = 40
+                  } else if(intensidade == 2){
+                    tempoDescanso = 70
+                  } else if(intensidade == 3){
+                    tempoDescanso = 90
+                  }
+                } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                  var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                  if(intensidade >= 30 && intensidade <= 60){
+                    tempoDescanso = 40
+                  } else if(intensidade > 60 && intensidade <= 85){
+                    tempoDescanso = 70
+                  } else if(intensidade <= 100){
+                    tempoDescanso = 90
+                  } else if(intensidade == 10){
+                    tempoDescanso = 50
+                  }
+
+                } else {
+                  console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                  return -1
+                }
+
+              }
+
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5) { // NA ou 0-60s
+            while(c < tabela.idExercicios.length){
+              if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){ // Se o Exercício é do tipo alongamento
+                tempoDescanso = "NA"
+
+              } else {
+                if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                  var intensidade = tabela.intensidade[c]
+                  if(intensidade == 1){
+                    tempoDescanso = 20
+                  } else if(intensidade == 2){
+                    tempoDescanso = 40
+                  } else if(intensidade == 3){
+                    tempoDescanso = 60
+                  }
+                } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                  var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                  if(intensidade >= 30 && intensidade <= 60){
+                    tempoDescanso = 20
+                  } else if(intensidade > 60 && intensidade <= 85){
+                    tempoDescanso = 35
+                  } else if(intensidade <= 100){
+                    tempoDescanso = 50
+                  } else if(intensidade == 10){
+                    tempoDescanso = 60
+                  }
+
+                } else {
+                  console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                  return -1
+                }
+              }
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+              
+
+          } else {
+            console.log("Erro na regra 18. Fase inválida!")
+            return -1
+          }
+
+          break
+
+        case 1: // Core
+          var tempoDescanso = 0
+
+          if(treinos[i].fase == 1){ // 0-90s
+            while(c < tabela.idExercicios.length){
+              if(tabela.intensidade[c] == "NA"){ // Exercícios do tipo time
+                tempoDescanso = 60
+              } else if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                var intensidade = tabela.intensidade[c]
+                if(intensidade == 1){
+                  tempoDescanso = 40
+                } else if(intensidade == 2){
+                  tempoDescanso = 70
+                } else if(intensidade == 3){
+                  tempoDescanso = 90
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = 40
+                } else if((intensidade > 60 && intensidade <= 85) || intensidade == 10){
+                  tempoDescanso = 70
+                } else if(intensidade <= 100){
+                  tempoDescanso = 90
+                } else if(intensidade == 10){
+                  tempoDescanso = 50
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+          
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5) { // 0-60s
+            while(c < tabela.idExercicios.length){
+              if(tabela.intensidade[c] == "NA"){ // Exercícios do tipo time
+                tempoDescanso = 30
+              } else if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                var intensidade = tabela.intensidade[c]
+                if(intensidade == 1){
+                  tempoDescanso = 20
+                } else if(intensidade == 2){
+                  tempoDescanso = 40
+                } else if(intensidade == 3){
+                  tempoDescanso = 60
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = 20
+                } else if((intensidade > 60 && intensidade <= 85) || intensidade == 10){
+                  tempoDescanso = 35
+                } else if(intensidade <= 100){
+                  tempoDescanso = 50
+                } else if(intensidade == 10){
+                  tempoDescanso = 60
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+              
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+
+          } else {
+            console.log("Erro na regra 18. Fase inválida!")
+            return -1
+          }
+
+          break
+
+        case 2: // Resistência
+          var tempoDescanso = 0
+
+          if(treinos[i].fase == 1){ // 0-90s
+            while(c < tabela.idExercicios.length){
+              if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                var intensidade = tabela.intensidade[c]
+                if(intensidade == 1){
+                  tempoDescanso = 40
+                } else if(intensidade == 2){
+                  tempoDescanso = 70
+                } else if(intensidade == 3){
+                  tempoDescanso = 90
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = 40
+                } else if(intensidade > 60 && intensidade <= 85){
+                  tempoDescanso = 70
+                } else if(intensidade <= 100){
+                  tempoDescanso = 90
+                } else if(intensidade == 10){
+                  tempoDescanso = 50
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+          
+          } else if (treinos[i].fase == 2 || treinos[i].fase == 3) { // 0-60s
+            while(c < tabela.idExercicios.length){
+              if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                if(intensidade == 1){
+                  tempoDescanso = 20
+                } else if(intensidade == 2){
+                  tempoDescanso = 40
+                } else if(intensidade == 3){
+                  tempoDescanso = 60
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = 20
+                } else if(intensidade > 60 && intensidade <= 85){
+                  tempoDescanso = 35
+                } else if(intensidade <= 100){
+                  tempoDescanso = 50
+                } else if(intensidade == 10){
+                  tempoDescanso = 60
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+              
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+          } else if (treinos[i].fase == 4){ // 3-5min 
+            while(c < tabela.idExercicios.length){
+              if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                if(intensidade == 1){
+                  tempoDescanso = (3*60)
+                } else if(intensidade == 2){
+                  tempoDescanso = (4*60)
+                } else if(intensidade == 3){
+                  tempoDescanso = (5*60)
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = (3*60)
+                } else if(intensidade > 60 && intensidade <= 85){
+                  tempoDescanso = (3,5*60)
+                } else if(intensidade <= 100){
+                  tempoDescanso = (4*60)
+                } else if(intensidade == 10){
+                  tempoDescanso = (5*60)
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+              
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+          } else if(treinos[i].fase == 5){ // 1-2min para exercícios normais, 3-5min para exercícios power
+            if(exercicios[tabela.idExercicios[c]].niveisOpt.includes(5)){ // Para exercícios power
+              while(c < tabela.idExercicios.length){
+                if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                  if(intensidade == 1){
+                    tempoDescanso = (3*60)
+                  } else if(intensidade == 2){
+                    tempoDescanso = (4*60)
+                  } else if(intensidade == 3){
+                    tempoDescanso = (5*60)
+                  }
+                } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                  var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+  
+                  if(intensidade >= 30 && intensidade <= 60){
+                    tempoDescanso = (3*60)
+                  } else if(intensidade > 60 && intensidade <= 85){
+                    tempoDescanso = (3,5*60)
+                  } else if(intensidade <= 100){
+                    tempoDescanso = (4*60)
+                  } else if(intensidade == 10){
+                    tempoDescanso = (5*60)
+                  }
+  
+                } else {
+                  console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                  return -1
+                }
+                
+                tabela.tempoDescanso[c] = tempoDescanso
+                c++
+              }
+            } else { // Para exercícios normais
+              while(c < tabela.idExercicios.length){
+                if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                  if(intensidade == 1){
+                    tempoDescanso = (1*60)
+                  } else if(intensidade == 2){
+                    tempoDescanso = (1,5*60)
+                  } else if(intensidade == 3){
+                    tempoDescanso = (2*60)
+                  }
+                } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                  var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+  
+                  if(intensidade >= 30 && intensidade <= 60){
+                    tempoDescanso = (1*60)
+                  } else if(intensidade > 60 && intensidade <= 85){
+                    tempoDescanso = (1,25*60)
+                  } else if(intensidade <= 100){
+                    tempoDescanso = (1,5*60)
+                  } else if(intensidade == 10){
+                    tempoDescanso = (2*60)
+                  }
+  
+                } else {
+                  console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                  return -1
+                }
+                
+                tabela.tempoDescanso[c] = tempoDescanso
+                c++
+              }
+            }
+
+          } else {
+            console.log("Erro na regra 18. Fase inválida!")
+            return -1
+          }
+
+          break
+
+        case 3: // Cardio
+          var tempoDescanso = 0
+
+          if(treinos[i].fase == 1){ // 0-90s
+            while(c < tabela.idExercicios.length){
+              if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                var intensidade = tabela.intensidade[c]
+                if(intensidade == 1){
+                  tempoDescanso = 40
+                } else if(intensidade == 2){
+                  tempoDescanso = 70
+                } else if(intensidade == 3){
+                  tempoDescanso = 90
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = 40
+                } else if(intensidade > 60 && intensidade <= 85){
+                  tempoDescanso = 70
+                } else if(intensidade <= 100){
+                  tempoDescanso = 90
+                } else if(intensidade == 10){
+                  tempoDescanso = 50
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+          
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5) { // 0-60s
+            while(c < tabela.idExercicios.length){
+              if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
+                if(intensidade == 1){
+                  tempoDescanso = 20
+                } else if(intensidade == 2){
+                  tempoDescanso = 40
+                } else if(intensidade == 3){
+                  tempoDescanso = 60
+                }
+              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
+                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+                if(intensidade >= 30 && intensidade <= 60){
+                  tempoDescanso = 20
+                } else if(intensidade > 60 && intensidade <= 85){
+                  tempoDescanso = 35
+                } else if(intensidade <= 100){
+                  tempoDescanso = 50
+                } else if(intensidade == 10){
+                  tempoDescanso = 60
+                }
+
+              } else {
+                console.log("Erro na regra 18! Tipo da variável intensidade bugado")
+                return -1
+              }
+              
+              tabela.tempoDescanso[c] = tempoDescanso
+              c++
+            }
+            
+          } else {
+            console.log("Erro na regra 18. Fase inválida!")
+            return -1
+          }
+
           break
 
         default:
