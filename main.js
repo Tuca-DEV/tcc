@@ -4,7 +4,7 @@ import {traceValues, explanations} from "./ie.js"
 import {binding} from './binding.js'
  
 export var askable_vars = ["Usuario.nome", "Usuario.idade", "Usuario.sexo", "Usuario.peso", "Usuario.altura", "Usuario.objetivo", "Usuario.disponibilidade", "Usuario.nivel"]
-export var objVars = ["Usuario.planoTreino", "Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.idExercicios",  "Usuario.planoTreino.treinos.tabExercicios.intensidade",  "Usuario.planoTreino.treinos.tabExercicios.modTempoExec", "Usuario.planoTreino.treinos.tabExercicios.repeticoes"]
+export var objVars = ["Usuario.planoTreino", "Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.idExercicios",  "Usuario.planoTreino.treinos.tabExercicios.intensidade",  "Usuario.planoTreino.treinos.tabExercicios.modTempoExec", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.sets"]
 
 traceValues("Usuario")
 
@@ -25,6 +25,9 @@ for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de 
     }
     for(var j = 0; j < 4; j++){
         console.log("Repetições: "+treinos[i].tabExercicios[j].repeticoes)
+    }
+    for(var j = 0; j < 4; j++){
+        console.log("Sets: "+treinos[i].tabExercicios[j].sets)
     }
 
     }

@@ -607,13 +607,13 @@ function regra10() {
     var index = Math.round(Math.random()*(selectedExerc.length - 1))
 
     if(freqDoMes[mesAtual].length == 3){
-      treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].id)
+      treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].idExerc)
       treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
       treinos[i].tabExercicios[3].tempoTotal.push(1200)
 
     } else if (freqDoMes[mesAtual].length == 4){
       if(diaSemana < 4) { // Se não é o quarto dia de treino daquela semana
-        treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].id)
+        treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].idExerc)
         treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
         treinos[i].tabExercicios[3].tempoTotal.push(1200)
 
@@ -624,7 +624,7 @@ function regra10() {
         while(treinoTempoTotal < (60*60)){ // Enquanto o tempo total não ultrapassar 1 hora
           index = Math.round(Math.random()*(selectedExerc.length - 1))
 
-          treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].id)
+          treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].idExerc)
           treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
           treinos[i].tabExercicios[3].tempoTotal.push(20*60)
 
@@ -1141,7 +1141,7 @@ function regra15() {
             } else {
               tabela.modTempoExec[c] = mod
             }
-            
+
             c++
           }
           
@@ -1429,6 +1429,225 @@ function regra16() {
 
             c++
           }    
+          break
+
+        default:
+          console.log("Erro regra 14, seção inválida!")
+          return -1
+      }
+    }
+
+  }
+}  
+
+////Regra 17: Define a quantidade de sets de todos os exercícios
+regras[17].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data != null) // Datas definidas
+regras[17].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].fase > 0) // Fases OPT dos treinos definidas
+regras[17].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
+regras[17].acoesConsequente.push(regra17)
+regras[17].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
+regras[17].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.sets")
+regras[17].exp = "Regra 17: Para WarmUp, na fase 1: nas demais: 1-2 para f\n Para Core, na fase 1: 12-20; nas demais: 8-12\n Para Resistência, na fase 1: 12-20; 2: 8-12; 3: 6-12; 4: 4-6; 5: 1-5 ou 8-10\n Para Core, na fase 1: 12-20; nas demais: 8-12.\n * Se o exercício for de contagem de tempo, recebe 1 repetição"
+
+function regra17() { 
+  var treinos = binding["Usuario.planoTreino.treinos"]
+  
+  for(var i = 0; i < treinos.length; i++){
+
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao] // Tabela da seção "secao"
+      var mes = mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) // Mês relativo do treino (primeiro(0), segundo(1), terceiro(2)...)
+      var c = 0;
+
+      switch(secao){
+        case 0: // WarmUp
+
+          var sets = 0
+
+          if(treinos[i].fase == 1){
+            sets = "1-3"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5){
+            sets = "1-2/2-3"
+          } else {
+            console.log("Erro na regra 17. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){ // Se for exercício de cardio
+              tabela.sets[c] = 1
+            } else if(sets == "1-3"){ // Se o grupo de valores para as repetições é (1 a 3)
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.sets[c] = 1
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.sets[c] = 2
+              } else { // Últimos 4 meses
+                tabela.sets[c] = 3
+              }
+                
+            } else if (sets == "1-2/2-3"){
+              if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){ // Se for exercício de alongamento
+                if(mes >= 0 && mes <= 5){ // Primeiros 6 meses
+                  tabela.sets[c] = 1
+                }else{ // Últimos 6 meses
+                  tabela.sets[c] = 2
+                }
+              } else { // Se for exercício de mobilidade ou 
+                if(mes >= 0 && mes <= 5){ // Primeiros 6 meses
+                  tabela.sets[c] = 2
+                }else{ // Últimos 6 meses
+                  tabela.sets[c] = 3
+                }
+              }
+              
+            }
+
+            c++
+          }
+
+          break
+
+        case 1: // Core
+          var sets = 0
+
+          if(treinos[i].fase == 1){
+            sets = "1-4"
+          } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5){
+            sets = "2-3"
+          } else {
+            console.log("Erro na regra 17. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(sets == "1-4"){ 
+              if(mes >= 0 && mes <= 2){ // Primeiros 3 meses
+                tabela.sets[c] = 1
+              }else if (mes >= 3 && mes <= 5){ // 4°, 5° e 6° mêses treinando
+                tabela.sets[c] = 2
+              }else if(mes >= 6 && mes <= 8) { // 7°, 8° e 9° mêses treinando
+                tabela.sets[c] = 3
+              }else { // Últimos 3 mêses
+                tabela.sets[c] = 4
+              }
+                
+            } else if (sets == "2-3"){
+              if(mes >= 0 && mes <= 5){ // Primeiros 6 meses
+                tabela.sets[c] = 2
+              }else{ // Últimos 6 meses
+                tabela.sets[c] = 3
+              }
+            }
+
+            c++
+          }
+
+          break
+
+        case 2: // Resistência
+          var sets = 0
+
+          if(treinos[i].fase == 1){
+            sets = "1-3"
+          } else if(treinos[i].fase == 2) {
+            sets = "2-4"
+          } else if (treinos[i].fase == 3 || treinos[i].fase == 5){
+            sets = "3-5"
+          } else if (treinos[i].fase == 4){
+            sets = "4-6"
+          } else {
+            console.log("Erro na regra 17. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(sets == "1-3"){ 
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.sets[c] = 1
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.sets[c] = 2
+              }else { // Últimos 4 meses treinando
+                tabela.sets[c] = 3
+              }
+
+            } else if (sets == "2-4"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.sets[c] = 2
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.sets[c] = 3
+              }else { // Últimos 4 meses treinando
+                tabela.sets[c] = 4
+              }
+
+            } else if (sets == "3-5"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.sets[c] = 3
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.sets[c] = 4
+              }else { // Últimos 4 meses treinando
+                tabela.sets[c] = 5
+              }
+
+            } else if (sets == "4-6"){
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                tabela.sets[c] = 4
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                tabela.sets[c] = 5
+              }else { // Últimos 4 meses treinando
+                tabela.sets[c] = 6
+              }
+
+            }
+
+            c++
+          }
+
+
+          break
+
+        case 3: // Cardio
+          var sets = 0
+
+          if(treinos[i].fase == 1){
+            sets = "1-2"
+          } else if (treinos[i].fase == 2 || treinos[i].fase == 5){
+            sets = "2-3"
+          } else if (treinos[i].fase == 3){
+            sets = 2
+          } else if(treinos[i].fase == 4) {
+            sets = 1
+          } else {
+            console.log("Erro na regra 17. Fase inválida!")
+            return -1
+          }
+
+          while(c < tabela.idExercicios.length){
+            if(typeof(sets) == "number"){ // Se sets já é do tipo number
+              tabela.sets[c] = sets
+
+            } else { // Se sets é um intervalo de valores
+              if(sets == "1-2"){
+                if(mes >= 0 && mes <= 5){ // Primeiros 6 meses
+                  tabela.sets[c] = 1
+                }else{ // Últimos 6 meses
+                  tabela.sets[c] = 2
+                }
+              }else if(sets == "2-3"){
+                if(mes >= 0 && mes <= 5){ // Primeiros 6 meses
+                  tabela.sets[c] = 2
+                }else{ // Últimos 6 meses
+                  tabela.sets[c] = 3
+                }
+              }else {
+                console.log("ERRO na regra 17! Sets bugado")
+                return -1
+              }
+            }
+                
+            c++
+          }
+
+  
           break
 
         default:
