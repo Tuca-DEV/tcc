@@ -2114,7 +2114,6 @@ function regra18() {
 }  
 
 ////Regra 19: Define o tempo de execução total de um exercício 
-
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Sets definidos
@@ -2187,6 +2186,39 @@ function regra19(){
   }
 }
 
+////Regra 20: Define o tempo de execução total de um treino
+regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoDescanso[0] != null) // Quantidade de repetições definidos
+regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoTotal[0] != null) // Modo de execução definidos
+regras[20].acoesConsequente.push(regra20)
+regras[20].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
+regras[20].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tempoTotal")
+regras[20].exp = "Regra 20: Soma o tempo de execução de cada tempo de descansos entre as séries e tempo de execução, resultando no tempo total de treino"
+
+function regra20(){
+  var treinos = binding["Usuario.planoTreino.treinos"]
+
+  for(var i = 0; i < treinos.length; i++){
+    var somaTempo = 0
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao]
+      var c = 0
+
+      while(c < tabela.idExercicios.length){
+        if(tabela.tempoDescanso[c] == "NA"){
+          somaTempo += tabela.tempoTotal[c] 
+        }else{
+          somaTempo += tabela.tempoTotal[c] + tabela.tempoDescanso[c]
+        }
+        
+        c++
+      }
+    }
+
+    treinos[i].tempoTotal = somaTempo
+
+  }
+}
 
 
 export {regras}
