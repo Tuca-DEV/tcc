@@ -1121,9 +1121,12 @@ function regra15() {
           while(c < tabela.idExercicios.length){
             if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){ //Se é tipo Cardio, recebe NA
               tabela.modTempoExec[c] = "NA"
+            } else if (exercicios[tabela.idExercicios[c]].tipoSubTreino == "Mobilidade") {
+              tabela.modTempoExec[c] = "M"
             } else {
               tabela.modTempoExec[c] = mod
             }
+
             c++
           }
 
@@ -2110,7 +2113,79 @@ function regra18() {
   }
 }  
 
+////Regra 19: Define o tempo de execução total de um exercício 
 
+regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
+regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Sets definidos
+regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].repeticoes[0] != null) // Quantidade de repetições definidos
+regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].modTempoExec[0] != null) // Modo de execução definidos
+regras[19].acoesConsequente.push(regra19)
+regras[19].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
+regras[19].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
+regras[19].exp = "Regra 19: Soma o tempo de execução de cada repetição realizada em um exercício de acordo com o modo de execução (LE, C, M, R)"
+
+function regra19(){
+  var treinos = binding["Usuario.planoTreino.treinos"]
+
+  for(var i = 0; i < treinos.length; i++){
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao] // Tabela da seção "secao"
+      var c = 0;
+
+      if(secao == 0){ // WarmUp
+        while(c < tabela.idExercicios.length){
+          var mod = tabela.modTempoExec[c]
+          var reps = tabela.repeticoes[c]
+          var sets = tabela.sets[c]
+          var tempoTotal = tabela.tempoTotal[c]
+
+          if(tempoTotal == null){ // Treinos que não tiveram o tempo total definido
+            if(mod == "LE"){ // Lento Excêntrico configura em média 7 segundos por repetição
+              tempoTotal = 30 * reps * sets 
+            }else if (mod == "C"){ // Controlado em média tem 4 segundos por repetição
+              tempoTotal = 4 * reps * sets
+            }else if (mod == "M"){ // Médio em média tem 3 segundos por repetição
+              tempoTotal = 3 * reps * sets
+            }else if (mod == "R"){ // Rápido em média tem 2 segundos por repetição
+              tempoTotal = 2 * reps * sets
+            } 
+            
+          } 
+
+          tabela.tempoTotal[c] = tempoTotal
+          c++
+        }
+
+      } else { // Core, Resistência, Cardio
+        while(c < tabela.idExercicios.length){
+          var mod = tabela.modTempoExec[c]
+          var reps = tabela.repeticoes[c]
+          var sets = tabela.sets[c]
+          var tempoTotal = tabela.tempoTotal[c]
+
+          if(tempoTotal == null){ // Treinos que não tiveram o tempo total definido
+            if(mod == "LE"){ // Lento Excêntrico configura em média 7 segundos por repetição
+              tempoTotal = 7 * reps * sets 
+            }else if (mod == "C"){ // Controlado em média tem 4 segundos por repetição
+              tempoTotal = 4 * reps * sets
+            }else if (mod == "M"){ // Médio em média tem 3 segundos por repetição
+              tempoTotal = 3 * reps * sets
+            }else if (mod == "R"){ // Rápido em média tem 2 segundos por repetição
+              tempoTotal = 2 * reps * sets
+            } else { // Exercícios tipo time
+              tempoTotal = 60 * reps * sets
+            }
+          } 
+
+          tabela.tempoTotal[c] = tempoTotal
+          c++
+        }
+      }
+    }
+
+  }
+}
 
 
 
