@@ -2191,7 +2191,7 @@ regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabE
 regras[20].acoesConsequente.push(regra20)
 regras[20].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
 regras[20].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tempoTotal")
-regras[20].exp = "Regra 20: Soma o tempo de execução de cada tempo de descansos entre as séries e tempo de execução, resultando no tempo total de treino"
+regras[20].exp = "Regra 20: Soma o tempo de execução e tempos de descanso entre as séries, resultando no tempo total de treino"
 
 function regra20(){
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -2214,6 +2214,35 @@ function regra20(){
     }
 
     treinos[i].tempoTotal = somaTempo
+
+  }
+}
+
+////Regra 21: Define o volume total de um treino, ou seja, quantidade de sets total
+regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Quantidade de repetições definidos
+regras[21].acoesConsequente.push(regra21)
+regras[21].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.sets")
+regras[21].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.volume")
+regras[21].exp = "Regra 21: Soma a quantidade de sets total de um treino (volume)"
+
+function regra21(){
+  var treinos = binding["Usuario.planoTreino.treinos"]
+
+  for(var i = 0; i < treinos.length; i++){
+    var somaSets = 0
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao]
+      var c = 0
+
+      while(c < tabela.idExercicios.length){
+        somaSets += tabela.sets[c]
+        
+        c++
+      }
+    }
+
+    treinos[i].volume = somaSets
 
   }
 }
