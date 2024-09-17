@@ -753,7 +753,7 @@ function regra12() {
     //Definindo a quantidade de Exercícios de Resistência neste treino
     switch(treinos[i].fase){
       case 1:
-        quantExercs = 5
+        quantExercs = 6
         break
       case 2:
         quantExercs = 6
@@ -1458,7 +1458,7 @@ regras[17].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExerci
 regras[17].acoesConsequente.push(regra17)
 regras[17].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.fase", "Usuario.planoTreino.treinos.tabExercicios.idExercicios")
 regras[17].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.sets")
-regras[17].exp = "Regra 17(número de sets): Para WarmUp, na fase 1: 1-3; nas demais: 1-2 para alongamentos e 2-3 para pliométricos\n Para Core, na fase 1: 1-4; nas demais: 2-3\n Para Resistência, na fase 1: 1-3; 2: 2-4; 3: 3-5; 4: 4-6; 5: 3-5\n Para Cardio, na fase 1: 1-2; 2: 2-3; 3: 2; 4: 1; 5: 2-3"
+regras[17].exp = "Regra 17(número de sets): Para WarmUp, na fase 1: 1-3; nas demais: 1-2 para alongamentos e 2-3 para pliométricos\n Para Core, na fase 1: 1-4; nas demais: 2-3\n Para Resistência, na fase 1: 2-3; 2: 2-4; 3: 3-5; 4: 4-6; 5: 3-5\n Para Cardio, na fase 1: 1-2; 2: 2-3; 3: 2; 4: 1; 5: 2-3"
 
 function regra17() { 
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -1559,7 +1559,7 @@ function regra17() {
           var sets = 0
 
           if(treinos[i].fase == 1){
-            sets = "1-3"
+            sets = "2-3"
           } else if(treinos[i].fase == 2) {
             sets = "2-4"
           } else if (treinos[i].fase == 3 || treinos[i].fase == 5){
@@ -1572,10 +1572,8 @@ function regra17() {
           }
 
           while(c < tabela.idExercicios.length){
-            if(sets == "1-3"){ 
-              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.sets[c] = 1
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+            if(sets == "2-3"){ 
+              if(mes >= 0 && mes <= 7){ // Primeiros 8 meses
                 tabela.sets[c] = 2
               }else { // Últimos 4 meses treinando
                 tabela.sets[c] = 3
