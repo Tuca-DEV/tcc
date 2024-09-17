@@ -2219,10 +2219,11 @@ function regra20(){
 }
 
 ////Regra 21: Define o volume total de um treino, ou seja, quantidade de sets total
-regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Quantidade de datas dos treinos definida
 regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Quantidade de repetições definidos
+regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].intensidade[0] != null) // Intensidades dos exercícios definidas
 regras[21].acoesConsequente.push(regra21)
-regras[21].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.sets")
+regras[21].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
 regras[21].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.volume")
 regras[21].exp = "Regra 21: Soma a quantidade de sets total de um treino (volume)"
 
@@ -2236,8 +2237,12 @@ function regra21(){
       var c = 0
 
       while(c < tabela.idExercicios.length){
-        somaSets += tabela.sets[c]
-        
+        if(tabela.intensidade[c] == "NA" && secao == 0){ // Se o exercício não tem intensidade e é da seção WarmUp (alongamento), não acrescerá o volume
+          somaSets += 0
+        } else {
+          somaSets += tabela.sets[c]
+        }
+
         c++
       }
     }
@@ -2246,6 +2251,68 @@ function regra21(){
 
   }
 }
+
+/*
+////Regra 22: Define a intensidade média do treino
+regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].intensidade[0] != null) // Quantidade de repetições definidos
+regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].volume != null) // Volume dos treinos definido
+regras[22].acoesConsequente.push(regra22)
+regras[22].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.volume")
+regras[22].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.intensidade")
+regras[22].exp = "Regra 22: Faz a média aritmética para dar uma intensidade (de 1 a 3) média do treino"
+
+function regra22(){
+  var treinos = binding["Usuario.planoTreino.treinos"]
+
+  for(var i = 0; i < treinos.length; i++){
+    var somaIntensidade = 0
+    for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
+      var tabela = treinos[i].tabExercicios[secao]
+      var c = 0
+      var num
+
+      while(c < tabela.idExercicios.length){
+        if(tabela.intensidade[c] == "NA"){ // NA de intensidade
+          num = 0 
+        }else if (typeof(tabela.intensidade[c]) == "string"){ // Valores em % de RM e BW
+          num = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
+
+          if(num >= 0 && num <= 33){
+            num = 1
+          } else if(num > 33 && num <= 66){
+            num = 2
+          }else if (num > 66 && num <= 100){
+            num = 3
+          } else {
+            console.log("Erro na regra 22. Número em formato incorreto")
+            return -1
+          }
+        } else { // Valores de intensidade entre 1 e 3
+          num = tabela.intensidade[c]
+        }
+
+        somaIntensidade += num
+        c++
+      }
+    }
+
+    var m = Math.round(somaIntensidade/treinos[i].volume) // Média de intensidade (valor entre 1 e 3)
+
+    if(m == 1){
+      treinos[i].intensidade = "Iniciante"
+    } else if (m == 2){
+      treinos[i].intensidade = "Intermediário"
+    } else if (m == 3){
+      treinos[i].intensidade = "Avançado"
+    } else {
+      console.log("Erro na regra 22, média fora do intervalo")
+      return -1
+    }
+
+  }
+}
+  */
 
 
 export {regras}
