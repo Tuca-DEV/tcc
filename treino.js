@@ -2,7 +2,7 @@ import TabExercicios from './tabexercicios.js';
 
 class Treino {
     // Var's objetivo: tabExercicios
-    constructor(data) {
+    constructor(data = null) {
       this.data = data; // Dia, mês e ano do treino
       this.fase = null; // Fase OPT
       this.tempoTotal = null; // Tempo total somando todas as execuções de todos os exercícios mais os tempos de descanso

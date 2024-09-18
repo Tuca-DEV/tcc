@@ -853,8 +853,6 @@ function regra13() {
 
   }
 }
-  
-  
 
 function notaExerc(condElimina, condNota, rand){
   var selecaoExercs = Array.from({ length: exercicios.length }, () => [-10, -10])
@@ -2112,13 +2110,13 @@ function regra18() {
 }  
 
 ////Regra 19: Define o tempo de execução total de um exercício 
-regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].data instanceof Date) // Quantidade de treinos definidos
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos.tabExercicios"][0].idExercicios.length > 0) // Exercícios já selecionados
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Sets definidos
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].repeticoes[0] != null) // Quantidade de repetições definidos
 regras[19].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].modTempoExec[0] != null) // Modo de execução definidos
 regras[19].acoesConsequente.push(regra19)
-regras[19].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
+regras[19].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.repeticoes", "Usuario.planoTreino.treinos.tabExercicios.modTempoExec")
 regras[19].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
 regras[19].exp = "Regra 19: Soma o tempo de execução de cada repetição realizada em um exercício de acordo com o modo de execução (LE, C, M, R)"
 
@@ -2185,12 +2183,12 @@ function regra19(){
 }
 
 ////Regra 20: Define o tempo de execução total de um treino
-regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
+regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos.data"] instanceof Date) // Quantidade de treinos definidos
 regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoDescanso[0] != null) // Quantidade de repetições definidos
 regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoTotal[0] != null) // Modo de execução definidos
 regras[20].acoesConsequente.push(regra20)
-regras[20].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
-regras[20].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tempoTotal")
+regras[20].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
+regras[20].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tempoTotal")
 regras[20].exp = "Regra 20: Soma o tempo de execução e tempos de descanso entre as séries, resultando no tempo total de treino"
 
 function regra20(){
@@ -2219,18 +2217,19 @@ function regra20(){
 }
 
 ////Regra 21: Define o volume total de um treino, ou seja, quantidade de sets total
-regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Quantidade de datas dos treinos definida
+regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos.data"] instanceof Date) // Quantidade de datas dos treinos definida
 regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Quantidade de repetições definidos
 regras[21].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].intensidade[0] != null) // Intensidades dos exercícios definidas
 regras[21].acoesConsequente.push(regra21)
-regras[21].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
-regras[21].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.volume")
+regras[21].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.tabExercicios.intensidade")
+regras[21].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.volume")
 regras[21].exp = "Regra 21: Soma a quantidade de sets total de um treino (volume)"
 
 function regra21(){
   var treinos = binding["Usuario.planoTreino.treinos"]
 
   for(var i = 0; i < treinos.length; i++){
+    
     var somaSets = 0
     for(var secao = 0; secao < treinos[i].tabExercicios.length; secao++){
       var tabela = treinos[i].tabExercicios[secao]
@@ -2252,14 +2251,15 @@ function regra21(){
   }
 }
 
-/*
+
 ////Regra 22: Define a intensidade média do treino
-regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"].length > 1) // Treinos definidos
-regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].intensidade[0] != null) // Quantidade de repetições definidos
+regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos.data"] instanceof Date) // Quantidade de treinos definidos
+regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].intensidade[0] != null) // Quantidade de repetições definida
+regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Quantidade de sets definida
 regras[22].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].volume != null) // Volume dos treinos definido
 regras[22].acoesConsequente.push(regra22)
-regras[22].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.volume")
-regras[22].nameVariaveisConsequente.push("Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.intensidade")
+regras[22].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.intensidade", "Usuario.planoTreino.treinos.tabExercicios.sets", "Usuario.planoTreino.treinos.volume")
+regras[22].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.intensidade")
 regras[22].exp = "Regra 22: Faz a média aritmética para dar uma intensidade (de 1 a 3) média do treino"
 
 function regra22(){
@@ -2273,16 +2273,21 @@ function regra22(){
       var num
 
       while(c < tabela.idExercicios.length){
-        if(tabela.intensidade[c] == "NA"){ // NA de intensidade
-          num = 0 
-        }else if (typeof(tabela.intensidade[c]) == "string"){ // Valores em % de RM e BW
+
+        if(tabela.intensidade[c] == "NA" && secao != 0){ // NA de intensidade e não é alongamento, logo, é exercício tipo time (Exemplo: prancha)
+          num = 1.5
+        } else if(tabela.intensidade[c] == "NA"){ // Alongamentos
+          num = 0
+        } else if (typeof(tabela.intensidade[c]) == "string"){ // Valores em % de RM e BW
           num = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
 
-          if(num >= 0 && num <= 33){
-            num = 1
-          } else if(num > 33 && num <= 66){
+          if(num == 10){ // BW
             num = 2
-          }else if (num > 66 && num <= 100){
+          } else if(num >= 30 && num <= 60){
+            num = 1
+          } else if(num > 60 && num <= 80){
+            num = 2
+          } else if (num > 80 && num <= 100){
             num = 3
           } else {
             console.log("Erro na regra 22. Número em formato incorreto")
@@ -2292,7 +2297,7 @@ function regra22(){
           num = tabela.intensidade[c]
         }
 
-        somaIntensidade += num
+        somaIntensidade += (num*tabela.sets[c])
         c++
       }
     }
@@ -2312,7 +2317,7 @@ function regra22(){
 
   }
 }
-  */
+
 
 
 export {regras}

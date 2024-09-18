@@ -80,9 +80,6 @@ function apply(regra){
 
 //Avalia se todos os testes lógicos na regra retornam valor verdadeiro
 function evalconditions(regra) {   
-    if(regra.nameVariaveisAntecedente[2] == "Usuario.planoTreino.treinos.volume"){
-        console.log("DEBUG")
-    }
     for(var i=0; i < regra.antecedente.length; i++){
         if(!tracedVars.includes(regra.nameVariaveisAntecedente[i])){traceValues(regra.nameVariaveisAntecedente[i])} // Se a variável não foi traçada, trace seu valor
         if(!regra.antecedente[i]()) {
@@ -100,7 +97,9 @@ function activate(objeto, nameVariable) {
     atr.forEach(nameAtr => {
         var nameAtrComplete = nameVariable + "." + nameAtr;
         if(objVars.includes(nameAtrComplete)) {
-            traceValues(nameAtrComplete)
+            if(!tracedVars.includes(nameAtrComplete)){
+                traceValues(nameAtrComplete)
+            }
         }
     })
 }
