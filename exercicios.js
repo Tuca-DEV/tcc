@@ -42,7 +42,7 @@ exercicios.push(new Exercicio(23, "Prancha", "time", [1,2,3,4,5], 2, "BodyWeight
 exercicios.push(new Exercicio(24, "Marching", "rep", [1], 1, "BodyWeight", "Core", ["Abdômen"])) // Ficar levantando as pernas flexionadas unilateralmente enquanto deitado
 
 //Fase OPT 2,3,4 FORÇA
-exercicios.push(new Exercicio(25, "Abdominal na bola suiça", "rep", [2,3,4], 3, "BodyWeight", "Core", ["Abdômen"])) // Abdominal simples deitado na bola suiça
+exercicios.push(new Exercicio(25, "Abdominal na bola suiça", "rep", [2,3,4], 2, "BodyWeight", "Core", ["Abdômen"])) // Abdominal simples deitado na bola suiça
 exercicios.push(new Exercicio(26, "Hiperextensão lombar", "rep", [2,3,4], 2, "BodyWeight", "Core", ["Lombar"])) // Levantar o tronco no banco romano
 exercicios.push(new Exercicio(27, "Abdominal reverso", "rep", [2,3,4], 2, "BodyWeight", "Core", ["Abdômen"])) // Deitado, elevar os pés até o teto
 exercicios.push(new Exercicio(28, "Puxada abdominal transversal na polia", "rep", [2,3,4], 2, "Máquina", "Core", ["Abdômen"])) // Puxar a polia transversalmente, rotacionando o tronco
@@ -50,8 +50,8 @@ exercicios.push(new Exercicio(28, "Puxada abdominal transversal na polia", "rep"
 //Fase OPT 5 FORÇA EXPLOSIVA
 exercicios.push(new Exercicio(29, "Rotation chest pass", "rep", [5], 1, "Bola", "Core", ["Abdômen"])) // De pé, lançar a bola medicinal para o lado com a maior velocidade possivel girando o tronco em direção lateral
 exercicios.push(new Exercicio(30, "Throwing on the swiss ball ", "rep", [5], 3, "Bola", "Core", ["Abdômen", "Costas"])) // Deitado em cima da bola suiça, levantar o tronco e lançar a bola medicinal a frente na maior velocidade possível
-exercicios.push(new Exercicio(31, "Oblique throw", "rep", [5], 1, "Bola", "Core", ["Abdômen", "Ombro"])) // De pé, lançar a bola medicinal obliquamente com a maior velocidade possivel em direção ao teto 
-exercicios.push(new Exercicio(32, "Soccer throw", "rep", [5], 1, "Bola", "Core", ["Abdômen", "Costas"])) // De pé, lançar a bola medicinal com a maior velocidade possivel em direção ao chão
+exercicios.push(new Exercicio(31, "Oblique throw", "rep", [5], 2, "Bola", "Core", ["Abdômen", "Ombro"])) // De pé, lançar a bola medicinal obliquamente com a maior velocidade possivel em direção ao teto 
+exercicios.push(new Exercicio(32, "Soccer throw", "rep", [5], 2, "Bola", "Core", ["Abdômen", "Costas"])) // De pé, lançar a bola medicinal com a maior velocidade possivel em direção ao chão
 
 /* Resistência */
 

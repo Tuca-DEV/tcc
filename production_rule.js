@@ -588,7 +588,7 @@ regras[10].antecedente.push(() => binding["Usuario.nivel"] > 0)  // Nível do us
 regras[10].acoesConsequente.push(regra10)
 regras[10].nameVariaveisAntecedente.push("Usuario.objetivo", "Usuario.planoTreino.treinos.data", "Usuario.planoTreino.freqNoMes", "Usuario.nivel")
 regras[10].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tabExercicios.idExercicios", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
-regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 20 minutos."
+regras[10].exp = "Regra 10: Se o usuário quer emagrecer, se a frequência semanal do mês é de 3 dias de treino: cardio de 20 minutos todos os dias, se a frequência semanal do mês é de 4 dias de treino: cardio exclusivo em um dia, e nos outros 3: cardio de 15 minutos."
 
 // Função que define os cardios nos treinos
 function regra10() { 
@@ -609,13 +609,13 @@ function regra10() {
     if(freqDoMes[mesAtual].length == 3){
       treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].idExerc)
       treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
-      treinos[i].tabExercicios[3].tempoTotal.push(1200)
+      treinos[i].tabExercicios[3].tempoTotal.push(20*60)
 
     } else if (freqDoMes[mesAtual].length == 4){
       if(diaSemana < 4) { // Se não é o quarto dia de treino daquela semana
         treinos[i].tabExercicios[3].idExercicios.push(selectedExerc[index].idExerc)
         treinos[i].tabExercicios[3].nomeExercicios.push(selectedExerc[index].nome)
-        treinos[i].tabExercicios[3].tempoTotal.push(1200)
+        treinos[i].tabExercicios[3].tempoTotal.push(14*60)
 
       } else {
         var treinoTempoTotal = 0
@@ -684,11 +684,11 @@ function regra11() {
     var exerciciosComNota = notaExerc(condElimina, condNota, 0.1)
 
     //Definindo a quantidade de Exercícios para o Core neste treino
-    if(treinos[i].fase == 1){
+    if(treinos[i].fase == 1 || treinos[i].fase == 2){
       quantExercs = 4
-    } else if (treinos[i].fase == 5){
+    } else if (treinos[i].fase == 5 ){
       quantExercs = 3
-    } else { // Fases OPT 2, 3 ou 4
+    } else { // Fases OPT 3 ou 4
       if(Math.random() >= 0.5){ // Aleatoriedade de 50% para ser 2 ou 3 exercícios de Core neste treino em específico
         quantExercs = 3
       } else {
@@ -766,10 +766,10 @@ function regra12() {
         }
         break
       case 4:
-        quantExercs = 6
+        quantExercs = 5
         break
       case 5:
-        quantExercs = 7
+        quantExercs = 6
         break
       default:
         console.log("ERRO: fase em regra 12 com valor indefinido!")
@@ -1295,20 +1295,24 @@ function regra16() {
               tabela.repeticoes[c] = 1
 
             } else if(reps == "12-20"){
-              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.repeticoes[c] = 12
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                tabela.repeticoes[c] = 16
-              } else { // Últimos 4 meses
+              if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
+                tabela.repeticoes[c] = 12 
+              } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                tabela.repeticoes[c] = 14
+              } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
+                tabela.repeticoes[c] = 18
+              } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                 tabela.repeticoes[c] = 20
               }
               
             } else if (reps == "8-12"){
-              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+              if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
                 tabela.repeticoes[c] = 8
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                tabela.repeticoes[c] = 10
-              } else { // Últimos 4 meses
+              } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                tabela.repeticoes[c] = 9
+              } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
+                tabela.repeticoes[c] = 11
+              } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                 tabela.repeticoes[c] = 12
               }
             }
@@ -1329,7 +1333,7 @@ function regra16() {
           } else if (treinos[i].fase == 3){
             reps = "6-12"
           } else if(treinos[i].fase == 4) {
-            reps = "4-6"
+            reps = "1-5"
           } else if(treinos[i].fase == 5) {
             reps = "1-5/8-10"
           } else {
@@ -1340,59 +1344,73 @@ function regra16() {
           while(c < tabela.idExercicios.length){
             if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){
               tabela.repeticoes[c] = 1
-
-            } else if(reps == "12-20"){
-              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.repeticoes[c] = 12
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                tabela.repeticoes[c] = 16
-              } else { // Últimos 4 meses
+            } else if(reps == "12-20"){                                // A quantidade de repetições é aumentada gradativamente até que mude o valor da intensidade 
+                                                                       // Ou seja, em um ciclo de 4 mêses, o número de repetições aumenta do mínimo valor para o máximo
+              if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
+                tabela.repeticoes[c] = 12 
+              } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                tabela.repeticoes[c] = 14
+              } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
+                tabela.repeticoes[c] = 18
+              } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                 tabela.repeticoes[c] = 20
               }
               
             } else if (reps == "8-12"){
-              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+              if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
                 tabela.repeticoes[c] = 8
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                tabela.repeticoes[c] = 10
-              } else { // Últimos 4 meses
+              } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                tabela.repeticoes[c] = 9
+              } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
+                tabela.repeticoes[c] = 11
+              } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                 tabela.repeticoes[c] = 12
               }
+
             } else if (reps == "6-12"){
-              if(mes >= 0 && mes <= 2){ // Primeiros 3 meses
+              if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
                 tabela.repeticoes[c] = 6
-              }else if (mes >= 3 && mes <= 5){ // 4°, 5° e 6° mêses treinando
+              } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
                 tabela.repeticoes[c] = 8
-              }else if (mes >= 6 && mes <= 8) { // 7°, 8° e 9° mêses treinando
+              } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
                 tabela.repeticoes[c] = 10
-              }else if(mes >= 9 && mes <= 12){ // últimos meses
+              } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                 tabela.repeticoes[c] = 12
               }
-            } else if (reps == "4-6") {
-              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+            } else if (reps == "1-5") {
+              if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
+                tabela.repeticoes[c] = 1
+              } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                tabela.repeticoes[c] = 2
+              } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
                 tabela.repeticoes[c] = 4
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+              } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                 tabela.repeticoes[c] = 5
-              } else { // Últimos 4 meses
-                tabela.repeticoes[c] = 6
               }
+
             } else if (reps == "1-5/8-10"){
               if(c%2 == 0){ // 1-5
-                if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
                   tabela.repeticoes[c] = 1
-                }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                  tabela.repeticoes[c] = 3
-                } else { // Últimos 4 meses
+                } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                  tabela.repeticoes[c] = 2
+                } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
+                  tabela.repeticoes[c] = 4
+                } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                   tabela.repeticoes[c] = 5
                 }
+  
               } else { // 8-10
-                if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
+                if(mes == 0 || mes == 4 || mes == 8){ // 1°, 5° e 9° mês
                   tabela.repeticoes[c] = 8
-                }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
+                } else if (mes == 1 || mes == 5 || mes == 9){  // 2°, 6° e 10° mês
+                  tabela.repeticoes[c] = 8
+                } else if (mes == 2 || mes == 6 || mes == 10){ // 3°, 7° e 11° mês
                   tabela.repeticoes[c] = 9
-                } else { // Últimos 4 meses
+                } else if (mes == 3 || mes == 7 || mes == 11){ // 4°, 8° e 12° mês
                   tabela.repeticoes[c] = 10
                 }
+  
               }
             }
 
@@ -1520,7 +1538,7 @@ function regra17() {
           var sets = 0
 
           if(treinos[i].fase == 1){
-            sets = "1-4"
+            sets = "1-3"
           } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5){
             sets = "2-3"
           } else {
@@ -1529,17 +1547,14 @@ function regra17() {
           }
 
           while(c < tabela.idExercicios.length){
-            if(sets == "1-4"){ 
-              if(mes >= 0 && mes <= 2){ // Primeiros 3 meses
+            if(sets == "1-3"){ 
+              if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
                 tabela.sets[c] = 1
-              }else if (mes >= 3 && mes <= 5){ // 4°, 5° e 6° mêses treinando
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
                 tabela.sets[c] = 2
-              }else if(mes >= 6 && mes <= 8) { // 7°, 8° e 9° mêses treinando
+              }else { // Últimos mêses treinando
                 tabela.sets[c] = 3
-              }else { // Últimos 3 mêses
-                tabela.sets[c] = 4
-              }
-                
+              } 
             } else if (sets == "2-3"){
               if(mes >= 0 && mes <= 5){ // Primeiros 6 meses
                 tabela.sets[c] = 2
@@ -1557,7 +1572,7 @@ function regra17() {
           var sets = 0
 
           if(treinos[i].fase == 1){
-            sets = "2-3"
+            sets = 2
           } else if(treinos[i].fase == 2) {
             sets = "2-4"
           } else if (treinos[i].fase == 3 || treinos[i].fase == 5){
@@ -1570,16 +1585,17 @@ function regra17() {
           }
 
           while(c < tabela.idExercicios.length){
-            if(sets == "2-3"){ 
-              if(mes >= 0 && mes <= 7){ // Primeiros 8 meses
-                tabela.sets[c] = 2
-              }else { // Últimos 4 meses treinando
-                tabela.sets[c] = 3
-              }
+            if(sets == 2){ 
+              tabela.sets[c] = sets // Para todos os mêses
 
             } else if (sets == "2-4"){
               if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.sets[c] = 2
+                if(c%2==0){
+                  tabela.sets[c] = 2
+                } else {
+                  tabela.sets[c] = 3
+                }
+
               }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
                 tabela.sets[c] = 3
               }else { // Últimos 4 meses treinando
@@ -1588,11 +1604,11 @@ function regra17() {
 
             } else if (sets == "3-5"){
               if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.sets[c] = 3
-              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
                 tabela.sets[c] = 4
-              }else { // Últimos 4 meses treinando
+              }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
                 tabela.sets[c] = 5
+              }else { // Últimos 4 meses treinando
+                tabela.sets[c] = 3
               }
 
             } else if (sets == "4-6"){
@@ -1691,8 +1707,10 @@ function regra18() {
 
           if(treinos[i].fase == 1){ // NA ou 0-90s
             while(c < tabela.idExercicios.length){
-              if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){ // Se o Exercício é do tipo alongamento
-                tempoDescanso = "NA"
+              var exercAtual = exercicios[tabela.idExercicios[c]] // Exercício C
+
+              if(exercAtual.tipoSubTreino == "Alongamento"){ // Se o Exercício é do tipo alongamento
+                tempoDescanso = 0
 
               } else {
                 if(tabela.intensidade[c] == "NA"){
@@ -1733,7 +1751,7 @@ function regra18() {
           } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5) { // NA ou 0-60s
             while(c < tabela.idExercicios.length){
               if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){ // Se o Exercício é do tipo alongamento
-                tempoDescanso = "NA"
+                tempoDescanso = 0
 
               } else {
                 if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
@@ -1776,34 +1794,25 @@ function regra18() {
           break
 
         case 1: // Core
+        // O tempo de descanso será proporcional a intensidade e quantidade de agrupamentos musculares trabalhados
           var tempoDescanso = 0
 
           if(treinos[i].fase == 1){ // 0-90s
             while(c < tabela.idExercicios.length){
-              if(tabela.intensidade[c] == "NA"){ // Exercícios do tipo time
+              var exercAtual = exercicios[tabela.idExercicios[c]] // Exercício da iteração C
+
+              if(exercAtual.tipoContagem == "time"){ // Exercícios do tipo time
                 tempoDescanso = 60
-              } else if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
-                var intensidade = tabela.intensidade[c]
-                if(intensidade == 1){
-                  tempoDescanso = 40
-                } else if(intensidade == 2){
-                  tempoDescanso = 70
-                } else if(intensidade == 3){
-                  tempoDescanso = 90
-                }
-              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
-                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
-
-                if(intensidade >= 30 && intensidade <= 60){
-                  tempoDescanso = 40
-                } else if((intensidade > 60 && intensidade <= 85) || intensidade == 10){
-                  tempoDescanso = 70
-                } else if(intensidade <= 100){
-                  tempoDescanso = 90
-                } else if(intensidade == 10){
+              } else if (tabela.intensidade[c] == "NA") {  // Os demais
+                if(exercAtual.dificuldade == 1){
+                  tempoDescanso = 20
+                } else if(exercAtual.dificuldade == 2){
                   tempoDescanso = 50
+                } else if(exercAtual.dificuldade == 3){
+                  tempoDescanso = 90
                 }
-
+              } else if(tabela.intensidade[c] == "10% BW"){
+                tempoDescanso = 60
               } else {
                 console.log("Erro na regra 18! Tipo da variável intensidade bugado")
                 return -1
@@ -1815,30 +1824,20 @@ function regra18() {
           
           } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5) { // 0-60s
             while(c < tabela.idExercicios.length){
-              if(tabela.intensidade[c] == "NA"){ // Exercícios do tipo time
+              var exercAtual = exercicios[tabela.idExercicios[c]] // Exercício da iteração C
+
+              if(exercAtual.tipoContagem == "time"){ // Exercícios do tipo time
                 tempoDescanso = 30
-              } else if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
-                var intensidade = tabela.intensidade[c]
-                if(intensidade == 1){
+              } else if (tabela.intensidade[c] == "NA") { // Os demais
+                if(exercAtual.dificuldade == 1){
                   tempoDescanso = 20
-                } else if(intensidade == 2){
+                } else if(exercAtual.dificuldade == 2){
                   tempoDescanso = 40
-                } else if(intensidade == 3){
+                } else if(exercAtual.dificuldade == 3){
                   tempoDescanso = 60
                 }
-              } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
-                var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
-
-                if(intensidade >= 30 && intensidade <= 60){
-                  tempoDescanso = 20
-                } else if((intensidade > 60 && intensidade <= 85) || intensidade == 10){
-                  tempoDescanso = 35
-                } else if(intensidade <= 100){
-                  tempoDescanso = 50
-                } else if(intensidade == 10){
-                  tempoDescanso = 60
-                }
-
+              } else if (tabela.intensidade[c] == "10% BW"){
+                tempoDescanso = 60
               } else {
                 console.log("Erro na regra 18! Tipo da variável intensidade bugado")
                 return -1
@@ -1847,7 +1846,6 @@ function regra18() {
               tabela.tempoDescanso[c] = tempoDescanso
               c++
             }
-
           } else {
             console.log("Erro na regra 18. Fase inválida!")
             return -1
@@ -1860,26 +1858,28 @@ function regra18() {
 
           if(treinos[i].fase == 1){ // 0-90s
             while(c < tabela.idExercicios.length){
+              var exercAtual = exercicios[tabela.idExercicios[c]] // Exercício da iteração C
+
               if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
                 var intensidade = tabela.intensidade[c]
-                if(intensidade == 1){
-                  tempoDescanso = 40
-                } else if(intensidade == 2){
-                  tempoDescanso = 70
-                } else if(intensidade == 3){
+                if(intensidade == 1){ //0-30s
+                  tempoDescanso = 30
+                } else if(intensidade == 2){//30-60s
+                  tempoDescanso = 60
+                } else if(intensidade == 3){//60-90s
                   tempoDescanso = 90
                 }
               } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
                 var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
 
-                if(intensidade >= 30 && intensidade <= 60){
-                  tempoDescanso = 40
-                } else if(intensidade > 60 && intensidade <= 85){
-                  tempoDescanso = 70
-                } else if(intensidade <= 100){
+                if(intensidade >= 30 && intensidade <= 70){
+                  tempoDescanso = 30
+                } else if(intensidade > 70 && intensidade <= 85){
+                  tempoDescanso = 60
+                } else if(intensidade > 85 && intensidade <= 100){
                   tempoDescanso = 90
                 } else if(intensidade == 10){
-                  tempoDescanso = 50
+                  tempoDescanso = 60
                 }
 
               } else {
@@ -1895,23 +1895,23 @@ function regra18() {
             while(c < tabela.idExercicios.length){
               if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
                 if(intensidade == 1){
-                  tempoDescanso = 20
-                } else if(intensidade == 2){
                   tempoDescanso = 40
+                } else if(intensidade == 2){
+                  tempoDescanso = 50
                 } else if(intensidade == 3){
                   tempoDescanso = 60
                 }
               } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
                 var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
 
-                if(intensidade >= 30 && intensidade <= 60){
+                if(intensidade >= 30 && intensidade <= 70){
                   tempoDescanso = 20
-                } else if(intensidade > 60 && intensidade <= 85){
-                  tempoDescanso = 35
-                } else if(intensidade <= 100){
-                  tempoDescanso = 50
-                } else if(intensidade == 10){
+                } else if(intensidade > 70 && intensidade <= 85){
+                  tempoDescanso = 40
+                } else if(intensidade > 85 && intensidade <= 100){
                   tempoDescanso = 60
+                } else if(intensidade == 10){
+                  tempoDescanso = 50
                 }
 
               } else {
@@ -1922,7 +1922,7 @@ function regra18() {
               tabela.tempoDescanso[c] = tempoDescanso
               c++
             }
-          } else if (treinos[i].fase == 4){ // 3-5min 
+          } else if (treinos[i].fase == 4){ // 3-4min 
             while(c < tabela.idExercicios.length){
               if(typeof(tabela.intensidade[c]) == "number"){  // Formatação da intensidade entre os valores {0,1,2}
                 if(intensidade == 1){
@@ -1938,7 +1938,7 @@ function regra18() {
                 if(intensidade >= 30 && intensidade <= 60){
                   tempoDescanso = (3*60)
                 } else if(intensidade > 60 && intensidade <= 85){
-                  tempoDescanso = (3,5*60)
+                  tempoDescanso = (3.5*60)
                 } else if(intensidade <= 100){
                   tempoDescanso = (4*60)
                 } else if(intensidade == 10){
@@ -1960,21 +1960,21 @@ function regra18() {
                   if(intensidade == 1){
                     tempoDescanso = (3*60)
                   } else if(intensidade == 2){
-                    tempoDescanso = (4*60)
+                    tempoDescanso = (3.5*60)
                   } else if(intensidade == 3){
-                    tempoDescanso = (5*60)
+                    tempoDescanso = (4*60)
                   }
                 } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
                   var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
   
-                  if(intensidade >= 30 && intensidade <= 60){
+                  if(intensidade >= 30 && intensidade <= 70){
                     tempoDescanso = (3*60)
-                  } else if(intensidade > 60 && intensidade <= 85){
-                    tempoDescanso = (3,5*60)
-                  } else if(intensidade <= 100){
+                  } else if(intensidade > 70 && intensidade <= 85){
+                    tempoDescanso = (3.5*60)
+                  } else if(intensidade > 85 && intensidade <= 100){
                     tempoDescanso = (4*60)
                   } else if(intensidade == 10){
-                    tempoDescanso = (5*60)
+                    tempoDescanso = (3*60)
                   }
   
                 } else {
@@ -1991,19 +1991,19 @@ function regra18() {
                   if(intensidade == 1){
                     tempoDescanso = (1*60)
                   } else if(intensidade == 2){
-                    tempoDescanso = (1,5*60)
+                    tempoDescanso = (1.5*60)
                   } else if(intensidade == 3){
                     tempoDescanso = (2*60)
                   }
                 } else if (typeof(tabela.intensidade[c] == "string")){ // Formatação da intensidade entre os valores {30-100% RM ou 10% BW}
                   var intensidade = Number(tabela.intensidade[c].substring(0, (tabela.intensidade[c].indexOf("%")))) // Recebe a parte numérica da intensidade
   
-                  if(intensidade >= 30 && intensidade <= 60){
+                  if(intensidade >= 30 && intensidade <= 70){
                     tempoDescanso = (1*60)
-                  } else if(intensidade > 60 && intensidade <= 85){
-                    tempoDescanso = (1,25*60)
+                  } else if(intensidade > 70 && intensidade <= 85){
+                    tempoDescanso = (1.25*60)
                   } else if(intensidade <= 100){
-                    tempoDescanso = (1,5*60)
+                    tempoDescanso = (1.5*60)
                   } else if(intensidade == 10){
                     tempoDescanso = (2*60)
                   }
@@ -2151,7 +2151,6 @@ function regra19(){
           tabela.tempoTotal[c] = tempoTotal
           c++
         }
-
       } else { // Core, Resistência, Cardio
         while(c < tabela.idExercicios.length){
           var mod = tabela.modTempoExec[c]
@@ -2185,11 +2184,12 @@ function regra19(){
 ////Regra 20: Define o tempo de execução total de um treino
 regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos.data"] instanceof Date) // Quantidade de treinos definidos
 regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoDescanso[0] != null) // Quantidade de repetições definidos
-regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoTotal[0] != null) // Modo de execução definidos
+regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].tempoTotal[0] != null) // Modo de execução 
+regras[20].antecedente.push(() => binding["Usuario.planoTreino.treinos"][1].tabExercicios[1].sets[0] != null) // Sets definidos
 regras[20].acoesConsequente.push(regra20)
-regras[20].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal")
+regras[20].nameVariaveisAntecedente.push("Usuario.planoTreino.treinos.data", "Usuario.planoTreino.treinos.tabExercicios.tempoDescanso", "Usuario.planoTreino.treinos.tabExercicios.tempoTotal", "Usuario.planoTreino.treinos.tabExercicios.sets")
 regras[20].nameVariaveisConsequente.push("Usuario.planoTreino.treinos.tempoTotal")
-regras[20].exp = "Regra 20: Soma o tempo de execução e tempos de descanso entre as séries, resultando no tempo total de treino"
+regras[20].exp = "Regra 20: Soma o tempo de execução com tempos de descanso entre as séries e tempo de troca de exercício, resultando no tempo total de treino"
 
 function regra20(){
   var treinos = binding["Usuario.planoTreino.treinos"]
@@ -2202,9 +2202,9 @@ function regra20(){
 
       while(c < tabela.idExercicios.length){
         if(tabela.tempoDescanso[c] == "NA"){
-          somaTempo += tabela.tempoTotal[c] 
+          somaTempo += tabela.tempoTotal[c] +  20 // 20s médios na troca e preparação do ambiente para o próximo exercício
         }else{
-          somaTempo += tabela.tempoTotal[c] + tabela.tempoDescanso[c]
+          somaTempo += tabela.tempoTotal[c] + tabela.tempoDescanso[c]*tabela.sets[c]
         }
         
         c++
@@ -2320,7 +2320,7 @@ function regra22(){
 
 
 
-export {regras}
+export {regras, mesRelativo}
 
 
 

@@ -2,6 +2,7 @@ import Usuario from "./usuario.js"
 import Exercicio from './exercicio.js'
 import {traceValues, explanations} from "./ie.js"
 import {binding} from './binding.js'
+import {mesRelativo} from './production_rule.js'
  
 export var askable_vars = ["Usuario.nome", "Usuario.idade", "Usuario.sexo", "Usuario.peso", "Usuario.altura", "Usuario.objetivo", "Usuario.disponibilidade", "Usuario.nivel"]
 export var objVars = ["Usuario.planoTreino", "Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios", 
@@ -15,31 +16,49 @@ traceValues("Usuario")
 
 var treinos = binding["Usuario.planoTreino.treinos"]
 
-
-for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
-    console.log(treinos[i])
-    console.log("Tempo Total: "+Math.round(treinos[i].tempoTotal/60))
-    console.log("WarmUp Exercises: "+treinos[i].tabExercicios[0].nomeExercicios)
-    console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
-    console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
-    console.log("Cardio Exercises: "+ treinos[i].tabExercicios[3].nomeExercicios)
-    for(var j = 0; j < 4; j++){
-        console.log("Intensidade: "+treinos[i].tabExercicios[j].intensidade)
+var q = 0
+var f = []
+var m = []
+for(var i = 0; i < treinos.length; i++){     
+    if((treinos[i].tempoTotal/60) > 108){
+        q++
+        f.push(treinos[i].fase)
+        m.push(mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()))
+        console.log(treinos[i])
+        console.log("Tempo Total: "+Math.round(treinos[i].tempoTotal/60))
+        /*
+        console.log("WarmUp Exercises: "+treinos[i].tabExercicios[0].nomeExercicios)
+        console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
+        console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
+        console.log("Cardio Exercises: "+ treinos[i].tabExercicios[3].nomeExercicios)
+        */
+        for(var j = 0; j < 4; j++){
+            console.log("Intensidade: "+treinos[i].tabExercicios[j].intensidade)
+        }
+        for(var j = 0; j < 4; j++){
+            console.log("modTempoExec: "+treinos[i].tabExercicios[j].modTempoExec)
+        }
+        for(var j = 0; j < 4; j++){
+            console.log("Repetições: "+treinos[i].tabExercicios[j].repeticoes)
+        } 
+        for(var j = 0; j < 4; j++){
+            console.log("Sets: "+treinos[i].tabExercicios[j].sets)
+        }
+        for(var j = 0; j < 4; j++){
+            console.log("Tempo de Descanso: "+treinos[i].tabExercicios[j].tempoDescanso)
+        }
+        for(var j = 0; j < 4; j++){
+            console.log("Tempo de execução total: "+treinos[i].tabExercicios[j].tempoTotal)
+        }
+            
+        console.log("\n")
     }
-    for(var j = 0; j < 4; j++){
-        console.log("modTempoExec: "+treinos[i].tabExercicios[j].modTempoExec)
-    }
-    for(var j = 0; j < 4; j++){
-        console.log("Repetições: "+treinos[i].tabExercicios[j].repeticoes)
-    } 
-    for(var j = 0; j < 4; j++){
-        console.log("Sets: "+treinos[i].tabExercicios[j].sets)
-    }
-    for(var j = 0; j < 4; j++){
-        console.log("Tempo de Descanso: "+treinos[i].tabExercicios[j].tempoDescanso)
-    }
+        
+    console.log("\n")
 }
-
+console.log("Acima: "+ q)
+console.log("Fases: "+f)
+console.log("Meses relativos: "+m)
 console.log("Treinos.length: ", binding["Usuario.planoTreino.treinos"].length)
 console.log("Fases por mês do plano de treinos: ", binding["Usuario.planoTreino.fases"])
 console.log("Objetivo: ", binding["Usuario.objetivo"])
@@ -48,7 +67,6 @@ for(var i = 0; i < binding["Usuario.planoTreino.freqNoMes"].length; i++){
     console.log("Frequência no mês "+i+": "+binding["Usuario.planoTreino.freqNoMes"][i])
 }
     
-
 console.log("Explicação: ", explanations)
 
 
