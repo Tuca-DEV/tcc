@@ -20,20 +20,18 @@ var q =0
 var f = []
 var m = []
 for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
-    if((treinos[i].tempoTotal/60) < 38){
-        q++
-        f.push(treinos[i].fase)
-        m.push(treinos[i].data.getMonth())
-
+    if(treinos[i].fase == 5){
+        
         console.log(treinos[i].data)
         console.log(treinos[i].fase)
+        console.log(treinos[i].intensidade)
         console.log("Tempo Total: "+Math.round(treinos[i].tempoTotal/60))
         
         console.log("WarmUp Exercises: "+treinos[i].tabExercicios[0].nomeExercicios)
         console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
         console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
         console.log("Cardio Exercises: "+ treinos[i].tabExercicios[3].nomeExercicios)
-        */
+        
         for(var j = 0; j < 4; j++){
             console.log("Intensidade: "+treinos[i].tabExercicios[j].intensidade)
         }
@@ -56,7 +54,6 @@ for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de 
         console.log("\n")
     }
         
-    console.log("\n")
 }
 console.log("Acima: "+ q)
 console.log("Fases: "+f)

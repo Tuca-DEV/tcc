@@ -1243,8 +1243,10 @@ function regra16() {
           }
 
           while(c < tabela.idExercicios.length){
-            if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){
+            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){ 
               tabela.repeticoes[c] = 1
+            }else if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){ // Exercícios de repetição tipo cardio
+              tabela.repeticoes[c] = 60
             } else if(reps == "1/5-8"){ // Se o grupo de valores para as repetições é (1 ou 5 a 8)
               if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Alongamento"){
                 tabela.repeticoes[c] = 1
@@ -1423,9 +1425,9 @@ function regra16() {
           var reps = 0
 
           if(treinos[i].fase == 1){
-            reps = "12-20"
+            reps = "36-60"
           } else if (treinos[i].fase >= 2 && treinos[i].fase <= 5){
-            reps = "8-12"
+            reps = "24-36"
           } else {
             console.log("Erro na regra 16. Fase inválida!")
             return -1
@@ -1435,22 +1437,22 @@ function regra16() {
             if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){
               tabela.repeticoes[c] = 1
 
-            } else if(reps == "12-20"){
+            } else if(reps == "36-60"){
               if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.repeticoes[c] = 12
+                tabela.repeticoes[c] = 36
               }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                tabela.repeticoes[c] = 16
+                tabela.repeticoes[c] = 48
               } else { // Últimos 4 meses
-                tabela.repeticoes[c] = 20
+                tabela.repeticoes[c] = 60
               }
               
-            } else if (reps == "8-12"){
+            } else if (reps == "24-36"){
               if(mes >= 0 && mes <= 3){ // Primeiros 4 meses
-                tabela.repeticoes[c] = 8
+                tabela.repeticoes[c] = 24
               }else if (mes >= 4 && mes <= 7){ // 5°, 6°, 7° e 8° mêses treinando
-                tabela.repeticoes[c] = 10
+                tabela.repeticoes[c] = 30
               } else { // Últimos 4 meses
-                tabela.repeticoes[c] = 12
+                tabela.repeticoes[c] = 36
               }
             }
 
@@ -2302,7 +2304,7 @@ function regra22(){
       }
     }
 
-    var m = Math.round(somaIntensidade/treinos[i].volume) // Média de intensidade (valor entre 1 e 3)
+    var m = Math.round(somaIntensidade/treinos[i].volume) // Média de intensidade (valor entre 1 e 3) 
 
     if(m == 1){
       treinos[i].intensidade = "Iniciante"
