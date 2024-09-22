@@ -16,17 +16,19 @@ traceValues("Usuario")
 
 var treinos = binding["Usuario.planoTreino.treinos"]
 
-var q = 0
+var q =0
 var f = []
 var m = []
-for(var i = 0; i < treinos.length; i++){     
-    if((treinos[i].tempoTotal/60) > 108){
+for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
+    if((treinos[i].tempoTotal/60) < 38){
         q++
         f.push(treinos[i].fase)
-        m.push(mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()))
-        console.log(treinos[i])
+        m.push(treinos[i].data.getMonth())
+
+        console.log(treinos[i].data)
+        console.log(treinos[i].fase)
         console.log("Tempo Total: "+Math.round(treinos[i].tempoTotal/60))
-        /*
+        
         console.log("WarmUp Exercises: "+treinos[i].tabExercicios[0].nomeExercicios)
         console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
         console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
