@@ -1,4 +1,4 @@
-import Exercicio from './exercicio.js'
+import Exercicio from '../entities/exercicio.js'
 
 var exercicios = []
 

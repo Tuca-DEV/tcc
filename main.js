@@ -1,8 +1,8 @@
-import Usuario from "./usuario.js"
-import Exercicio from './exercicio.js'
-import {traceValues, explanations} from "./ie.js"
-import {binding} from './binding.js'
-import {mesRelativo} from './production_rule.js'
+import Usuario from "./entities/usuario.js"
+import Exercicio from './entities/exercicio.js'
+import {traceValues, explanations} from "./inference_engine/ie.js"
+import {binding} from './facts_database/binding.js'
+import {mesRelativo} from './knowledge_base/production_rule.js'
  
 export var askable_vars = ["Usuario.nome", "Usuario.idade", "Usuario.sexo", "Usuario.peso", "Usuario.altura", "Usuario.objetivo", "Usuario.disponibilidade", "Usuario.nivel"]
 export var objVars = ["Usuario.planoTreino", "Usuario.planoTreino.treinos", "Usuario.planoTreino.treinos.tabExercicios", 
@@ -20,7 +20,6 @@ var q =0
 var f = []
 var m = []
 for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
-    if(treinos[i].fase == 5){
         
         console.log(treinos[i].data)
         console.log(treinos[i].fase)
@@ -52,7 +51,6 @@ for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de 
         }
             
         console.log("\n")
-    }
         
 }
 console.log("Acima: "+ q)

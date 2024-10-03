@@ -1,6 +1,6 @@
 //import {x, y} from './ie.js'
 //import user from './main.js'
-import Usuario from "./usuario.js"
+import Usuario from "../entities/usuario.js"
 
 export var user = new Usuario;
 var x = 0, y = 0; // x (cada treino do usuário) varia de 0 a Usuario.planoTreino.qtdTreinosAnual, y (tipo de subtreino) varia de 0 a 3

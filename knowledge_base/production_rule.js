@@ -1,6 +1,6 @@
-import {binding} from './binding.js'
-import Treino from './treino.js'
-import {exercicios} from './exercicios.js'
+import {binding} from '../facts_database/binding.js'
+import Treino from '../entities/treino.js'
+import {exercicios} from '../knowledge_base/exercicios.js'
 
 class Regra {
     constructor() {

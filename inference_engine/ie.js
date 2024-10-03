@@ -1,7 +1,7 @@
 
-import {askable_vars, objVars} from './main.js'
-import {regras} from './production_rule.js'
-import {binding} from './binding.js'
+import {askable_vars, objVars} from '../main.js'
+import {regras} from '../knowledge_base/production_rule.js'
+import {binding} from '../facts_database/binding.js'
 import promptSync from 'prompt-sync';
 
 const prompt = promptSync();
@@ -38,6 +38,7 @@ function traceValues(nameVariable) {
 
     }
 
+    // Trace facilities
     if(binding[nameVariable] != null){
         console.log("Variável "+nameVariable+ " traçada!")
         tracedVars.push(nameVariable)
@@ -73,7 +74,7 @@ function select(regras, nameVariable, selected_regras){
 //Avalia se a regra selecionada será executada
 function apply(regra){
     if(evalconditions(regra)) { 
-        explanations.push(regra.exp)
+        explanations.push(regra.exp) // Explanations facilities
         regra.executarConsequente() //Executará o consequente da regra caso todos os predicados sejam verdadeiros com o valor da variável
     } 
 }
