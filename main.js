@@ -1,3 +1,13 @@
+/*
+ * Project: Self Train Artificial Intelligence
+ * Author: Gustavo Camilo Ferreira (Tuca-DEV)
+ * Description: Sistema de inteligência artificial do tipo sistema especialista que planeja treinos físicos de academia
+ * Date Completed: 18/09/2024
+ * Language: JavaScript (Node.js)
+ * Note: Este código faz parte do meu projeto de TCC
+ *       no qual estamos desenvolvendo um aplicativo para treinos físicos.
+ */
+
 import Usuario from "./entities/usuario.js"
 import Exercicio from './entities/exercicio.js'
 import {traceValues, explanations} from "./inference_engine/ie.js"
