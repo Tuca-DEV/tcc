@@ -1,21 +1,7 @@
 import {binding} from '../facts_database/binding.js'
 import Treino from '../entities/treino.js'
 import {exercicios} from '../knowledge_base/exercicios.js'
-
-class Regra {
-    constructor() {
-      this.antecedente = []; // Vetor que armazena as cláusulas condicionais da regra
-      this.nameVariaveisAntecedente = []; // Atributo que armazena as variáveis envolvidas no antecedente
-      this.acoesConsequente = []; // Atributo que armazena as funções caso todos os predicados em antecedente sejam verdadeiros
-      this.nameVariaveisConsequente = []; // Atributo que guarda o nome das variáveis que sofrerão mudanças no consequente
-      this.exp = null // Atributo string que armazena a explicação da regra
-      this.used = false;
-    }
-  
-    executarConsequente() {
-        this.acoesConsequente.forEach(funcao => funcao());
-    }
-  }
+import Regra from '../entities/regra.js'
 
 //Knowledge base
 var regras = new Array(30).fill(null).map(() => new Regra())
