@@ -14,7 +14,7 @@ function traceValues(nameVariable) {
     infer(nameVariable) // Tentativa de deduzir o valor da variável
 
     //Caso a variável não tenha sido inferida e pode ser perguntada
-    if((binding[nameVariable] == null || isNaN(binding[nameVariable]) || binding[nameVariable].length == 0) && askable_vars.includes(nameVariable)) { 
+    if((binding[nameVariable] == null || Number.isNaN(binding[nameVariable]) || binding[nameVariable].length == 0) && askable_vars.includes(nameVariable)) { 
 
         if(binding[nameVariable] instanceof Array) { //Se é uma variável multi-valorada tipo array
                 var i = prompt("Quantos valores quer adicionar a(o) "+nameVariable+"?  ")
