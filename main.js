@@ -19,7 +19,7 @@ var treinos = binding["Usuario.planoTreino.treinos"]
 var q =0
 var f = []
 var m = []
-for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de todos os treinos
+for(var i = 0; i < 30; i++){      // Imprimir tabExercicios Core de todos os treinos
         
         console.log(treinos[i].data)
         console.log(treinos[i].fase)
@@ -30,10 +30,10 @@ for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de 
         console.log("Core Exercises: "+ treinos[i].tabExercicios[1].nomeExercicios)
         console.log("Resistance Exercises: "+ treinos[i].tabExercicios[2].nomeExercicios)
         console.log("Cardio Exercises: "+ treinos[i].tabExercicios[3].nomeExercicios)
-        
+        /*
         for(var j = 0; j < 4; j++){
             console.log("Intensidade: "+treinos[i].tabExercicios[j].intensidade)
-        }
+        } */
         for(var j = 0; j < 4; j++){
             console.log("modTempoExec: "+treinos[i].tabExercicios[j].modTempoExec)
         }
@@ -44,11 +44,9 @@ for(var i = 0; i < treinos.length; i++){      // Imprimir tabExercicios Core de 
             console.log("Sets: "+treinos[i].tabExercicios[j].sets)
         }
         for(var j = 0; j < 4; j++){
-            console.log("Tempo de Descanso: "+treinos[i].tabExercicios[j].tempoDescanso)
+            console.log("Tempo total de execução: "+treinos[i].tabExercicios[j].tempoTotal)
         }
-        for(var j = 0; j < 4; j++){
-            console.log("Tempo de execução total: "+treinos[i].tabExercicios[j].tempoTotal)
-        }
+        
             
         console.log("\n")
         

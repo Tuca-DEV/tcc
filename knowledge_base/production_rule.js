@@ -840,12 +840,6 @@ function regra13() {
     while(quantExercs > 0){
       quantExercs--
       var id = exerciciosComNota[quantExercs][0]
-
-      if(id < 0){
-        console.log(treinos[i])
-        console.log()
-        console.log()
-      }
       
       treinos[i].tabExercicios[0].idExercicios.push(id) 
       treinos[i].tabExercicios[0].nomeExercicios.push(exercicios[id].nome)
@@ -1228,7 +1222,7 @@ function regra16() {
 
       switch(secao){
         case 0: // WarmUp
-
+          if(treinos[i])
           var reps = 0
 
           if(treinos[i].fase == 1){
@@ -1243,7 +1237,7 @@ function regra16() {
           }
 
           while(c < tabela.idExercicios.length){
-            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time"){ 
+            if(exercicios[tabela.idExercicios[c]].tipoContagem == "time" && exercicios[tabela.idExercicios[c]].tipoSubTreino != "Alongamento"){ 
               tabela.repeticoes[c] = 1
             }else if(exercicios[tabela.idExercicios[c]].tipoSubTreino == "Cardio"){ // Exercícios de repetição tipo cardio
               tabela.repeticoes[c] = 60
