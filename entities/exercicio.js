@@ -1,5 +1,5 @@
   class Exercicio {
-    constructor(idExerc = null, nome = null, tipoContagem = null, niveisOpt = [], dificuldade = null, tipo = null, tipoSubTreino = null, agrupMusc = []) {
+    constructor(idExerc = null, nome = null, tipoContagem = null, niveisOpt = [], dificuldade = null, tipo = null, tipoSubTreino = null, agrupMusc = [], desc = null) {
         this.idExerc = idExerc;
         this.nome = nome;
         this.tipoContagem = tipoContagem // time ou rep : Tempo ou repetições
@@ -8,6 +8,7 @@
         this.tipo = tipo; // (Máquina, PesoLivre, Bola, Kettlebell, BodyWeight)
         this.tipoSubTreino = tipoSubTreino; // (Alongamento, Mobilidade, Cardio, Resistência, Core)
         this.agrupMusc = agrupMusc; // Agrupamentos musculares recrutados (Pernas, Abdômen, Peito, Costas, Ombros, Bíceps, Tríceps)
+        this.desc = desc // Descrição detalhada sobre o método correto de execução do exercício
 
     }
 }
