@@ -507,7 +507,7 @@ function regra8() {
   var pMes = treinos[0].data.getMonth()
   var intercala = 0
 
-  var freq3 = [["Peito", "Ombro", "Tríceps"], ["Pernas"], ["Costas", "Bíceps"]]
+  var freq3 = [["Peito", "Ombro", "Tríceps"], ["Pernas", "Isquiotibiais", "Quadríceps", "Panturrilha"], ["Costas", "Bíceps"]]
   var freq4 = [["Peito", "Ombro", "Tríceps"], ["Pernas","Costas", "Bíceps"]]
   var freq5 = [["Peito"], ["Pernas", "Isquiotibiais", "Quadríceps", "Panturrilha"], ["Costas"], ["Ombro"], ["Bíceps", "Tríceps"]]
 
@@ -721,14 +721,10 @@ function regra12() {
 
     //Condições de nota
     var condNota = [function(id){if(exercicios[id].niveisOpt.includes(treinos[i].fase)){return 0.4} return 0}] // Se a fase OPT do Treino é compatível com uma das fases OPT recomendadas do exercício, +0.65
-    condNota.push(function(id){ // Se o usuário é idoso, o exercício é de dificuldade 2, e o treino é dos 3 primeiros mêses, -0.2
-      if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) < 4){
-        return -0.2
-      }
-      return 0}) 
+    condNota.push(function(id){if(binding["Usuario.idade"] > 60 && exercicios[id].dificuldade == 2 && mesRelativo(treinos[i].data.getMonth(), treinos[0].data.getMonth()) < 4){return -0.2} return 0}) // Se o usuário é idoso, o exercício é de dificuldade 2, e o treino é dos 3 primeiros mêses, -0.2
     condNota.push(function(id){if(binding["Usuario.nivel"] == exercicios[id].dificuldade){return 0.2} return 0}) // Se o usuário tem um nível igual a dificuldade deste exercício, +0.25.
     condNota.push(function(id){if(binding["Usuario.nivel"] > exercicios[id].dificuldade){return 0.1} return 0}) // Se o usuário tem um nível superior a dificuldade deste exercício, +0.1.
-    condNota.push(function(id){if(binding["Usuario.nivel"] == 1 && (exercicios[id].tipo == "Kettlebell" || exercicios[id].tipo == "PesoLivre")){return -0.2} return 0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com pesos livres ou Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
+    condNota.push(function(id){if(binding["Usuario.nivel"] == 1 && (exercicios[id].tipo == "Kettlebell")){return -0.2} return 0.1}) // Se o usuário tem um nível 1 e o exercício é realizado com Kettlebell, -0.1. Se não (é Máquina ou Bola ou BodyWeight), +0.1
    
     if(treinos[i].agrupMusc == "Cardio"){ // Se o treino é de Cardio, não terá anaeróbico
       continue
@@ -836,7 +832,6 @@ function regra13() {
 
 function notaExerc(condElimina, condNota, rand){
   var selecaoExercs = Array.from({ length: exercicios.length }, () => [-10, -10])
-
   for(var i = 0; i < exercicios.length; i++){
 
     var nota = 0; 

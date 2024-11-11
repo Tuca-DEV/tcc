@@ -3,6 +3,7 @@ import Exercicio from '../entities/exercicio.js'
 var exercicios = []
 var nextId = 0
 
+// Automatização de inserção de ID's
 function adicionarExercicio(nome, niveisOpt, dificuldade, tipo, tipoSubTreino, agrupMusc, descricao) {
     const exercicio = new Exercicio(nextId++, nome, niveisOpt, dificuldade, tipo, tipoSubTreino, agrupMusc, descricao);
     exercicios.push(exercicio);
@@ -68,13 +69,15 @@ adicionarExercicio( "Barbell clean", "rep", [5], 3, "PesoLivre", "Resistência",
 adicionarExercicio( "Overhead medicine ball thrown", "rep", [5], 1, "Bola", "Resistência", ["Ombro", "Pernas"]) // Com a bola nos joelhos e agachado, pular explosivamente e jogar a bola medicinal para cima
 
 //Pernas
-adicionarExercicio( "Flexão plantar (livre)", "rep", [1,2,3,5], 2, "BodyWeight", "Resistência", ["Panturrilha"]) // Flexão da panturrilha em pé (peso do corpo)
+adicionarExercicio( "Flexão plantar (livre)", "rep", [1,2,3,5], 2, "BodyWeight", "Resistência", ["Panturrilha"]) // Flexão da panturrilha em pé (sem chão, total amplitude de movimento)
+adicionarExercicio( "Flexão plantar em pé", "rep", [1,2], 1, "BodyWeight", "Resistência", ["Panturrilha"]) // Flexão da panturrilha em pé (no chão)
 adicionarExercicio( "Cadeira flexora", "rep", [1,2,3,4], 1, "Máquina", "Resistência", ["Isquiotibiais"]) // Flexão de isquiotibiais na máquina
 adicionarExercicio( "Cadeira extensora", "rep", [1,2,3,4], 1, "Máquina", "Resistência", ["Quadríceps"]) // Extensão de quadríceps na máquina
 adicionarExercicio( "Leg Press", "rep", [2,3,4], 2, "Máquina", "Resistência", ["Pernas"]) // Leg Press
 adicionarExercicio( "Agachamento (barra teleguiada)", "rep", [2,3,4], 2, "Máquina", "Resistência", ["Pernas"]) // Agachamento com barra teleguiada
 adicionarExercicio( "Agachamento (barra)", "rep", [2,3,4], 3, "PesoLivre", "Resistência", ["Pernas"]) // Agachamento com barra de peso livre
 adicionarExercicio( "Agachamento", "rep", [1,5], 1, "BodyWeight", "Resistência", ["Pernas"]) // Agachamento com peso do corpo
+adicionarExercicio( "Agachamento (apoio banco)", "rep", [1], 1, "BodyWeight", "Resistência", ["Pernas"]) // Agachamento com apoio do banco
 //Costas
 adicionarExercicio( "Standing cable row", "rep", [1, 2], 1, "Máquina", "Resistência", ["Costas", "Bíceps"]) // Com as pernas levemente flexionadas, puxar as polias 
 adicionarExercicio( "Voador na bola suiça", "rep", [1], 1, "PesoLivre", "Resistência", ["Costas"]) // Voador na bola suiça
