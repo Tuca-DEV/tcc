@@ -200,43 +200,95 @@ adicionarExercicio( "Crucifixo inverso (halter)", "rep", [2,3,4], 2, "PesoLivre"
     "Para o crucifixo inverso com halteres, deite-se de barriga para baixo em um banco inclinado, segurando um haltere em cada mão. Com os braços estendidos à frente, puxe os halteres para os lados, contraindo as costas. Evite arquear as costas durante o movimento e retorne de forma controlada à posição inicial.");
 
 //Bíceps
-adicionarExercicio( "Rosca direta com uma perna (halter)", "rep", [1], 2, "PesoLivre", "Resistência", ["Bíceps"]) // Fazer uma rosca direta com halteres se apoiando apenas com uma perna enquanto a outra fica acima do solo
-adicionarExercicio( "Rosca direta com uma perna (barra)", "rep", [1], 1, "PesoLivre", "Resistência", ["Bíceps"]) // Fazer uma rosca direta com a barra se apoiando apenas com uma perna enquanto a outra fica acima do solo
-adicionarExercicio( "Rosca direta (halter)", "rep", [2,3,4], 1, "PesoLivre", "Resistência", ["Bíceps"]) // Rosca direta com halteres
-adicionarExercicio( "Rosca direta (barra)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Bíceps"]) // Rosca direta com barra de peso livre
-adicionarExercicio( "Rosca Scott (máquina)", "rep", [2,3,4], 1, "Máquina", "Resistência", ["Bíceps"]) // Rosca Scott na máquina
-adicionarExercicio( "Rosca Scott (barra)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Bíceps"]) // Rosca Scott com barra de peso livre
+adicionarExercicio( "Rosca direta com uma perna (halter)", "rep", [1], 2, "PesoLivre", "Resistência", ["Bíceps"], 
+    "Para realizar a rosca direta com uma perna com halteres, fique de pé com uma perna apoiada no chão e a outra elevada, mantendo o equilíbrio. Segure um haltere em cada mão com as palmas voltadas para frente. Execute a rosca direta, flexionando os cotovelos e trazendo os halteres até a altura dos ombros, concentrando a contração no bíceps. Mantenha o tronco estável durante o movimento e repita o exercício com a outra perna.");
+
+adicionarExercicio( "Rosca direta com uma perna (barra)", "rep", [1], 1, "PesoLivre", "Resistência", ["Bíceps"], 
+    "Para a rosca direta com barra e uma perna elevada, fique em pé com uma perna apoiada no chão e a outra levemente elevada. Segure a barra com as palmas das mãos voltadas para frente e execute a flexão dos cotovelos, levando a barra até a altura dos ombros. Mantenha o tronco firme, evitando balanços, e repita o movimento.");
+
+adicionarExercicio( "Rosca direta (halter)", "rep", [2,3,4], 1, "PesoLivre", "Resistência", ["Bíceps"], 
+    "Para a rosca direta com halteres, fique em pé com os pés na largura dos ombros, segurando um haltere em cada mão. Flexione os cotovelos, levantando os halteres até a altura dos ombros, mantendo os cotovelos fixos ao lado do corpo. Concentre-se na contração do bíceps e retorne lentamente à posição inicial.");
+
+adicionarExercicio( "Rosca direta (barra)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Bíceps"], 
+    "Na rosca direta com barra, fique em pé com os pés alinhados com os ombros e segure a barra com as palmas das mãos voltadas para cima. Flexione os cotovelos para levar a barra até a altura dos ombros, contraindo o bíceps. Mantenha os cotovelos fixos ao longo do corpo e retorne de forma controlada à posição inicial.");
+
+adicionarExercicio( "Rosca Scott (máquina)", "rep", [2,3,4], 1, "Máquina", "Resistência", ["Bíceps"], 
+    "Para a rosca Scott na máquina, sente-se na máquina com as costas apoiadas e os braços estendidos à frente. Segure as alças com as palmas voltadas para cima e puxe-as em direção ao rosto, contraindo os bíceps. Evite movimentar os ombros e mantenha o tronco fixo durante o movimento.");
+
+adicionarExercicio( "Rosca Scott (barra)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Bíceps"], 
+    "No exercício de rosca Scott com barra, sente-se em um banco Scott com a barra posicionada à sua frente. Segure a barra com as palmas voltadas para cima e execute a flexão dos cotovelos, trazendo a barra em direção ao peito. Concentre-se na contração dos bíceps e evite movimentar os ombros.");
+
 //Tríceps
-adicionarExercicio( "Tríceps testa", "rep", [2,3,4], 1, "PesoLivre", "Resistência", ["Tríceps"]) // Tríceps testa
-adicionarExercicio( "Extensão unilateral do cotovelo (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Tríceps"]) // Extensão unilateral do cotovelo (halter)
-adicionarExercicio( "Extensão unilateral do cotovelo (polia)", "rep", [2,3,4], 2, "Máquina", "Resistência", ["Tríceps"]) // Extensão unilateral do cotovelo (polia)
-adicionarExercicio( "Rosca inversa", "rep", [2,3,4], 1, "Máquina", "Resistência", ["Tríceps"]) // Rosca inversa
+adicionarExercicio( "Tríceps testa", "rep", [2,3,4], 1, "PesoLivre", "Resistência", ["Tríceps"], 
+    "Para o tríceps testa, deite-se em um banco plano e segure uma barra ou halteres com as mãos voltadas para frente. Com os cotovelos dobrados, abaixe a barra ou halteres até a testa, mantendo os cotovelos fixos. Estenda os braços para voltar à posição inicial, contraindo os tríceps no topo.");
+
+adicionarExercicio( "Extensão unilateral do cotovelo (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Tríceps"], 
+    "Para a extensão unilateral do cotovelo com haltere, posicione-se em um banco inclinado e segure um haltere com uma das mãos. Com o cotovelo flexionado, estenda o braço para trás, concentrando-se na contração do tríceps. Retorne lentamente à posição inicial e repita com o outro braço.");
+
+adicionarExercicio( "Extensão unilateral do cotovelo (polia)", "rep", [2,3,4], 2, "Máquina", "Resistência", ["Tríceps"], 
+    "Na extensão unilateral do cotovelo com polia, segure a alça da polia com uma mão e posicione-se com o cotovelo flexionado. Estenda o braço para baixo, contraindo os tríceps, e retorne de forma controlada à posição inicial. Mantenha o tronco estável durante o exercício.");
+
+adicionarExercicio( "Rosca inversa", "rep", [2,3,4], 1, "Máquina", "Resistência", ["Tríceps"], 
+    "Para a rosca inversa na máquina, sente-se e posicione os braços na máquina com as palmas voltadas para baixo. Puxe as alças em direção ao tronco, mantendo os cotovelos fixos ao lado do corpo. Concentre-se na contração dos músculos do tríceps durante o movimento e retorne à posição inicial.");
+
 //Peito
-adicionarExercicio( "Two-arm chest pass", "rep", [5], 1, "Bola", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Jogar a bola medicinal com uma força concêntrica explosiva em um ângulo de 30 graus a cima da linha dos ombros
-adicionarExercicio( "Rotation chest pass", "rep", [5], 1, "Bola", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Jogar a bola medicinal com uma força concêntrica explosiva em um ângulo de 30 graus a cima da linha dos ombros para a lateral 
-adicionarExercicio( "Supino declinado (halter)", "rep", [2,3,4], 3, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino com halter declinado
-adicionarExercicio( "Supino inclinado (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino com halter inclinado
-adicionarExercicio( "Supino (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino com halter
-adicionarExercicio( "Supino declinado", "rep", [2,3,4], 3, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino declinado
-adicionarExercicio( "Supino inclinado", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino inclinado
-adicionarExercicio( "Supino na bola suiça", "rep", [1,2], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino na bolsa suiça
-adicionarExercicio( "Supino", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Supino padrão
-adicionarExercicio( "Flexão militar", "rep", [1,2,3,], 2, "BodyWeight", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Flexão militar
-adicionarExercicio( "Flexão militar (apoio dos joelhos)", "rep", [1], 1, "BodyWeight", "Resistência", ["Peito", "Ombro", "Tríceps"]) // Flexão militar com joelhos encostados
+adicionarExercicio( "Passe de bola frontal", "rep", [5], 1, "Bola", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+    "Fique de frente para uma parede ou parceiro e adote uma posição com os pés alinhados e quadrados. Segure uma bola medicinal (5 a 10% do peso corporal) com ambas as mãos, com os cotovelos flexionados, na altura do peito. Empurre e solte a bola para frente com a maior força possível, estendendo os cotovelos e contraindo o peito, sem permitir que os ombros se elevem. Pegue a bola e repita o movimento o mais rápido possível.") // Jogar a bola medicinal com uma força concêntrica explosiva em um ângulo de 30 graus a cima da linha dos ombros
+
+adicionarExercicio( "Passe de bola com rotação (foco nos ombros)", "rep", [5], 1, "Bola", "Resistência", ["Peito", "Ombro", "Tríceps"],
+    "Fique em pé com os pés na largura dos ombros e os dedos apontando para frente. Segure uma bola medicinal (entre 5 e 10% do peso corporal). Utilize os músculos abdominais e os quadris para rotacionar rapidamente e de forma explosiva o corpo em 90 graus. À medida que o corpo gira, faça com que a perna de trás pivote e entre em extensão tripla (extensão do quadril, do joelho e flexão plantar do tornozelo). Lance a bola medicinal com o braço de trás, estendendo-o e aplicando força. Pegue a bola e repita o movimento o mais rápido possível, de forma controlada.") // Jogar a bola medicinal com uma força concêntrica explosiva em um ângulo de 30 graus a cima da linha dos ombros para a lateral 
+
+    adicionarExercicio( "Supino declinado (halter)", "rep", [2,3,4], 3, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "No supino declinado com halteres, deite-se em um banco declinado e segure um haltere em cada mão. Com os braços estendidos, abaixe os halteres em direção ao peito e, em seguida, empurre-os para cima, contraindo os músculos do peito. Mantenha os pés firmes no banco e o tronco estável.");
+
+    adicionarExercicio( "Supino inclinado (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "Para o supino inclinado com halteres, deite-se em um banco inclinado e segure um haltere em cada mão. Abaixe os halteres em direção ao peito, mantendo os cotovelos a um ângulo de 45 graus. Empurre os halteres para cima, contraindo os músculos do peito e dos ombros.");
+    
+    adicionarExercicio( "Supino (halter)", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "No supino com halteres, deite-se em um banco plano e segure um haltere em cada mão. Abaixe os halteres até a altura do peito, mantendo os cotovelos ligeiramente flexionados. Empurre os halteres de volta à posição inicial, contraindo os músculos do peito.");
+    
+    adicionarExercicio( "Supino declinado", "rep", [2,3,4], 3, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "Para o supino declinado, deite-se em um banco declinado e segure a barra com as mãos afastadas. Abaixe a barra até o peito e, em seguida, empurre-a de volta para cima, contraindo os músculos do peito. Mantenha os pés firmes no banco e o tronco estável.");
+    
+    adicionarExercicio( "Supino inclinado", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "No supino inclinado, deite-se em um banco inclinado e segure a barra com as mãos afastadas. Abaixe a barra até o peito e empurre-a de volta para a posição inicial, contraindo os músculos do peito e ombros.");
+    
+    adicionarExercicio( "Supino na bola suiça", "rep", [1,2], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "Para o supino na bola suíça, deite-se sobre a bola com os pés firmemente apoiados no chão e segure os halteres com as mãos. Abaixe os halteres até a altura do peito e, em seguida, empurre-os de volta à posição inicial, mantendo os músculos do peito e ombro contraídos.");
+    
+    adicionarExercicio( "Supino", "rep", [2,3,4], 2, "PesoLivre", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "No supino tradicional, deite-se em um banco plano e segure a barra com as mãos afastadas. Abaixe a barra até o peito e empurre-a de volta à posição inicial, concentrando-se no trabalho do peito.");
+    
+    adicionarExercicio( "Flexão militar", "rep", [1,2,3], 2, "BodyWeight", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "Para a flexão militar, comece na posição de prancha, com as mãos posicionadas ligeiramente mais afastadas que a largura dos ombros. Execute uma flexão, descendo até o peito quase tocar o chão, e depois empurre de volta para a posição inicial.");
+    
+    adicionarExercicio( "Flexão militar (apoio dos joelhos)", "rep", [1], 1, "BodyWeight", "Resistência", ["Peito", "Ombro", "Tríceps"], 
+        "A flexão militar com apoio dos joelhos é uma variação onde você executa o movimento com os joelhos apoiados no chão. Essa modificação torna o exercício mais acessível, mas ainda trabalha os músculos do peito, ombro e tríceps.");
+    
+
 //Ombro
-adicionarExercicio( "Dumbble Scaption", "rep", [1], 1, "PesoLivre", "Resistência", ["Ombro"]) // Com uma perna levemente levantada do chão, erguer os halteres na linha dos ombros em uma angulação de 45° da linha de visão horizontal e segurar um pouco
-adicionarExercicio( "Desenvolvimento de ombro na bola suiça", "rep", [1, 2], 2, "PesoLivre", "Resistência", ["Ombro"]) // Desenvolvimento de ombro sentado na bola suiça
-adicionarExercicio( "Desenvolvimento de ombro", "rep", [2, 3, 4], 2, "PesoLivre", "Resistência", ["Ombro"]) // Desenvolvimento de ombro sentado na bola suiça
-adicionarExercicio( "Desenvolvimento de ombro (máquina)", "rep", [2, 3, 4], 1, "Máquina", "Resistência", ["Ombro"]) // Desenvolvimento de ombro na máquina
+adicionarExercicio( "Dumbble Scaption", "rep", [1], 1, "PesoLivre", "Resistência", ["Ombro"], 
+    "Segure os halteres ao lado do corpo, com as palmas voltadas para os lados. Levante um pé do chão, conforme ilustrado. Levante ambos os braços, com os polegares para cima, em um ângulo de 45 graus à frente do corpo, até que as mãos alcancem aproximadamente a altura dos olhos. Mantenha as escápulas retraídas e deprimidas durante todo o exercício, sem permitir que as costas arqueiem. Segure a posição. Lentamente, retorne os braços para os lados do corpo e repita. Para regressão, execute com os dois pés no chão ou sentado. Para progressão, tente com um pé e alternando os braços, um pé e um braço ou utilizando modalidades proprioceptivas.");
+
+adicionarExercicio( "Desenvolvimento de ombro na bola suiça", "rep", [1, 2], 2, "PesoLivre", "Resistência", ["Ombro"], 
+    "No desenvolvimento de ombro na bola suíça, sente-se sobre a bola com os pés firmemente apoiados no chão. Segure os halteres na altura dos ombros e empurre-os para cima até os braços estarem completamente estendidos.");
+
+adicionarExercicio( "Desenvolvimento de ombro", "rep", [2, 3, 4], 2, "PesoLivre", "Resistência", ["Ombro"], 
+    "No desenvolvimento de ombro, sente-se em um banco e segure os halteres na altura dos ombros. Empurre os halteres para cima até que os braços fiquem totalmente estendidos, contraindo os músculos do ombro no topo do movimento.");
+
+adicionarExercicio( "Desenvolvimento de ombro (máquina)", "rep", [2, 3, 4], 1, "Máquina", "Resistência", ["Ombro"], "No desenvolvimento de ombro na máquina, sente-se na máquina com as costas apoiadas e os braços posicionados nas alças. Empurre as alças para cima até os braços estarem estendidos, focando na contração dos músculos do ombro.");
+
 
 
 // Cardios
-adicionarExercicio( "Esteira", "time", [1,2,3,4,5], 1, "Máquina", "Cardio", ["FullBody"]) // Esteira
-adicionarExercicio( "Bicicleta", "time", [1,2,3,4,5], 1, "Máquina", "Cardio", ["FullBody", "Pernas"]) // Bicicleta
-adicionarExercicio( "Pular corda", "rep", [1,2,5], 2, "BodyWeight", "Cardio", ["FullBody", "Pernas"]) // Pular Corda
+adicionarExercicio( "Esteira", "time", [1,2,3,4,5], 1, "Máquina", "Cardio", ["FullBody"], 
+    "O exercício na esteira consiste em caminhar ou correr, ajustando a velocidade de acordo com o objetivo do treino. Trabalha o corpo todo, ajudando no condicionamento cardiovascular.\nPara correr corretamente, mantenha a postura ereta com a cabeça alinhada e o olhar voltado para frente, evitando tensionar os ombros e pescoço. Movimente os braços de forma natural, com os cotovelos dobrados em 90 graus, enquanto os pés devem pousar abaixo do corpo, com a parte média ou frontal do pé tocando o solo primeiro. Respire de maneira profunda e controlada, ajustando o ritmo da respiração ao seu passo. Mantenha uma cadência constante e evite começar com intensidade excessiva, para não se exaurir rapidamente. Ao terminar, desacelere progressivamente e faça alongamentos para auxiliar na recuperação muscular.");
 
-for(var i = 0; i < 10; i++){
-    console.log(exercicios[i])
-}
+adicionarExercicio( "Bicicleta", "time", [1,2,3,4,5], 1, "Máquina", "Cardio", ["FullBody", "Pernas"], 
+    "A bicicleta ergométrica é uma ótima opção para um treino cardiovascular de baixo impacto. Ajuste a resistência para desafiar suas pernas enquanto mantém a intensidade do exercício.\nPara pedalar corretamente, ajuste o banco da bicicleta de forma que seus joelhos fiquem ligeiramente flexionados quando os pés estiverem nos pedais na posição mais baixa. Mantenha as costas retas e os ombros relaxados, com as mãos no guidão de maneira confortável. Durante o pedal, use a força das pernas de maneira controlada, alternando entre força e velocidade em cada pedalada, e evite esticar totalmente as pernas para prevenir lesões. Mantenha uma postura estável, com os quadris firmes e os pés sempre alinhados com os pedais. Respire de forma profunda e cadenciada, ajustando a intensidade conforme necessário. Ao terminar, diminua a velocidade gradualmente e faça alongamentos para relaxar os músculos.");
+
+adicionarExercicio( "Pular corda", "rep", [1,2,5], 2, "BodyWeight", "Cardio", ["FullBody", "Pernas"], 
+    "Pular corda é um exercício cardiovascular eficaz que trabalha o corpo todo. Mantenha a postura ereta, mova os braços para girar a corda e tente manter um ritmo constante para melhorar a resistência.\nPara pular corda corretamente, comece com os pés juntos e os joelhos ligeiramente flexionados, mantendo uma postura ereta com os ombros relaxados e os cotovelos perto do corpo. Segure as extremidades da corda com as mãos, posicionadas ligeiramente à frente e ao lado do corpo, e use os pulsos para girar a corda de forma suave e controlada. Ao saltar, levante-se apenas o suficiente para que a corda passe por baixo dos pés, mantendo os saltos curtos e rápidos. Evite saltos altos e landings pesados, pois isso pode sobrecarregar os joelhos e tornozelos. Mantenha uma respiração regular e cadenciada, e, ao terminar, desacelere gradualmente o ritmo antes de finalizar o exercício.") 
+
 
 export {exercicios}
